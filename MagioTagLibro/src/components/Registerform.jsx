@@ -32,7 +32,7 @@ const registerForm = () => {
     })
 }
 
-function Register(){
+function Registerform(){
     return (
         <Formik
             initialValues={initialValues}
@@ -72,4 +72,4 @@ function Register(){
     )
 }
 
-export default Register;
+export default Registerform;
