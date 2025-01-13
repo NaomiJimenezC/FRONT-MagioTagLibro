@@ -7,7 +7,6 @@ const registerForm = () => {
         initialValues : {
             userName: "",
             email: "",
-            birthDate: "",
             newPassword: "",
             confirmPassword: "",
         },
@@ -47,11 +46,6 @@ function Registerform(){
             <p>E-mail</p>
             <input id="insertEmail" type="email" name="email" onChange={registerForm.formik.handleChange}
                    value={registerForm.formik.initialValues.email}>
-
-            </input>
-            <p>Birth Date</p>
-            <input id="birthDate" type="datetime-local" onChange={registerForm.formik.handleChange}
-                   value={registerForm.formik.initialValues.birthDate}>
 
             </input>
             <p>Create Password</p>
