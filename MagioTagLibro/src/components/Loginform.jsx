@@ -1,4 +1,4 @@
-function Login(){
+function Loginform(){
     return (
         <>
             <input id="user" type="text" title="user">
@@ -17,4 +17,4 @@ function Login(){
     )
 }
 
-export default Login;
+export default Loginform;
