@@ -1,0 +1,24 @@
+@use "sass:math";
+@use "../core/_Variables" as variables; // Asegúrate de que la ruta sea correcta
+
+.home-page {
+  text-align: center;
+  padding: variables.$layout-padding;
+
+  .title {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  .subtitle {
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+
+  .description {
+    font-size: 18px;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}

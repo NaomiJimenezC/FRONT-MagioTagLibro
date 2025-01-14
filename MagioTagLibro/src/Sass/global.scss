@@ -1,0 +1,33 @@
+@use "./core/_Reset.scss" as *;
+@use "./core/_Variables.scss" as *;
+@use "./core/_Functions.scss" as *;
+
+
+
+
+html, body {
+    height: 99%; 
+    margin: 0; 
+    padding: 0; 
+    font-family: "Playfair Display", serif;
+  }
+  
+  
+  p{
+
+    font-family: "Signika", serif;
+
+
+  }
+  
+  
+  #root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  img{
+    object-fit: cover;
+
+  }
