@@ -1,29 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 function Home() {
   return (
-    <main>
-      <header
-        role="banner"
-      >
+    <div>
+      <header role="banner">
         <h1 >Magio Taglibro</h1>
         <nav aria-label="Acciones principales">
-          <ul>
-            <li>
-              <button
-                aria-label="Iniciar sesión en Magio Taglibro"
-              >
-                Inicio de Sesión
-              </button>
-            </li>
-            <li>
-              <button
-                aria-label="Cambiar el modo de tema"
-              >
-                Modo de Tema
-              </button>
-            </li>
-          </ul>
+            <ul>
+              <li><Link to="/Login" aria-label="Go to homepage">
+                <button aria-label="Iniciar sesión en Magio Taglibro">
+                  Inicio de Sesión
+                </button>
+                </Link>
+              </li>
+              <li>
+                <button aria-label="Cambiar el modo de tema">
+                  Modo de Tema
+                </button>
+              </li>
+            </ul>
         </nav>
       </header>
       <section
@@ -37,7 +34,7 @@ function Home() {
           y conecta!
         </p>
       </section>
-    </main>
+    </div>
   );
 }
 
