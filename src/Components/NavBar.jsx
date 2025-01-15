@@ -44,7 +44,7 @@ const Navbar = () => {
 
       <div>
         {isLoggedIn && (
-          <Link to="/mis-diarios" style={{ color: "#fff", marginRight: "1rem" }}>
+          <Link to="/diaries" style={{ color: "#fff", marginRight: "1rem" }}>
             <button>Mis diarios</button>
           </Link>
         )}
@@ -67,7 +67,7 @@ const Navbar = () => {
               zIndex: 10,
             }}
           >
-            <Link to={`/user/${user?.id}`} style={{ display: "block", color: "#fff", textDecoration: "none" }}>
+            <Link to="/user">
               <button style={{
                 marginTop: "10px",
                 backgroundColor: "red",
