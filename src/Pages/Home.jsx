@@ -1,31 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
+import React from "react";
+import Navbar from "../Components/Navbar"; 
 
 function Home() {
   return (
     <div>
-      <header role="banner">
-        <h1 >Magio Taglibro</h1>
-        <nav aria-label="Acciones principales">
-            <ul>
-              <li><Link to="/Login" aria-label="Go to homepage">
-                <button aria-label="Iniciar sesión en Magio Taglibro">
-                  Inicio de Sesión
-                </button>
-                </Link>
-              </li>
-              <li>
-                <button aria-label="Cambiar el modo de tema">
-                  Modo de Tema
-                </button>
-              </li>
-            </ul>
-        </nav>
-      </header>
-      <section
-        role="main"
-      >
+      <Navbar />
+      <section role="main" style={{ padding: "2rem" }}>
         <h2>Bienvenidos a Magio Taglibro</h2>
         <p>
           Magio Taglibro es tu diario online personal y social. Aquí puedes

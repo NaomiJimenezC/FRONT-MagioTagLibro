@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import LoginForm from "../Components/LoginForm"; 
-import RegisterForm from "../Components/RegisterForm"; 
+import Navbar from "../Components/Navbar";  // Asegúrate de importar la Navbar
+import LoginForm from "../Components/LoginForm";
+import RegisterForm from "../Components/RegisterForm";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,9 +12,10 @@ const AuthPage = () => {
 
   return (
     <main>
+      <Navbar /> {/* Aquí se agrega la Navbar */}
       <section aria-labelledby="auth-page-title">
         <h1 id="auth-page-title">{isLogin ? "Iniciar Sesión" : "Registrarse"}</h1>
-        
+
         {isLogin ? (
           <>
             <LoginForm />
