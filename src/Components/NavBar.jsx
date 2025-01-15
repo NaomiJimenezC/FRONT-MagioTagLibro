@@ -67,7 +67,7 @@ const Navbar = () => {
               zIndex: 10,
             }}
           >
-            <Link to={`/perfil/${user?.id}`} style={{ display: "block", color: "#fff", textDecoration: "none" }}>
+            <Link to={`/user/${user?.id}`} style={{ display: "block", color: "#fff", textDecoration: "none" }}>
               <button style={{
                 marginTop: "10px",
                 backgroundColor: "red",
