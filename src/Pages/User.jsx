@@ -3,15 +3,15 @@ import Navbar from "../Components/Navbar";
 
 function User() {
   return (
-    <div>
+    <body>
       <Navbar />
-      <section role="main" style={{ padding: "2rem" }}>
+      <main role="main" >
         <h2>Aquí irá el usuario</h2>
         <p>
         Pasan cosas y cosas pasan.
         </p>
-      </section>
-    </div>
+      </main>
+    </body>
   );
 }
 

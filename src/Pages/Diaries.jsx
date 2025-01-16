@@ -3,15 +3,15 @@ import Navbar from "../Components/Navbar";
 
 function Diaries() {
   return (
-    <div>
+    <body>
       <Navbar />
-      <section role="main" style={{ padding: "2rem" }}>
+      <main role="main">
         <h2>Aquí irán las cosas de la aplicación</h2>
         <p>
         Pasan cosas y cosas pasan pero de diarios.
         </p>
-      </section>
-    </div>
+      </main>
+    </body>
   );
 }
 

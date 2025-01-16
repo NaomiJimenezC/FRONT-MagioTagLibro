@@ -1,15 +1,14 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
-import { useAuth } from "../Context/AuthContext";  // Asegúrate de que este es tu contexto de autenticación
-
+import { useAuth } from "../Context/AuthContext";  
 const AuthTestPage = () => {
-  const { isLoggedIn, login, logout } = useAuth();  // Usamos el contexto de autenticación
+  const { isLoggedIn, login, logout } = useAuth();  
 
   const handleLoginClick = () => {
     if (isLoggedIn) {
-      logout();  // Si está logueado, hace logout
+      logout(); 
     } else {
-      login();  // Si no está logueado, hace login
+      login();  
     }
   };
 

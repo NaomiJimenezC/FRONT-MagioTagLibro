@@ -7,51 +7,57 @@ const LoginForm = () => {
   const [securityCodeSent, setSecurityCodeSent] = useState(false);
 
   const handleSubmitLogin = (values) => {
-    fetch("/api/users/login", {
+    fetch("http://localhost:5000/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        username: values.identifier,  // Cambié "identifier" a "username" aquí
+        password: values.password,
+      }),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
           alert("Inicio de sesión exitoso");
         } else {
-          alert("Error al iniciar sesión. Verifique sus credenciales.");
+          const error = await response.json();
+          alert(error.message || "Error al iniciar sesión. Verifique sus credenciales.");
         }
       })
       .catch(() => alert("Error al conectar con el servidor."));
   };
 
   const handleForgotPassword = (values) => {
-    fetch("/api/users/forgot-password", {
+    fetch("http://localhost:5000/api/users/forgot-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ identifier: values.identifier }),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
           setSecurityCodeSent(true);
           alert("Código de seguridad enviado al email.");
         } else {
-          alert("Error al enviar el código. Verifique el usuario o correo.");
+          const error = await response.json();
+          alert(error.message || "Error al enviar el código. Verifique el usuario o correo.");
         }
       })
       .catch(() => alert("Error al conectar con el servidor."));
   };
 
   const handleResetPassword = (values) => {
-    fetch("/api/users/reset-password", {
+    fetch("http://localhost:5000/api/users/reset-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
           alert("Contraseña restablecida exitosamente.");
           setShowForgotPassword(false);
           setSecurityCodeSent(false);
         } else {
-          alert("Error al restablecer la contraseña. Verifique el código.");
+          const error = await response.json();
+          alert(error.message || "Error al restablecer la contraseña. Verifique el código.");
         }
       })
       .catch(() => alert("Error al conectar con el servidor."));

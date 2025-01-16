@@ -7,7 +7,7 @@ const ProtectedRoute = ({ element }) => {
 
   if (!isLoggedIn) {
     // Si no está logueado, redirige al login
-    return <Navigate to="/auth-test" />;
+    return <Navigate to="/login" />;
   }
 
   return element; // Si está logueado, renderiza la ruta

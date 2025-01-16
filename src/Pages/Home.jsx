@@ -3,9 +3,9 @@ import Navbar from "../Components/Navbar";
 
 function Home() {
   return (
-    <div>
+    <body>
       <Navbar />
-      <section role="main" style={{ padding: "2rem" }}>
+      <main role="main" >
         <h2>Bienvenidos a Magio Taglibro</h2>
         <p>
           Magio Taglibro es tu diario online personal y social. Aquí puedes
@@ -13,8 +13,8 @@ function Home() {
           tus amigos, o simplemente escribir para ti mismo. ¡Explora, escribe
           y conecta!
         </p>
-      </section>
-    </div>
+      </main>
+    </body>
   );
 }
 

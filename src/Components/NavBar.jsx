@@ -14,7 +14,7 @@ const Navbar = () => {
     if (isLoggedIn) {
       setIsDropdownOpen(!isDropdownOpen); // Alterna el desplegable
     } else {
-      navigate("/auth-test"); // Si no está logueado, redirige al login
+      navigate("/login"); // Si no está logueado, redirige al login
     }
   };
 

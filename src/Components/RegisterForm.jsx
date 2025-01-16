@@ -8,6 +8,7 @@ const RegisterForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    birthDate: "",
   };
 
   const validationSchema = Yup.object({
@@ -23,23 +24,31 @@ const RegisterForm = () => {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Las contraseñas deben coincidir")
       .required("La confirmación de la contraseña es obligatoria"),
+    birthDate: Yup.date()
+      .max(new Date(), "La fecha de nacimiento no puede ser en el futuro")
+      .required("La fecha de nacimiento es obligatoria"),
   });
 
-  const handleSubmit = (values) => {
-    // Simulación de envío al servidor
-    fetch("/api/users/register", {
+  const handleSubmit = (values, { setSubmitting }) => {
+    fetch("http://localhost:5000/api/users/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify(values), // Enviar todos los valores
     })
       .then((response) => {
+        setSubmitting(false);
         if (response.ok) {
           alert("¡Usuario registrado con éxito!");
         } else {
-          alert("Error al registrar el usuario. Inténtalo nuevamente.");
+          response.json().then((error) =>
+            alert(error.message || "Error al registrar el usuario.")
+          );
         }
       })
-      .catch(() => alert("Error al conectar con el servidor."));
+      .catch(() => {
+        setSubmitting(false);
+        alert("Error al conectar con el servidor.");
+      });
   };
 
   return (
@@ -93,6 +102,16 @@ const RegisterForm = () => {
                   aria-required="true"
                 />
                 <ErrorMessage name="confirmPassword" component="p" />
+              </div>
+              <div>
+                <label htmlFor="birthDate">Fecha de nacimiento</label>
+                <Field
+                  id="birthDate"
+                  name="birthDate"
+                  type="date"
+                  aria-required="true"
+                />
+                <ErrorMessage name="birthDate" component="p" />
               </div>
             </fieldset>
             <button
