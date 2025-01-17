@@ -1,8 +1,13 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 const RegisterForm = () => {
+  const navigate = useNavigate(); // Para redirigir a la página de usuario
+  const { login } = useAuth(); // Actualizar el contexto de autenticación
+
   const initialValues = {
     username: "",
     email: "",
@@ -29,26 +34,28 @@ const RegisterForm = () => {
       .required("La fecha de nacimiento es obligatoria"),
   });
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    fetch("http://localhost:5000/api/users/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values), // Enviar todos los valores
-    })
-      .then((response) => {
-        setSubmitting(false);
-        if (response.ok) {
-          alert("¡Usuario registrado con éxito!");
-        } else {
-          response.json().then((error) =>
-            alert(error.message || "Error al registrar el usuario.")
-          );
-        }
-      })
-      .catch(() => {
-        setSubmitting(false);
-        alert("Error al conectar con el servidor.");
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
       });
+
+      setSubmitting(false);
+
+      if (response.ok) {
+        // Registro exitoso
+        login(); // Actualizar el contexto a "logueado"
+        navigate("/user"); // Redirigir a la página de usuario
+      } else {
+        const error = await response.json();
+        alert(error.message || "Error al registrar el usuario.");
+      }
+    } catch (error) {
+      setSubmitting(false);
+      alert("Error al conectar con el servidor.");
+    }
   };
 
   return (

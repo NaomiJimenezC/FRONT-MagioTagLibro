@@ -1,66 +1,86 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 const LoginForm = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [securityCodeSent, setSecurityCodeSent] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleSubmitLogin = (values) => {
-    fetch("http://localhost:5000/api/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: values.identifier,  // Cambié "identifier" a "username" aquí
-        password: values.password,
-      }),
-    })
-      .then(async (response) => {
-        if (response.ok) {
-          alert("Inicio de sesión exitoso");
-        } else {
-          const error = await response.json();
-          alert(error.message || "Error al iniciar sesión. Verifique sus credenciales.");
-        }
-      })
-      .catch(() => alert("Error al conectar con el servidor."));
+  const handleSubmitLogin = async (values, { setSubmitting }) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: values.identifier,
+          password: values.password,
+        }),
+      });
+
+      setSubmitting(false);
+
+      if (response.ok) {
+        login(); // Actualizar el contexto de autenticación
+        navigate("/user"); // Redirigir a la página de usuario
+      } else {
+        const error = await response.json();
+        alert(error.message || "Error al iniciar sesión. Verifique sus credenciales.");
+      }
+    } catch (error) {
+      setSubmitting(false);
+      alert("Error al conectar con el servidor.");
+    }
   };
 
-  const handleForgotPassword = (values) => {
-    fetch("http://localhost:5000/api/users/forgot-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ identifier: values.identifier }),
-    })
-      .then(async (response) => {
-        if (response.ok) {
-          setSecurityCodeSent(true);
-          alert("Código de seguridad enviado al email.");
-        } else {
-          const error = await response.json();
-          alert(error.message || "Error al enviar el código. Verifique el usuario o correo.");
-        }
-      })
-      .catch(() => alert("Error al conectar con el servidor."));
+  const handleForgotPassword = async (values, { setSubmitting }) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/users/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier: values.identifier }),
+      });
+
+      setSubmitting(false);
+
+      if (response.ok) {
+        setSecurityCodeSent(true);
+        alert("Código de seguridad enviado al email.");
+      } else {
+        const error = await response.json();
+        alert(error.message || "Error al enviar el código. Verifique el usuario o correo.");
+      }
+    } catch (error) {
+      setSubmitting(false);
+      alert("Error al conectar con el servidor.");
+    }
   };
 
-  const handleResetPassword = (values) => {
-    fetch("http://localhost:5000/api/users/reset-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    })
-      .then(async (response) => {
-        if (response.ok) {
-          alert("Contraseña restablecida exitosamente.");
-          setShowForgotPassword(false);
-          setSecurityCodeSent(false);
-        } else {
-          const error = await response.json();
-          alert(error.message || "Error al restablecer la contraseña. Verifique el código.");
-        }
-      })
-      .catch(() => alert("Error al conectar con el servidor."));
+  const handleResetPassword = async (values, { setSubmitting }) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/users/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      setSubmitting(false);
+
+      if (response.ok) {
+        alert("Contraseña restablecida exitosamente.");
+        setShowForgotPassword(false);
+        setSecurityCodeSent(false);
+      } else {
+        const error = await response.json();
+        alert(error.message || "Error al restablecer la contraseña. Verifique el código.");
+      }
+    } catch (error) {
+      setSubmitting(false);
+      alert("Error al conectar con el servidor.");
+    }
   };
 
   return (
@@ -159,7 +179,11 @@ const LoginForm = () => {
                   )}
                 </fieldset>
                 <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
-                  {isSubmitting ? "Procesando..." : securityCodeSent ? "Restablecer Contraseña" : "Enviar Código"}
+                  {isSubmitting
+                    ? "Procesando..."
+                    : securityCodeSent
+                    ? "Restablecer Contraseña"
+                    : "Enviar Código"}
                 </button>
                 <button
                   type="button"
