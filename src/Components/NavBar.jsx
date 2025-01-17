@@ -1,26 +1,26 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useTheme } from "../Context/ThemeContext";
 import { useAuth } from "../Context/AuthContext";
+import { useTheme } from "../Context/ThemeContext"; // Ajusta la ruta si es necesario
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
-  const { isLoggedIn, logout, user } = useAuth(); // Usamos el contexto de autenticación para obtener el estado y el nombre de usuario
+  const { isLoggedIn, logout, user } = useAuth();
   const navigate = useNavigate();
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
-      setIsDropdownOpen(!isDropdownOpen); // Alterna el desplegable
+      setIsDropdownOpen((prev) => !prev);
     } else {
-      navigate("/login"); // Si no está logueado, redirige al login
+      navigate("/login");
     }
   };
 
   const handleLogout = () => {
     logout();
-    setIsDropdownOpen(false); // Cierra el desplegable después de cerrar sesión
+    navigate("/"); // Redirige a la página principal
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -37,27 +37,33 @@ const Navbar = () => {
       }}
     >
       <h1 className="navbar-logo">
-        <Link to="/" aria-label="Ir a la página principal" style={{ color: "#fff", textDecoration: "none" }}>
+        <Link
+          to="/"
+          aria-label="Ir a la página principal"
+          style={{ color: isDarkMode ? "#fff" : "#333", textDecoration: "none" }}
+        >
           🏠 Magio Taglibro
         </Link>
       </h1>
 
       <div>
         {isLoggedIn && (
-          <Link to="/diaries" style={{ color: "#fff", marginRight: "1rem" }}>
-            <button>Mis diarios</button>
+          <Link to="/diaries" style={{ marginRight: "1rem", textDecoration: "none" }}>
+            <button style={{ backgroundColor: "transparent", color: isDarkMode ? "#fff" : "#333" }}>
+              Mis diarios
+            </button>
           </Link>
         )}
 
         <button onClick={handleAuthClick}>
-          {isLoggedIn ? user?.username || "Usuario X" : "Iniciar sesión"}
+          {isLoggedIn ? user?.username || "Usuario" : "Iniciar sesión"}
         </button>
 
         {isLoggedIn && isDropdownOpen && (
           <div
             style={{
               position: "absolute",
-              top: "60px", // Ajusta la posición si es necesario
+              top: "60px",
               right: "20px",
               backgroundColor: isDarkMode ? "#444" : "#fff",
               color: isDarkMode ? "#fff" : "#333",
@@ -68,23 +74,26 @@ const Navbar = () => {
             }}
           >
             <Link to="/user">
-              <button style={{
-                marginTop: "10px",
-                backgroundColor: "red",
-                color: "#fff",
-                border: "none",
-                padding: "5px 10px",
-                cursor: "pointer",
-              }}>
-
-
-              Ir al perfil
-                </button>
+              <button
+                style={{
+                  display: "block",
+                  width: "100%",
+                  marginBottom: "10px",
+                  backgroundColor: "blue",
+                  color: "#fff",
+                  border: "none",
+                  padding: "5px 10px",
+                  cursor: "pointer",
+                }}
+              >
+                Ir al perfil
+              </button>
             </Link>
             <button
               onClick={handleLogout}
               style={{
-                marginTop: "10px",
+                display: "block",
+                width: "100%",
                 backgroundColor: "red",
                 color: "#fff",
                 border: "none",

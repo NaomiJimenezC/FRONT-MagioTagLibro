@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 
 const RegisterForm = () => {
-  const navigate = useNavigate(); // Para redirigir a la página de usuario
-  const { login } = useAuth(); // Actualizar el contexto de autenticación
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const initialValues = {
     username: "",
@@ -18,20 +18,20 @@ const RegisterForm = () => {
 
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(3, "El nombre de usuario debe tener al menos 3 caracteres")
-      .required("El nombre de usuario es obligatorio"),
+      .min(3, "Debe tener al menos 3 caracteres")
+      .required("Nombre de usuario obligatorio"),
     email: Yup.string()
       .email("Formato de correo inválido")
-      .required("El correo es obligatorio"),
+      .required("Correo obligatorio"),
     password: Yup.string()
-      .min(6, "La contraseña debe tener al menos 6 caracteres")
-      .required("La contraseña es obligatoria"),
+      .min(6, "Debe tener al menos 6 caracteres")
+      .required("Contraseña obligatoria"),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Las contraseñas deben coincidir")
-      .required("La confirmación de la contraseña es obligatoria"),
+      .oneOf([Yup.ref("password"), null], "Las contraseñas no coinciden")
+      .required("Confirmación obligatoria"),
     birthDate: Yup.date()
-      .max(new Date(), "La fecha de nacimiento no puede ser en el futuro")
-      .required("La fecha de nacimiento es obligatoria"),
+      .max(new Date(), "No puede ser una fecha futura")
+      .required("Fecha de nacimiento obligatoria"),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -41,22 +41,28 @@ const RegisterForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
-
       setSubmitting(false);
 
       if (response.ok) {
-        // Registro exitoso
-        login(); // Actualizar el contexto a "logueado"
-        navigate("/user"); // Redirigir a la página de usuario
+        login(); // Autenticación exitosa
+        navigate("/user"); // Redirigir al usuario
       } else {
         const error = await response.json();
-        alert(error.message || "Error al registrar el usuario.");
+        alert(error.message || "Error en el registro.");
       }
-    } catch (error) {
+    } catch {
       setSubmitting(false);
       alert("Error al conectar con el servidor.");
     }
   };
+
+  const renderField = (label, name, type = "text") => (
+    <div>
+      <label htmlFor={name}>{label}</label>
+      <Field id={name} name={name} type={type} aria-required="true" />
+      <ErrorMessage name={name} component="p" />
+    </div>
+  );
 
   return (
     <section aria-labelledby="register-form-title">
@@ -69,63 +75,14 @@ const RegisterForm = () => {
         {({ isSubmitting }) => (
           <Form>
             <fieldset>
-              <legend>Complete los campos para registrarse</legend>
-              <div>
-                <label htmlFor="username">Nombre de usuario</label>
-                <Field
-                  id="username"
-                  name="username"
-                  type="text"
-                  aria-required="true"
-                />
-                <ErrorMessage name="username" component="p" />
-              </div>
-              <div>
-                <label htmlFor="email">Correo electrónico</label>
-                <Field
-                  id="email"
-                  name="email"
-                  type="email"
-                  aria-required="true"
-                />
-                <ErrorMessage name="email" component="p" />
-              </div>
-              <div>
-                <label htmlFor="password">Contraseña</label>
-                <Field
-                  id="password"
-                  name="password"
-                  type="password"
-                  aria-required="true"
-                />
-                <ErrorMessage name="password" component="p" />
-              </div>
-              <div>
-                <label htmlFor="confirmPassword">Confirmar contraseña</label>
-                <Field
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  aria-required="true"
-                />
-                <ErrorMessage name="confirmPassword" component="p" />
-              </div>
-              <div>
-                <label htmlFor="birthDate">Fecha de nacimiento</label>
-                <Field
-                  id="birthDate"
-                  name="birthDate"
-                  type="date"
-                  aria-required="true"
-                />
-                <ErrorMessage name="birthDate" component="p" />
-              </div>
+              <legend>Complete los campos</legend>
+              {renderField("Nombre de usuario", "username")}
+              {renderField("Correo electrónico", "email", "email")}
+              {renderField("Contraseña", "password", "password")}
+              {renderField("Confirmar contraseña", "confirmPassword", "password")}
+              {renderField("Fecha de nacimiento", "birthDate", "date")}
             </fieldset>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              aria-busy={isSubmitting}
-            >
+            <button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
               {isSubmitting ? "Registrando..." : "Registrar"}
             </button>
           </Form>
