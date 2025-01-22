@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from "../Components/Navbar.jsx";
+import Navbar from "../Components/NavBar.jsx";
 import useCheckTodayEntry from "../Functionalities/todayEntries.jsx";
 import Button from "../Components/Button.jsx"; // Asumiendo que tienes un componente Button
 
