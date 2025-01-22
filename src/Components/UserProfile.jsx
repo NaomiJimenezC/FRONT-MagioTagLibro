@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import FriendManagement from "./FriendManagement";
+import FriendManagement from "../components/FriendManagement";  
+import "../sass/components/_UserManagement.scss";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -17,6 +18,16 @@ const UserProfile = () => {
       navigate("/login");
     }
   }, [navigate]);
+
+  // Función para abrir el popup
+  const openFriendModal = () => {
+    setShowFriendModal(true);
+  };
+
+  // Función para cerrar el popup
+  const closeFriendModal = () => {
+    setShowFriendModal(false);
+  };
 
   return (
     <main aria-labelledby="user-profile-title">
@@ -55,7 +66,7 @@ const UserProfile = () => {
               Gestión de amigos
             </h2>
             <button
-              onClick={() => setShowFriendModal(true)}
+              onClick={openFriendModal}
               className="manage-friends-btn"
               aria-haspopup="dialog"
             >
@@ -72,7 +83,7 @@ const UserProfile = () => {
             >
               <div className="modal-content">
                 <button
-                  onClick={() => setShowFriendModal(false)}
+                  onClick={closeFriendModal}
                   className="close-modal-btn"
                   aria-label="Cerrar"
                 >
