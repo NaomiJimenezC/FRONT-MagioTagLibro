@@ -9,14 +9,14 @@ import ProtectedRoute from "../Components/ProtectedRoute"; // Importa el compone
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Home  />,
   },
   {
     path: "/login",
     element: <LoginRegister />,
   },
   {
-    path: "/auth-test",  
+    path: "/auth-test", 
     element: <AuthTestPage />,
   },
   {
