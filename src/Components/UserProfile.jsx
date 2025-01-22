@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import FriendManagement from "../components/FriendManagement";  
-import "../sass/components/_UserManagement.scss";
+import FriendManagement from "../Components/FriendManagement";  
+import "../Sass/components/_UserManagement.scss";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
