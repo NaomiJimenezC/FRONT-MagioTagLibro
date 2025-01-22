@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../Components/Navbar.jsx";  
+import Navbar from "../Components/NavBar.jsx";  
 import LoginForm from "../Components/LoginForm.jsx";
 import RegisterForm from "../Components/RegisterForm.jsx";
 
