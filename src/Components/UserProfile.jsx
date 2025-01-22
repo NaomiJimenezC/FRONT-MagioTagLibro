@@ -1,64 +1,94 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import FriendManagement from "./FriendManagement";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
+  const [showFriendModal, setShowFriendModal] = useState(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  // Simular la carga de datos del usuario desde el contexto o el almacenamiento local
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
       setUser(storedUser);
     } else {
-      navigate("/login"); // Redirigir si no hay usuario en el localStorage
+      navigate("/login");
     }
   }, [navigate]);
 
-  const handleAddFriend = () => {
-    alert("Funcionalidad de agregar amigos aún no está implementada.");
-  };
-
   return (
-    <section aria-labelledby="user-profile-title">
-      <h1 id="user-profile-title">Perfil de Usuario</h1>
+    <main aria-labelledby="user-profile-title">
+      <header>
+        <h1 id="user-profile-title">Perfil de Usuario</h1>
+        <button
+          onClick={logout}
+          className="logout-btn"
+          aria-label="Cerrar sesión"
+        >
+          Cerrar sesión
+        </button>
+      </header>
+
       {user ? (
-        <div className="profile-container">
-          <div className="profile-header">
-            <img
-              src={`https://www.gravatar.com/avatar/${user.email}`}
-              alt="Avatar"
-              className="profile-avatar"
-            />
-            <div className="profile-details">
-              <h2>{user.username}</h2>
-              <p>{user.email}</p>
-              <p>Fecha de Registro: {new Date(user.createdAt).toLocaleDateString()}</p>
-            </div>
-          </div>
+        <article aria-labelledby="profile-details-title">
+          <section id="profile-summary" aria-labelledby="profile-summary-title">
+            <h2 id="profile-summary-title">Detalles del perfil</h2>
+            <figure>
+              <img
+                src={`https://www.gravatar.com/avatar/${user.email}`}
+                alt={`Avatar de ${user.username}`}
+                className="profile-avatar"
+              />
+              <figcaption>
+                Información del perfil de {user.username}.
+              </figcaption>
+            </figure>
+            <p><strong>Nombre de usuario:</strong> {user.username}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Fecha de registro:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
+          </section>
 
-          <div className="profile-actions">
+          <section aria-labelledby="friend-management-title">
+            <h2 id="friend-management-title" className="sr-only">
+              Gestión de amigos
+            </h2>
             <button
-              onClick={handleAddFriend}
-              disabled={true}
-              className="add-friend-btn"
+              onClick={() => setShowFriendModal(true)}
+              className="manage-friends-btn"
+              aria-haspopup="dialog"
             >
-              Agregar Amigos
+              Gestionar Amigos
             </button>
-          </div>
+          </section>
 
-          <div className="profile-footer">
-            <button onClick={logout} className="logout-btn">
-              Cerrar sesión
-            </button>
-          </div>
-        </div>
+          {showFriendModal && (
+            <aside
+              className="modal-overlay"
+              role="dialog"
+              aria-labelledby="friend-management-title"
+              aria-modal="true"
+            >
+              <div className="modal-content">
+                <button
+                  onClick={() => setShowFriendModal(false)}
+                  className="close-modal-btn"
+                  aria-label="Cerrar"
+                >
+                  ✕
+                </button>
+                <FriendManagement />
+              </div>
+            </aside>
+          )}
+        </article>
       ) : (
-        <p>Cargando perfil...</p>
+        <section>
+          <p>Cargando perfil...</p>
+        </section>
       )}
-    </section>
+    </main>
   );
 };
 
