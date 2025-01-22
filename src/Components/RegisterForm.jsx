@@ -43,12 +43,22 @@ const RegisterForm = () => {
       });
       setSubmitting(false);
 
+      const data = await response.json();
       if (response.ok) {
-        login(); // Autenticación exitosa
-        navigate("/user"); // Redirigir al usuario
+        // Desestructurar los datos de respuesta
+        const { message, token, user } = data;
+
+        // Guardar los datos del usuario y el token en localStorage
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // Llamar la función login para autenticar al usuario
+        login(user);
+
+        // Redirigir a la página de usuario
+        navigate("/user");
       } else {
-        const error = await response.json();
-        alert(error.message || "Error en el registro.");
+        alert(data.message || "Error en el registro.");
       }
     } catch {
       setSubmitting(false);

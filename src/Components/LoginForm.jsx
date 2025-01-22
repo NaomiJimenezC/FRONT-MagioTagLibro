@@ -12,7 +12,11 @@ const apiRequest = async (url, method, body, onSuccess, onError) => {
       body: JSON.stringify(body),
     });
     const data = await response.json();
-    response.ok ? onSuccess(data) : onError(data.message || "Error en la solicitud.");
+    if (response.ok) {
+      onSuccess(data);
+    } else {
+      onError(data.message || "Error en la solicitud.");
+    }
   } catch {
     onError("Error al conectar con el servidor.");
   }
@@ -24,19 +28,33 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleLogin = (values, { setSubmitting }) =>
+  const handleLogin = (values, { setSubmitting }) => {
     apiRequest(
       "http://localhost:5000/api/users/login",
       "POST",
       { username: values.identifier, password: values.password },
       (data) => {
-        localStorage.setItem("authToken", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        login(data.user);
+        // Desestructurar datos de login recibidos
+        const { message, token, user } = data;
+
+        // Mostrar mensaje de éxito
+        console.log("Datos de login recibidos:", data);
+        alert(message); // Mostrar el mensaje de éxito
+
+        // Guardar el token y el usuario en localStorage
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("user", JSON.stringify(user)); // Guardar el usuario completo en localStorage
+        console.log("Token guardado en localStorage:", token);
+
+        // Llamar la función login
+        login(user); // Función para manejar el login
+
+        // Redirigir a la página de usuario
         navigate("/user");
       },
-      (message) => alert(message)
+      (message) => alert(message) // Si ocurre un error, mostrarlo
     ).finally(() => setSubmitting(false));
+  };
 
   const handleForgotPassword = (values, { setSubmitting }) =>
     apiRequest(

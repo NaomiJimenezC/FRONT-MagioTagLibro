@@ -1,12 +1,13 @@
 import React from "react";
-import Navbar from "../Components/Navbar"; 
+import Navbar from "../Components/NavBar"; 
+import UserProfile from "../Components/UserProfile";
 
 function User() {
   return (
     <body>
       <Navbar />
       <main role="main" >
-        <h2>Aquí irá el usuario</h2>
+        <UserProfile/>
         <p>
         Pasan cosas y cosas pasan.
         </p>

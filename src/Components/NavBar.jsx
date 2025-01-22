@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useTheme } from "../Context/ThemeContext"; // Ajusta la ruta si es necesario
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
-  const { isLoggedIn, logout, user } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser && storedUser !== "undefined") {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error("Error al parsear el usuario:", error);
+        setUser(null); // Si el JSON es inválido, seteamos `user` como null
+      }
+    } else {
+      setUser(null); // Si no existe el usuario o es "undefined", lo dejamos como null
+    }
+  }, []);
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
@@ -19,8 +34,19 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    setUser(null); // Limpiar el usuario del estado
     navigate("/"); // Redirige a la página principal
     setIsDropdownOpen(false);
+  };
+
+  // Solo mostrar el nombre de usuario cuando se haya cargado correctamente el estado `user`
+  const getUsername = () => {
+    if (isLoggedIn && user) {
+      return user.username || "Usuario no encontrado";
+    }
+    return isLoggedIn ? "Cargando..." : "Iniciar sesión";
   };
 
   return (
@@ -56,7 +82,7 @@ const Navbar = () => {
         )}
 
         <button onClick={handleAuthClick}>
-          {isLoggedIn ? user?.username || "Usuario" : "Iniciar sesión"}
+          {getUsername()}
         </button>
 
         {isLoggedIn && isDropdownOpen && (
