@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Navbar from "../Components/NavBar";  
-import LoginForm from "../Components/LoginForm";
-import RegisterForm from "../Components/RegisterForm";
+import Navbar from "../Components/Navbar.jsx";  
+import LoginForm from "../Components/LoginForm.jsx";
+import RegisterForm from "../Components/RegisterForm.jsx";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);

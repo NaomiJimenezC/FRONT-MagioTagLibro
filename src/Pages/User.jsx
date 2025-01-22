@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "../Components/NavBar"; 
-import UserProfile from "../Components/UserProfile";
+import Navbar from "../Components/NavBar.jsx"; 
+import UserProfile from "../Components/UserProfile.jsx";
 
 function User() {
   return (
