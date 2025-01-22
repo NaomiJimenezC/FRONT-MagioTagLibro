@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../Components/Navbar";
+import Navbar from "../Components/NavBar";
 import { useAuth } from "../Context/AuthContext";  
 const AuthTestPage = () => {
   const { isLoggedIn, login, logout } = useAuth();  
