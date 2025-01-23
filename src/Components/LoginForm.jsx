@@ -30,7 +30,7 @@ const LoginForm = () => {
 
   const handleLogin = (values, { setSubmitting }) => {
     apiRequest(
-      "http://localhost:5000/api/users/login",
+      "https://backend-magiotaglibro.onrender.com/api/users/login",
       "POST",
       { username: values.identifier, password: values.password },
       (data) => {
@@ -58,7 +58,7 @@ const LoginForm = () => {
 
   const handleForgotPassword = (values, { setSubmitting }) =>
     apiRequest(
-      "http://localhost:5000/api/users/forgot-password",
+      "https://backend-magiotaglibro.onrender.com/api/users/forgot-password",
       "POST",
       { identifier: values.identifier },
       () => {
@@ -70,7 +70,7 @@ const LoginForm = () => {
 
   const handleResetPassword = (values, { setSubmitting }) =>
     apiRequest(
-      "http://localhost:5000/api/users/reset-password",
+      "https://backend-magiotaglibro.onrender.com/api/users/reset-password",
       "POST",
       values,
       () => {
