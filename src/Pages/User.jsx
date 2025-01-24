@@ -8,9 +8,6 @@ function User() {
       <Navbar />
       <main role="main" >
         <UserProfile/>
-        <p>
-        Pasan cosas y cosas pasan.
-        </p>
       </main>
     </body>
   );
