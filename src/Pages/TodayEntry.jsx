@@ -1,87 +1,169 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const TodayEntry = () => {
-
     const navigate = useNavigate();
-    const [user,setUser] = useState(null);
+    const backurl = process.env.BACKEND_URL;
+    const [user, setUser] = useState(null);
+    const [entries, setEntries] = useState(null);
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
         if (storedUser) {
             setUser(storedUser);
+
+            const fetchLastEntry = async () => {
+                try {
+                    const response = await axios.get(`https://backend-magiotaglibro.onrender.com/api/entries/${storedUser.username}/latest`);
+                    setEntries(response.data);
+                } catch (error) {
+                    console.error("Error fetching last entry:", error);
+                }
+            };
+
+            fetchLastEntry();
         } else {
             navigate("/login");
         }
-    }, []);
-
+    }, [navigate]);
 
     const validationSchema = Yup.object().shape({
-        palabras_clave: Yup.string()
-            .matches(
-                /^[a-zA-Z]+(\s*,\s*[a-zA-Z]+)*$/,
-                'Ingresa las palabras separadas por coma'
-            )
-            .required('Este campo es requerido'),
-        eventos_claves: Yup.string()
-            .required('Este campo es requerido'),
-        resumen: Yup.string()
-            .required('Este campo es requerido'),
+        titulo: Yup.string().required('El título es requerido'),
+        contenido: Yup.object().shape({
+            palabras_clave: Yup.string()
+                .matches(
+                    /^[a-zA-Z]+(\s*,\s*[a-zA-Z]+)*$/,
+                    'Ingresa las palabras separadas por coma'
+                )
+                .required('Este campo es requerido'),
+            eventos_clave: Yup.array()
+                .of(Yup.string().required('Evento no puede estar vacío'))
+                .min(1, 'Debe tener al menos un evento'),
+            resumen: Yup.string()
+                .required('Este campo es requerido'),
+        }),
     });
 
     const initialValues = {
-        palabras_clave: '',
-        eventos_claves: '',
-        resumen: ''
+        titulo: entries?.titulo || new Date().toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }),
+        contenido: {
+            palabras_clave: entries?.contenido?.palabras_clave || '',
+            eventos_clave: entries?.contenido?.eventos_clave || [''], // Inicializado como array
+            resumen: entries?.contenido?.resumen || ''
+        },
+        autor_username: user?.username || "",
     };
 
-    const handleSubmit = (values, { setSubmitting }) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+    const handleSubmit = async (values, { setSubmitting }) => {
+        try {
+            const response = await axios.post(`${backurl}/api/entries/new`, values);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error submitting entry:", error);
+        } finally {
             setSubmitting(false);
-        }, 400);
+        }
     };
+
+    if (!user || !entries) {
+        return <div>Cargando...</div>;
+    }
 
     return (
         <main>
+            <section>
+                <h1>{entries.titulo}</h1>
+                <h2>Fecha de creación: {entries.fecha_creacion}</h2>
+                <img src="" alt="Descripción 1" />
+                <img src="" alt="Descripción 2" />
+            </section>
             <section>
                 <Formik
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
                     validationSchema={validationSchema}
+                    enableReinitialize
                 >
-                    {({ isSubmitting }) => (
+                    {({ isSubmitting, setFieldValue, values }) => (
                         <Form>
+                            <fieldset>
+                                <legend>Cambiar el título</legend>
+                                <label htmlFor="titulo">Título:</label>
+                                <Field
+                                    name="titulo"
+                                    id="titulo"
+                                    type="text"
+                                    placeholder="Título de la entrada"
+                                />
+                                <ErrorMessage name="titulo" component="small" />
+                            </fieldset>
                             <fieldset>
                                 <legend>Información del día</legend>
 
-                                <label htmlFor="palabras_clave">Palabras clave:</label>
+                                <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
                                 <Field
-                                    name="palabras_clave"
+                                    name="contenido.palabras_clave"
                                     id="palabras_clave"
                                     placeholder="Ingrese las palabras claves de tu día"
                                 />
-                                <ErrorMessage name="palabras_clave" component="small" />
+                                <ErrorMessage name="contenido.palabras_clave" component="small" />
 
-                                <label htmlFor="eventos_claves">Eventos clave:</label>
-                                <Field
-                                    name="eventos_claves"
-                                    id="eventos_claves"
-                                    placeholder="Ingrese los eventos claves"
-                                />
-                                <ErrorMessage name="eventos_claves" component="small" />
+                                <fieldset>
+                                    <legend>Eventos Clave</legend>
+                                    {values.contenido.eventos_clave.map((evento, index) => (
+                                        <section
+                                            key={index}
+                                        >
+                                            <Field
+                                                name={`contenido.eventos_clave[${index}]`}
+                                                placeholder={`Evento ${index + 1}`}
+                                            />
+                                            <button
+                                                type="button"
+                                                aria-label="Eliminar evento"
+                                                onClick={() => {
+                                                    const nuevosEventos = [...values.contenido.eventos_clave];
+                                                    nuevosEventos.splice(index, 1);
+                                                    setFieldValue("contenido.eventos_clave", nuevosEventos);
+                                                }}
+                                            >
+                                                Eliminar
+                                            </button>
+                                            <ErrorMessage
+                                                name={`contenido.eventos_clave[${index}]`}
+                                                component="small"
+                                            />
+                                        </section>
+                                    ))}
 
-                                <label htmlFor="resumen">Resumen:</label>
+                                    <section>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setFieldValue("contenido.eventos_clave", [...values.contenido.eventos_clave, ''])
+                                            }
+                                        >
+                                            Agregar Evento
+                                        </button>
+                                    </section>
+                                </fieldset>
+
+                                <label htmlFor="contenido.resumen">Resumen:</label>
                                 <Field
-                                    name="resumen"
+                                    name="contenido.resumen"
                                     id="resumen"
-                                    placeholder="Escribe el resumen de tu día"
                                     as="textarea"
                                     rows={6}
+                                    placeholder="Escribe el resumen de tu día"
                                 />
-                                <ErrorMessage name="resumen" component="small" />
+                                <ErrorMessage name="contenido.resumen" component="small" />
 
                                 <button type="submit" disabled={isSubmitting}>
                                     {isSubmitting ? 'Enviando...' : 'Enviar'}
