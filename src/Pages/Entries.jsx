@@ -6,29 +6,69 @@ import useCheckTodayEntry from "../Functionalities/todayEntries.jsx";
 import Button from "../Components/Button.jsx"; // Asumiendo que tienes un componente Button
 
 const Entries = () => {
+    const backurl = process.env.BACKEND_URL;
+    const [user, setUser] = useState(null);
     const [entries, setEntries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const { checkTodayEntry, isLoading: isTodayEntryLoading } = useCheckTodayEntry(username);
+    const { checkTodayEntry, isLoading: isTodayEntryLoading } = useCheckTodayEntry(user?.username);
 
     useEffect(() => {
-        const fetchEntries = async () => {
+        const fetchUser = () => {
             try {
-                const response = await axios.get('/api/entries/');
-                setEntries(response.data);
-                setIsLoading(false);
-            } catch (err) {
-                setError('Error al cargar las entradas');
+                const storedUser = JSON.parse(localStorage.getItem("user"));
+                if (storedUser) {
+                    setUser(storedUser);
+                    return storedUser.username;
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                setError(error);
+            }
+            return null;
+        };
+
+        const fetchEntries = async (username) => {
+            try {
+                if (username) {
+                    const response = await axios.get(`${backurl}/api/entries/${username}`);
+                    setEntries(response.data);
+                }
+            } catch (error) {
+                setError(error);
+            } finally {
                 setIsLoading(false);
             }
         };
 
-        fetchEntries();
-    }, []);
+        setIsLoading(true);
+        const username = fetchUser();
+        if (username) {
+            fetchEntries(username);
+        } else {
+            setIsLoading(false);
+        }
+    }, [backurl]);
 
-    if (isLoading) return <div>Cargando entradas...</div>;
-    if (error) return <div>{error}</div>;
+    const entradasPropias = useMemo(() =>
+            entries.filter(entrada => entrada.username === user?.username),
+        [entries, user]
+    );
+
+    const entradasCompartidas = useMemo(() =>
+            entries.filter(entrada => entrada.username !== user?.username),
+        [entries, user]
+    );
+
+    if (isLoading) {
+        return <div>Cargando...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
 
     return (
         <>
@@ -36,9 +76,10 @@ const Entries = () => {
             <main role="main">
                 <section>
                     <h2>Mis Entradas de Diario</h2>
-                    {entries.length > 0 ? (
+                    {entradasPropias.length > 0 ? (
                         <ul>
-                            {entries.map(entry => (
+                            {entradasPropias.map(entry => (
+                                //TODO(componente react de las entradas)
                                 <li key={entry._id}>
                                     <Link to={`/entry/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}
@@ -57,6 +98,24 @@ const Entries = () => {
                         text={isTodayEntryLoading ? "Cargando..." : "Entrada de hoy"}
                         disabled={isTodayEntryLoading}
                     />
+                </section>
+
+                <section>
+                    <h1>Entradas compartidas</h1>
+                    {entradasCompartidas.length > 0 ? (
+                        <ul>
+                            {entradasCompartidas.map(entry => (
+                                //TODO(componente react de las entradas)
+                                <li key={entry._id}>
+                                    <Link to={`/entry/${entry._id}`}>
+                                        {entry.titulo} - {entry.fecha_creacion}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No hay entradas disponibles.</p>
+                    )}
                 </section>
             </main>
         </>
