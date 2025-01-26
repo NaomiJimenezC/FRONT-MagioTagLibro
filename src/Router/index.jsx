@@ -3,9 +3,9 @@ import Home from "../Pages/Home";
 import LoginRegister from "../Pages/LoginRegister";
 import AuthTestPage from "../Pages/AuthTestPage"; 
 import User from "../Pages/User";
-import Diaries from "../Pages/Diaries";
 import ProtectedRoute from "../Components/ProtectedRoute";
-import TodayEntry from "../Pages/TodayEntry.jsx"; // Importa el componente ProtectedRoute
+import TodayEntry from "../Pages/TodayEntry.jsx";
+import Entries from "../Pages/Entries.jsx"; // Importa el componente ProtectedRoute
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/diaries",
-    element: <ProtectedRoute element={<Diaries />} />, // Protege la ruta de /diaries
+    element: <ProtectedRoute element={<Entries />} />, // Protege la ruta de /diaries
   },
   {
     path: "/diaries/todayEntry",
