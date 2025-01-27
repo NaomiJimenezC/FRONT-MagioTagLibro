@@ -24,14 +24,12 @@ const TodayEntry = () => {
             if (storedUser) {
                 setUser(storedUser);
                 try {
-                    const response = await axios.get(`${backurl}/api/entries/${user.username}/${id}`);
+                    const response = await axios.get(`${backurl}/api/entries/${storedUser.username}/${id}`);
                     setEntry(response.data);
                     setEditable(response.data.fecha_creacion === today);
                 } catch (error) {
                     console.error("Error fetching entries:", error);
                     setError(error);
-                } finally {
-                    setIsLoading(false);
                 }
             } else {
                 navigate("/login");
