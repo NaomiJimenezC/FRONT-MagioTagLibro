@@ -6,6 +6,7 @@ const FriendManagement = () => {
   const [friends, setFriends] = useState([]); // Amigos
   const [blockedUsers, setBlockedUsers] = useState([]); // Usuarios bloqueados
   const [friendUsername, setFriendUsername] = useState(""); // Nombre de usuario del amigo
+  const [blockUsername, setBlockUsername] = useState(""); // Nombre de usuario para bloquear
   const [username, setUsername] = useState(null); // Nombre de usuario del usuario actual
 
   // Obtener el usuario desde localStorage
@@ -268,6 +269,13 @@ const FriendManagement = () => {
 
         <section>
           <h3>Usuarios Bloqueados</h3>
+          <input
+            type="text"
+            placeholder="Nombre de usuario a bloquear"
+            value={blockUsername}
+            onChange={(e) => setBlockUsername(e.target.value)}
+          />
+          <button onClick={() => blockUser(blockUsername)}>Añadir a bloqueados</button>
           {blockedUsers.length > 0 ? (
             <ul>
               {blockedUsers.map((user) => (
