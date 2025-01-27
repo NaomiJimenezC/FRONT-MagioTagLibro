@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 const FriendManagement = () => {
   const [pendingRequests, setPendingRequests] = useState([]); // Solicitudes enviadas
   const [incomingRequests, setIncomingRequests] = useState([]); // Solicitudes recibidas
-  const [friends, setFriends] = useState([]);
-  const [blockedUsers, setBlockedUsers] = useState([]);
-  const [friendUsername, setFriendUsername] = useState("");
-  const [username, setUsername] = useState(null);
+  const [friends, setFriends] = useState([]); // Amigos
+  const [blockedUsers, setBlockedUsers] = useState([]); // Usuarios bloqueados
+  const [friendUsername, setFriendUsername] = useState(""); // Nombre de usuario del amigo
+  const [username, setUsername] = useState(null); // Nombre de usuario del usuario actual
 
   // Obtener el usuario desde localStorage
   useEffect(() => {
@@ -16,7 +16,6 @@ const FriendManagement = () => {
     }
   }, []);
 
-  // Obtener solicitudes de amistad pendientes enviadas por el usuario
   const fetchPendingRequests = async () => {
     if (!username) return;
 
@@ -37,7 +36,6 @@ const FriendManagement = () => {
     }
   };
 
-  // Obtener solicitudes de amistad recibidas por el usuario
   const fetchIncomingRequests = async () => {
     if (!username) return;
 
@@ -58,13 +56,12 @@ const FriendManagement = () => {
     }
   };
 
-  // Obtener amigos y usuarios bloqueados
-  const fetchFriendRequests = async () => {
+  const fetchFriendsAndBlocked = async () => {
     if (!username) return;
 
     try {
       const response = await fetch(
-        `https://backend-magiotaglibro.onrender.com/api/friendship/friendship/friends/${username}`
+        `https://backend-magiotaglibro.onrender.com/api/friendship/friends/${username}`
       );
 
       if (!response.ok) {
@@ -82,21 +79,20 @@ const FriendManagement = () => {
 
   useEffect(() => {
     if (username) {
-      fetchFriendRequests();
+      fetchFriendsAndBlocked();
       fetchPendingRequests();
       fetchIncomingRequests();
 
       const interval = setInterval(() => {
-        fetchFriendRequests();
+        fetchFriendsAndBlocked();
         fetchPendingRequests();
         fetchIncomingRequests();
-      }, 15000); // Actualiza cada 15 segundos
+      }, 15000);
 
-      return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonte
+      return () => clearInterval(interval);
     }
   }, [username]);
 
-  // Función genérica para manejar solicitudes POST
   const handlePostRequest = async (url, body, successMessage, errorMessage) => {
     try {
       const response = await fetch(url, {
@@ -111,7 +107,7 @@ const FriendManagement = () => {
       }
 
       alert(successMessage);
-      fetchFriendRequests();
+      fetchFriendsAndBlocked();
       fetchPendingRequests();
       fetchIncomingRequests();
     } catch (error) {
@@ -121,8 +117,10 @@ const FriendManagement = () => {
   };
 
   const sendFriendRequest = async () => {
-    const isFriend = friends.some(friend => friend.username === friendUsername);
-    const isPendingRequest = pendingRequests.some(request => request.recipient.username === friendUsername);
+    const isFriend = friends.some((friend) => friend.username === friendUsername);
+    const isPendingRequest = pendingRequests.some(
+      (request) => request.recipient.username === friendUsername
+    );
 
     if (isFriend) {
       alert("Ya son amigos.");
@@ -134,10 +132,64 @@ const FriendManagement = () => {
     }
 
     handlePostRequest(
-      "https://backend-magiotaglibro.onrender.com/api/friendship/friends/request/" + username,
+      `https://backend-magiotaglibro.onrender.com/api/friendship/friends/request/${username}`,
       { friendUsername },
       "Solicitud de amistad enviada.",
       "Error enviando la solicitud de amistad."
+    );
+  };
+
+  const acceptFriendRequest = (requesterUsername) => {
+    handlePostRequest(
+      `https://backend-magiotaglibro.onrender.com/api/friendship/friends/accept/${username}`,
+      { friendUsername: requesterUsername },
+      "Solicitud de amistad aceptada.",
+      "Error aceptando la solicitud de amistad."
+    );
+  };
+
+  const rejectFriendRequest = (requesterUsername) => {
+    handlePostRequest(
+      `https://backend-magiotaglibro.onrender.com/api/friendship/friends/reject/${username}`,
+      { friendUsername: requesterUsername },
+      "Solicitud de amistad rechazada.",
+      "Error rechazando la solicitud de amistad."
+    );
+  };
+
+  const cancelFriendRequest = (recipientUsername) => {
+    handlePostRequest(
+      `https://backend-magiotaglibro.onrender.com/api/friendship/friends/reject/${username}`,
+      { friendUsername: recipientUsername },
+      "Solicitud de amistad cancelada.",
+      "Error cancelando la solicitud de amistad."
+    );
+  };
+
+  const blockUser = (blockUsername) => {
+    handlePostRequest(
+      `https://backend-magiotaglibro.onrender.com/api/friendship/friends/block/${username}`,
+      { blockUsername },
+      "Usuario bloqueado.",
+      "Error bloqueando el usuario."
+    );
+  };
+
+  const unblockUser = (blockUsername) => {
+    handlePostRequest(
+      `https://backend-magiotaglibro.onrender.com/api/friendship/friends/unblock/${username}`,
+      { blockUsername },
+      "Usuario desbloqueado.",
+      "Error desbloqueando el usuario."
+    );
+  };
+
+  const removeFriend = (friendUsername) => {
+    handlePostRequest(
+      `https://backend-magiotaglibro.onrender.com/api/friendship/friends/remove/${username}`,
+      { friendUsername },
+      "Amigo eliminado.",
+      "Error eliminando al amigo."
     );
   };
 
@@ -166,6 +218,9 @@ const FriendManagement = () => {
               {pendingRequests.map((request) => (
                 <li key={request._id}>
                   {request.recipient.username}
+                  <button onClick={() => cancelFriendRequest(request.recipient.username)}>
+                    Cancelar
+                  </button>
                 </li>
               ))}
             </ul>
@@ -181,11 +236,49 @@ const FriendManagement = () => {
               {incomingRequests.map((request) => (
                 <li key={request._id}>
                   {request.requester.username}
+                  <button onClick={() => acceptFriendRequest(request.requester.username)}>
+                    Aceptar
+                  </button>
+                  <button onClick={() => rejectFriendRequest(request.requester.username)}>
+                    Rechazar
+                  </button>
                 </li>
               ))}
             </ul>
           ) : (
             <p>No tienes solicitudes recibidas.</p>
+          )}
+        </section>
+
+        <section>
+          <h3>Lista de Amigos</h3>
+          {friends.length > 0 ? (
+            <ul>
+              {friends.map((friend) => (
+                <li key={friend._id}>
+                  {friend.username}
+                  <button onClick={() => removeFriend(friend.username)}>Eliminar amigo</button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No tienes amigos.</p>
+          )}
+        </section>
+
+        <section>
+          <h3>Usuarios Bloqueados</h3>
+          {blockedUsers.length > 0 ? (
+            <ul>
+              {blockedUsers.map((user) => (
+                <li key={user._id}>
+                  {user.username}
+                  <button onClick={() => unblockUser(user.username)}>Desbloquear</button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No tienes usuarios bloqueados.</p>
           )}
         </section>
       </article>
