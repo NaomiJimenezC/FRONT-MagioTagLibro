@@ -5,7 +5,8 @@ import Navbar from "../Components/NavBar.jsx";
 import useCheckTodayEntry from "../Functionalities/todayEntries.jsx";
 
 const Entries = () => {
-    const backurl = process.env.BACKEND_URL;
+    const backurl = import.meta.env.VITE_BACKEND_URL;
+
     const [user, setUser] = useState(null);
     const [entries, setEntries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -32,9 +33,12 @@ const Entries = () => {
             try {
                 if (username) {
                     const response = await axios.get(`${backurl}/api/entries/${username}`);
+                    console.log(response);
+                    console.log(response.data)
                     setEntries(response.data);
                 }
             } catch (error) {
+                console.error("Error fetching entries:", error);
                 setError(error);
             } finally {
                 setIsLoading(false);
@@ -50,24 +54,22 @@ const Entries = () => {
         }
     }, [backurl]);
 
-    const entradasPropias = useMemo(() =>
-            entries.filter(entrada => entrada.username === user?.username),
-        [entries, user]
-    );
 
-    const entradasCompartidas = useMemo(() =>
-            entries.filter(entrada => entrada.username !== user?.username),
-        [entries, user]
-    );
+    const entradasPropias = entries.filter(entrada => entrada.username === user?.username);
+    const entradasCompartidas = entries.filter(entrada => entrada.username !== user?.username);
 
     if (isLoading) {
         return <div>Cargando...</div>;
     }
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return (
+            <div>
+                <h2>Ocurrió un error</h2>
+                <p>{error.response?.data?.message || error.message || "Error desconocido"}</p>
+            </div>
+        );
     }
-
 
     return (
         <>
@@ -78,7 +80,6 @@ const Entries = () => {
                     {entradasPropias.length > 0 ? (
                         <ul>
                             {entradasPropias.map(entry => (
-                                //TODO(componente react de las entradas)
                                 <li key={entry._id}>
                                     <Link to={`/entry/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}
@@ -90,13 +91,16 @@ const Entries = () => {
                         <p>No hay entradas disponibles.</p>
                     )}
                 </section>
+
                 <section>
-                    <h2>Ir a la entrada de hoy</h2>
-                    <Button
+                    <button
+                        type="button"
                         onClick={checkTodayEntry}
-                        text={isTodayEntryLoading ? "Cargando..." : "Entrada de hoy"}
                         disabled={isTodayEntryLoading}
-                    />
+                    >
+                        {isTodayEntryLoading ? "Cargando..." : "Entrada de hoy"}
+                    </button>
+
                 </section>
 
                 <section>
@@ -104,7 +108,6 @@ const Entries = () => {
                     {entradasCompartidas.length > 0 ? (
                         <ul>
                             {entradasCompartidas.map(entry => (
-                                //TODO(componente react de las entradas)
                                 <li key={entry._id}>
                                     <Link to={`/entry/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}
@@ -120,4 +123,5 @@ const Entries = () => {
         </>
     );
 };
+
 export default Entries;
