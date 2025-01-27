@@ -7,7 +7,7 @@ import axios from "axios";
 const TodayEntry = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const backurl = process.env.BACKEND_URL;
+    const backurl = import.meta.env.VITE_BACKEND_URL;
     const today = new Date().toLocaleDateString('es-ES', {
         day: '2-digit',
         month: '2-digit',
