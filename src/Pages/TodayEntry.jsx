@@ -1,34 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const TodayEntry = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const backurl = process.env.BACKEND_URL;
+    const today = new Date().toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+
+    const [editable, setEditable] = useState(true);
     const [user, setUser] = useState(null);
-    const [entries, setEntries] = useState(null);
+    const [entry, setEntry] = useState(null);
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-        if (storedUser) {
-            setUser(storedUser);
-
-            const fetchLastEntry = async () => {
+        const fetchUserAndEntries = async () => {
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            if (storedUser) {
+                setUser(storedUser);
                 try {
-                    const response = await axios.get(`https://backend-magiotaglibro.onrender.com/api/entries/${storedUser.username}/latest`);
-                    setEntries(response.data);
+                    const response = await axios.get(`${backurl}/api/entries/${user.username}/${id}`);
+                    setEntry(response.data);
+                    setEditable(response.data.fecha_creacion === today);
                 } catch (error) {
-                    console.error("Error fetching last entry:", error);
+                    console.error("Error fetching entries:", error);
+                    setError(error);
+                } finally {
+                    setIsLoading(false);
                 }
-            };
-
-            fetchLastEntry();
-        } else {
-            navigate("/login");
-        }
-    }, [navigate]);
+            } else {
+                navigate("/login");
+            }
+        };
+        fetchUserAndEntries();
+    }, [navigate, id, backurl]);
 
     const validationSchema = Yup.object().shape({
         titulo: Yup.string().required('El título es requerido'),
@@ -48,15 +58,15 @@ const TodayEntry = () => {
     });
 
     const initialValues = {
-        titulo: entries?.titulo || new Date().toLocaleDateString('es-ES', {
+        titulo: entry?.titulo || new Date().toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
         }),
         contenido: {
-            palabras_clave: entries?.contenido?.palabras_clave || '',
-            eventos_clave: entries?.contenido?.eventos_clave || [''], // Inicializado como array
-            resumen: entries?.contenido?.resumen || ''
+            palabras_clave: entry?.contenido?.palabras_clave || '',
+            eventos_clave: entry?.contenido?.eventos_clave || [''], // Inicializado como array
+            resumen: entry?.contenido?.resumen || ''
         },
         autor_username: user?.username || "",
     };
@@ -72,15 +82,15 @@ const TodayEntry = () => {
         }
     };
 
-    if (!user || !entries) {
+    if (!user || !entry) {
         return <div>Cargando...</div>;
     }
 
     return (
         <main>
             <section>
-                <h1>{entries.titulo}</h1>
-                <h2>Fecha de creación: {entries.fecha_creacion}</h2>
+                <h1>{entry.titulo}</h1>
+                <h2>Fecha de creación: {entry.fecha_creacion}</h2>
                 <img src="" alt="Descripción 1" />
                 <img src="" alt="Descripción 2" />
             </section>
@@ -101,6 +111,7 @@ const TodayEntry = () => {
                                     id="titulo"
                                     type="text"
                                     placeholder="Título de la entrada"
+                                    disabled={!editable}
                                 />
                                 <ErrorMessage name="titulo" component="small" />
                             </fieldset>
@@ -112,18 +123,18 @@ const TodayEntry = () => {
                                     name="contenido.palabras_clave"
                                     id="palabras_clave"
                                     placeholder="Ingrese las palabras claves de tu día"
+                                    disabled={!editable}
                                 />
                                 <ErrorMessage name="contenido.palabras_clave" component="small" />
 
                                 <fieldset>
                                     <legend>Eventos Clave</legend>
                                     {values.contenido.eventos_clave.map((evento, index) => (
-                                        <section
-                                            key={index}
-                                        >
+                                        <section key={index}>
                                             <Field
                                                 name={`contenido.eventos_clave[${index}]`}
                                                 placeholder={`Evento ${index + 1}`}
+                                                disabled={!editable}
                                             />
                                             <button
                                                 type="button"
@@ -162,6 +173,7 @@ const TodayEntry = () => {
                                     as="textarea"
                                     rows={6}
                                     placeholder="Escribe el resumen de tu día"
+                                    disabled={!editable}
                                 />
                                 <ErrorMessage name="contenido.resumen" component="small" />
 
