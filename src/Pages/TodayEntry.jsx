@@ -17,6 +17,7 @@ const TodayEntry = () => {
     const [editable, setEditable] = useState(true);
     const [user, setUser] = useState(null);
     const [entry, setEntry] = useState(null);
+    const [error,setError] = useState(null);
 
     useEffect(() => {
         const fetchUserAndEntries = async () => {

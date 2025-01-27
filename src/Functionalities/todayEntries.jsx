@@ -37,11 +37,12 @@ const useCheckTodayEntry = (username) => {
                     }
                 };
                 const newEntry = await axios.post(`${backurl}/api/entries/new`, newEntryData);
-                navigate(`/diaries/${newEntry.data._id}`);
+                const latestEntry = await axios.get(`${backurl}/api/entries/${username}/latest`);
+                navigate(`/diaries/${latestEntry.data._id}`);
             }
         } catch (error) {
             console.error("Error al comprobar la entrada de hoy:", error);
-            // Manejar el error (por ejemplo, mostrar un mensaje al usuario)
+
         } finally {
             setIsLoading(false);
         }
