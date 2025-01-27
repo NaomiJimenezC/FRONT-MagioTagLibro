@@ -37,6 +37,7 @@ const useCheckTodayEntry = (username) => {
                     }
                 };
                 const newEntry = await axios.post(`${backurl}/api/entries/new`, newEntryData);
+                console.log(newEntry)
                 const latestEntry = await axios.get(`${backurl}/api/entries/${username}/latest`);
                 navigate(`/diaries/${latestEntry.data._id}`);
             }
