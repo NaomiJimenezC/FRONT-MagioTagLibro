@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute element={<Entries />} />, // Protege la ruta de /diaries
   },
   {
-    path: "/diaries/todayEntry",
+    path: "/diaries/:id",
     element: <ProtectedRoute element={<TodayEntry />} />,
   }
 ]);

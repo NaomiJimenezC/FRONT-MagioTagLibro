@@ -20,7 +20,7 @@ const useCheckTodayEntry = (username) => {
             const todayEntry = response?.data?.fecha_creacion === today ? response.data : null;
 
             if (todayEntry) {
-                navigate(`/entry/${todayEntry._id}`);
+                navigate(`/diaries/${todayEntry._id}`);
             } else {
                 const newEntryData = {
                     titulo: `Entrada del ${today}`,
@@ -37,7 +37,7 @@ const useCheckTodayEntry = (username) => {
                     }
                 };
                 const newEntry = await axios.post(`${backurl}/api/entries/new`, newEntryData);
-                navigate(`/entry/${newEntry.data._id}`);
+                navigate(`/diaries/${newEntry.data._id}`);
             }
         } catch (error) {
             console.error("Error al comprobar la entrada de hoy:", error);

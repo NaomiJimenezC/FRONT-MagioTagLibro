@@ -80,7 +80,7 @@ const Entries = () => {
                         <ul>
                             {entradasPropias.map(entry => (
                                 <li key={entry._id}>
-                                    <Link to={`/entry/${entry._id}`}>
+                                    <Link to={`/diaries/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}
                                     </Link>
                                 </li>
