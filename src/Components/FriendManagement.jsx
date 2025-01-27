@@ -22,7 +22,7 @@ const FriendManagement = () => {
 
     try {
       const response = await fetch(
-        `https://backend-magiotaglibro.onrender.com/api/friends/pending/${username}`
+        `https://backend-magiotaglibro.onrender.com/api/friendship/friends/pending/${username}`
       );
 
       if (!response.ok) {
@@ -43,7 +43,7 @@ const FriendManagement = () => {
 
     try {
       const response = await fetch(
-        `https://backend-magiotaglibro.onrender.com/api/friends/incoming/${username}`
+        `https://backend-magiotaglibro.onrender.com/api/friendship/friends/incoming/${username}`
       );
 
       if (!response.ok) {
@@ -64,7 +64,7 @@ const FriendManagement = () => {
 
     try {
       const response = await fetch(
-        `https://backend-magiotaglibro.onrender.com/api/friendship/friends/${username}`
+        `https://backend-magiotaglibro.onrender.com/api/friendship/friendship/friends/${username}`
       );
 
       if (!response.ok) {
