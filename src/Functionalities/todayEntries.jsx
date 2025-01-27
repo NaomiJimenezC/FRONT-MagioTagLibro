@@ -3,6 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const useCheckTodayEntry = (username) => {
+    const backurl = import.meta.env.VITE_BACKEND_URL;
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -13,10 +14,10 @@ const useCheckTodayEntry = (username) => {
             month: '2-digit',
             year: 'numeric'
         });
-
+        console.log(username);
         try {
-            const response = await axios.get(`/api/entries/`);
-            const todayEntry = response.data.find(entry => entry.fecha_creacion === today);
+            const response = await axios.get(`${backurl}/api/entries/${username}/latest`);
+            const todayEntry = response?.data?.fecha_creacion === today ? response.data : null;
 
             if (todayEntry) {
                 navigate(`/entry/${todayEntry._id}`);
@@ -35,7 +36,7 @@ const useCheckTodayEntry = (username) => {
                         mensajes: []
                     }
                 };
-                const newEntry = await axios.post('/api/entries', newEntryData);
+                const newEntry = await axios.post(`${backurl}/api/entries/new`, newEntryData);
                 navigate(`/entry/${newEntry.data._id}`);
             }
         } catch (error) {
