@@ -33,8 +33,6 @@ const Entries = () => {
             try {
                 if (username) {
                     const response = await axios.get(`${backurl}/api/entries/${username}`);
-                    console.log(response);
-                    console.log(response.data)
                     setEntries(response.data);
                 }
             } catch (error) {
@@ -55,8 +53,9 @@ const Entries = () => {
     }, [backurl]);
 
 
-    const entradasPropias = entries.filter(entrada => entrada.username === user?.username);
-    const entradasCompartidas = entries.filter(entrada => entrada.username !== user?.username);
+    const entradasPropias = entries.filter(entrada => entrada.autor_username === user?.username);
+    const entradasCompartidas = entries.filter(entrada => entrada.autor_username !== user?.username);
+
 
     if (isLoading) {
         return <div>Cargando...</div>;

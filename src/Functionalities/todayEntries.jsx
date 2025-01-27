@@ -25,9 +25,9 @@ const useCheckTodayEntry = (username) => {
                 const newEntryData = {
                     titulo: `Entrada del ${today}`,
                     contenido: {
-                        palabras_clave: '',
-                        eventos_clave: '',
-                        resumen: ''
+                        palabras_clave: 'Ingrese,las,palabras,claves,así',
+                        eventos_clave: ["Ingrese eventos claves"],
+                        resumen: 'Ingrese el resumen de su día'
                     },
                     fecha_creacion: today,
                     autor_username: username,
