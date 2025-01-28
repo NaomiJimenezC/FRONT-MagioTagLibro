@@ -1,60 +1,82 @@
 import axios from 'axios';
-import { Field, Formik } from 'formik'
+import * as Yup from 'yup';
+import { Field, Formik,Form,ErrorMessage } from 'formik'
 import React from 'react'
+import Layout from '../Layout/MainLayout';
 
 export const Contact = () => {
+    const backurl = import.meta.env.VITE_BACKEND_URL;
     const initialValues = {
         subject: '',
         email_user: '',
         email_body: ''
       };
     
-      const handleSubmit = (values, { setSubmitting }) => {
-        // Aquí manejas el envío del formulario
-        const posted = await axios 
-        console.log(values);
-        setSubmitting(false);
+      const handleSubmit = async (values, { setSubmitting }) => {
+        try{
+            await axios.get(`${backurl}/api/contact/sent`)
+        }catch(error){
+            console.log(`Error submitting contact form: ${error}`)
+        }
+        finally{
+            setSubmitting(false);
+        }
       };
+
+      const validationSchema = Yup.object().shape({
+        subject: Yup.string()
+            .required("El asunto es requerido"),
+        email_user: Yup.string()
+            .email("Formato de correo inválido")
+            .required("Correo obligatorio"),
+        email_body: Yup.string()
+            .required("Es necesario describir el asunto")
+      })
     
   return (
-    <main>
-        <section>
-            <h1>¡Contacta con nosotros!</h1>
-            <p>En Magio Taglibro valoramos mucho el bienestar del usuario, debido a ello siempre estamos abiertos a escucharos. Déjanos en el formulario lo que veas necesario y te leeremos. ¡Muchas gracias!</p>
-        </section>
-        <section>
-            <Formik>
-                <Form>
-                    <fieldset>
-                        <legend>Contacta</legend>
-                            <label htmlFor='subject'>Asunto</label>
-                            <Field
-                            id={"subject"}
-                            name="subject"
-                            as="input"
-                            //falta la parte de onsubit y values
-                            />
+    <Layout>
+        <main>
+            <section>
+                <h1>¡Contacta con nosotros!</h1>
+                <p>En Magio Taglibro valoramos mucho el bienestar del usuario, debido a ello siempre estamos abiertos a escucharos. Déjanos en el formulario lo que veas necesario y te leeremos. ¡Muchas gracias!</p>
+            </section>
+            <section>
+            <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+        >
+        {({ isSubmitting }) => (
+            <Form>
+            <fieldset>
+                <legend>Contacta con nosotros</legend>
+                
+            
+                <label htmlFor="subject">Asunto</label>
+                <Field id="subject" name="subject" type="text" />
+                <ErrorMessage name="subject" />
+                
 
-                            <Field
-                                id={"email_user"}
-                                name="email_user"
-                                as="input"
-                                //falta la parte de onsubit y values
-                            />
+                <label htmlFor="email_user">Email</label>
+                <Field id="email_user" name="email_user" type="email" />
+                <ErrorMessage name="email_user" />
+            
 
-                            <Field
-                                id={"email_body"}
-                                name="email_body"
-                                as="textarea"
-                                rows={8}
-                                //falta la parte de onsubit y values
-                            />
+            
+                <label htmlFor="email_body">Mensaje</label>
+                <Field id="email_body" name="email_body" as="textarea" rows={8} />
+                <ErrorMessage name="email_body"/>
+        
 
-                            <button type='submit'>Enviar</button>
-                    </fieldset>
-                </Form>
-            </Formik>
-        </section>
-    </main>
+                <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Enviando...' : 'Enviar'}
+                </button>
+            </fieldset>
+            </Form>
+        )}
+        </Formik>
+            </section>
+        </main>
+    </Layout>
   )
 }
