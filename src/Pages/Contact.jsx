@@ -48,30 +48,30 @@ export const Contact = () => {
         >
         {({ isSubmitting }) => (
             <Form>
-            <fieldset>
-                <legend>Contacta con nosotros</legend>
+                <fieldset>
+                    <legend>Contacta con nosotros</legend>
+                    
                 
-            
-                <label htmlFor="subject">Asunto</label>
-                <Field id="subject" name="subject" type="text" />
-                <ErrorMessage name="subject" />
+                    <label htmlFor="subject">Asunto</label>
+                    <Field id="subject" as="input" name="subject" type="text" />
+                    <ErrorMessage name="subject" />
+                    
+
+                    <label htmlFor="email_user">Email</label>
+                    <Field id="email_user" as="input" name="email_user" type="email" />
+                    <ErrorMessage name="email_user" />
                 
 
-                <label htmlFor="email_user">Email</label>
-                <Field id="email_user" name="email_user" type="email" />
-                <ErrorMessage name="email_user" />
+                
+                    <label htmlFor="email_body">Mensaje</label>
+                    <Field id="email_body" name="email_body" as="textarea" rows={8} />
+                    <ErrorMessage name="email_body"/>
             
 
-            
-                <label htmlFor="email_body">Mensaje</label>
-                <Field id="email_body" name="email_body" as="textarea" rows={8} />
-                <ErrorMessage name="email_body"/>
-        
-
-                <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Enviando...' : 'Enviar'}
-                </button>
-            </fieldset>
+                    <button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Enviando...' : 'Enviar'}
+                    </button>
+                </fieldset>
             </Form>
         )}
         </Formik>
