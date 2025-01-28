@@ -14,9 +14,6 @@ const Footer = () => {
 
         {/* Contact Section */}
         <section aria-labelledby="contact-heading">
-          <h3 id="contact-heading" className="sr-only">
-            Contact Information
-          </h3>
           <nav aria-label="Contact navigation">
             <ul className="list-none p-0">
               <li>
@@ -33,9 +30,7 @@ const Footer = () => {
 
         {/* Social Media Links */}
         <section aria-labelledby="social-media-heading">
-          <h3 id="social-media-heading" className="sr-only">
-            Social Media
-          </h3>
+
           <p className="text-sm mb-2">Follow us on:</p>
           <ul className="flex justify-center md:justify-start space-x-4">
             <li>

@@ -5,12 +5,17 @@ import AuthTestPage from "../Pages/AuthTestPage";
 import User from "../Pages/User";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import TodayEntry from "../Pages/TodayEntry.jsx";
-import Entries from "../Pages/Entries.jsx"; // Importa el componente ProtectedRoute
+import Entries from "../Pages/Entries.jsx";
+import {Contact} from "../Pages/Contact.jsx"; // Importa el componente ProtectedRoute
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Home  />,
+  },
+  {
+    path: "/contact",
+    element: <Contact />,
   },
   {
     path: "/login",

@@ -41,40 +41,40 @@ export const Contact = () => {
                 <p>En Magio Taglibro valoramos mucho el bienestar del usuario, debido a ello siempre estamos abiertos a escucharos. Déjanos en el formulario lo que veas necesario y te leeremos. ¡Muchas gracias!</p>
             </section>
             <section>
-            <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-        >
-        {({ isSubmitting }) => (
-            <Form>
-                <fieldset>
-                    <legend>Contacta con nosotros</legend>
-                    
-                
-                    <label htmlFor="subject">Asunto</label>
-                    <Field id="subject" as="input" name="subject" type="text" />
-                    <ErrorMessage name="subject" />
-                    
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                >
+                    {({ isSubmitting }) => (
+                        <Form>
+                            <fieldset>
+                                <legend>Contacta con nosotros</legend>
 
-                    <label htmlFor="email_user">Email</label>
-                    <Field id="email_user" as="input" name="email_user" type="email" />
-                    <ErrorMessage name="email_user" />
-                
 
-                
-                    <label htmlFor="email_body">Mensaje</label>
-                    <Field id="email_body" name="email_body" as="textarea" rows={8} />
-                    <ErrorMessage name="email_body"/>
-            
+                                <label htmlFor="subject">Asunto</label>
+                                <Field id="subject" as="input" name="subject" type="text" />
+                                <ErrorMessage name="subject" />
 
-                    <button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? 'Enviando...' : 'Enviar'}
-                    </button>
-                </fieldset>
-            </Form>
-        )}
-        </Formik>
+
+                                <label htmlFor="email_user">Email</label>
+                                <Field id="email_user" as="input" name="email_user" type="email" />
+                                <ErrorMessage name="email_user" />
+
+
+
+                                <label htmlFor="email_body">Mensaje</label>
+                                <Field id="email_body" name="email_body" as="textarea" rows={8} />
+                                <ErrorMessage name="email_body"/>
+
+
+                                <button type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? 'Enviando...' : 'Enviar'}
+                                </button>
+                            </fieldset>
+                        </Form>
+                    )}
+                </Formik>
             </section>
         </main>
     </Layout>
