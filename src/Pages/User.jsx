@@ -1,15 +1,15 @@
 import React from "react";
-import Navbar from "../Components/NavBar.jsx"; 
 import UserProfile from "../Components/UserProfile.jsx";
+import Layout from "../Layout/MainLayout"; 
 
-function User() {
+const User = () => {
   return (
-    <body>
-      <Navbar />
-      <main role="main" >
-        <UserProfile/>
+    <Layout>
+      <main role="main">
+        <h1>Perfil de Usuario</h1>
+        <UserProfile />
       </main>
-    </body>
+    </Layout>
   );
 }
 

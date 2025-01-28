@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Navbar from "../Components/NavBar.jsx";  
-import LoginForm from "../Components/LoginForm.jsx";
-import RegisterForm from "../Components/RegisterForm.jsx";
+import Layout from "../Layout/MainLayout"; 
+import LoginForm from "../Components/LoginForm";
+import RegisterForm from "../Components/RegisterForm";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,18 +11,22 @@ const AuthPage = () => {
   };
 
   return (
-    <body>
-      <Navbar /> 
+    <Layout>
       <header>
-        <h1 id="auth-page-title">{isLogin ? "Iniciar Sesión" : "Registrarse"}</h1>
+        <h1 id="auth-page-title">
+          {isLogin ? "Iniciar Sesión" : "Registrarse"}
+        </h1>
       </header>
-      <main>
+      <main role="main">
         {isLogin ? (
           <>
             <LoginForm />
             <p>
               ¿No tienes cuenta?{" "}
-              <button onClick={handleToggleForm} aria-label="Ir a la página de registro">
+              <button
+                onClick={handleToggleForm}
+                aria-label="Ir a la página de registro"
+              >
                 Regístrate aquí
               </button>
             </p>
@@ -32,14 +36,17 @@ const AuthPage = () => {
             <RegisterForm />
             <p>
               ¿Ya tienes cuenta?{" "}
-              <button onClick={handleToggleForm} aria-label="Ir a la página de inicio de sesión">
+              <button
+                onClick={handleToggleForm}
+                aria-label="Ir a la página de inicio de sesión"
+              >
                 Inicia sesión aquí
               </button>
             </p>
           </>
         )}
       </main>
-    </body>
+    </Layout>
   );
 };
 

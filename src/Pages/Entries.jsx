@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from "../Components/NavBar.jsx";
+import Layout from "../Layout/MainLayout";
 import useCheckTodayEntry from "../Functionalities/todayEntries.jsx";
 
 const Entries = () => {
@@ -52,10 +52,8 @@ const Entries = () => {
         }
     }, [backurl]);
 
-
     const entradasPropias = entries.filter(entrada => entrada.autor_username === user?.username);
     const entradasCompartidas = entries.filter(entrada => entrada.autor_username !== user?.username);
-
 
     if (isLoading) {
         return <div>Cargando...</div>;
@@ -71,11 +69,12 @@ const Entries = () => {
     }
 
     return (
-        <>
-            <Navbar />
+        <Layout>
             <main role="main">
-                <section>
-                    <h2>Mis Entradas de Diario</h2>
+                <section aria-labelledby="my-entries">
+                    <header>
+                        <h2 id="my-entries">Mis Entradas de Diario</h2>
+                    </header>
                     {entradasPropias.length > 0 ? (
                         <ul>
                             {entradasPropias.map(entry => (
@@ -91,7 +90,10 @@ const Entries = () => {
                     )}
                 </section>
 
-                <section>
+                <section aria-labelledby="today-entry">
+                    <header>
+                        <h2 id="today-entry">Entrada de Hoy</h2>
+                    </header>
                     <button
                         type="button"
                         onClick={checkTodayEntry}
@@ -99,11 +101,12 @@ const Entries = () => {
                     >
                         {isTodayEntryLoading ? "Cargando..." : "Entrada de hoy"}
                     </button>
-
                 </section>
 
-                <section>
-                    <h1>Entradas compartidas</h1>
+                <section aria-labelledby="shared-entries">
+                    <header>
+                        <h2 id="shared-entries">Entradas Compartidas</h2>
+                    </header>
                     {entradasCompartidas.length > 0 ? (
                         <ul>
                             {entradasCompartidas.map(entry => (
@@ -119,7 +122,7 @@ const Entries = () => {
                     )}
                 </section>
             </main>
-        </>
+        </Layout>
     );
 };
 

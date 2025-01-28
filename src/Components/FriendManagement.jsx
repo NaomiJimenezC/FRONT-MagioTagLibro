@@ -9,7 +9,6 @@ const FriendManagement = () => {
   const [blockUsername, setBlockUsername] = useState(""); // Nombre de usuario para bloquear
   const [username, setUsername] = useState(null); // Nombre de usuario del usuario actual
 
-  // Obtener el usuario desde localStorage
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser?.username) {

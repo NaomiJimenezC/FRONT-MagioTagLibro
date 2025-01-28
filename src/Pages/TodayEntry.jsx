@@ -1,93 +1,95 @@
-    import React, { useEffect, useState } from 'react';
-    import * as Yup from 'yup';
-    import { Formik, Form, Field, ErrorMessage } from 'formik';
-    import { useNavigate, useParams } from "react-router-dom";
-    import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import Layout from "../Layout/MainLayout"; 
 
-    const TodayEntry = () => {
-        const { id } = useParams();
-        const navigate = useNavigate();
-        const backurl = import.meta.env.VITE_BACKEND_URL;
-        const today = new Date().toLocaleDateString('es-ES', {
+const TodayEntry = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const backurl = import.meta.env.VITE_BACKEND_URL;
+    const today = new Date().toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+
+    const [editable, setEditable] = useState(true);
+    const [user, setUser] = useState(null);
+    const [entry, setEntry] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchUserAndEntries = async () => {
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            if (storedUser) {
+                setUser(storedUser);
+                try {
+                    const response = await axios.get(`${backurl}/api/entries/${storedUser.username}/${id}`);
+                    setEntry(response.data);
+                    setEditable(response.data.fecha_creacion === today);
+                } catch (error) {
+                    console.error("Error fetching entries:", error);
+                    setError(error);
+                }
+            } else {
+                navigate("/login");
+            }
+        };
+        fetchUserAndEntries();
+    }, [navigate, id, backurl]);
+
+    const validationSchema = Yup.object().shape({
+        titulo: Yup.string().required('El título es requerido'),
+        contenido: Yup.object().shape({
+            palabras_clave: Yup.string()
+                .matches(
+                    /^[a-zA-Z]+(\s*,\s*[a-zA-Z]+)*$/,
+                    'Ingresa las palabras separadas por coma'
+                )
+                .required('Este campo es requerido'),
+            eventos_clave: Yup.array()
+                .of(Yup.string().required('Evento no puede estar vacío'))
+                .min(1, 'Debe tener al menos un evento'),
+            resumen: Yup.string()
+                .required('Este campo es requerido'),
+        }),
+    });
+
+    const initialValues = {
+        titulo: entry?.titulo || new Date().toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
-        });
+        }),
+        contenido: {
+            palabras_clave: entry?.contenido?.palabras_clave || '',
+            eventos_clave: entry?.contenido?.eventos_clave || [''],
+            resumen: entry?.contenido?.resumen || ''
+        },
+        autor_username: user?.username || "",
+        fecha_creacion: today,
+    };
 
-        const [editable, setEditable] = useState(true);
-        const [user, setUser] = useState(null);
-        const [entry, setEntry] = useState(null);
-        const [error,setError] = useState(null);
-
-        useEffect(() => {
-            const fetchUserAndEntries = async () => {
-                const storedUser = JSON.parse(localStorage.getItem("user"));
-                if (storedUser) {
-                    setUser(storedUser);
-                    try {
-                        const response = await axios.get(`${backurl}/api/entries/${storedUser.username}/${id}`);
-                        setEntry(response.data);
-                        setEditable(response.data.fecha_creacion === today);
-                    } catch (error) {
-                        console.error("Error fetching entries:", error);
-                        setError(error);
-                    }
-                } else {
-                    navigate("/login");
-                }
-            };
-            fetchUserAndEntries();
-        }, [navigate, id, backurl]);
-
-        const validationSchema = Yup.object().shape({
-            titulo: Yup.string().required('El título es requerido'),
-            contenido: Yup.object().shape({
-                palabras_clave: Yup.string()
-                    .matches(
-                        /^[a-zA-Z]+(\s*,\s*[a-zA-Z]+)*$/,
-                        'Ingresa las palabras separadas por coma'
-                    )
-                    .required('Este campo es requerido'),
-                eventos_clave: Yup.array()
-                    .of(Yup.string().required('Evento no puede estar vacío'))
-                    .min(1, 'Debe tener al menos un evento'),
-                resumen: Yup.string()
-                    .required('Este campo es requerido'),
-            }),
-        });
-
-        const initialValues = {
-            titulo: entry?.titulo || new Date().toLocaleDateString('es-ES', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            }),
-            contenido: {
-                palabras_clave: entry?.contenido?.palabras_clave || '',
-                eventos_clave: entry?.contenido?.eventos_clave || [''], // Inicializado como array
-                resumen: entry?.contenido?.resumen || ''
-            },
-            autor_username: user?.username || "",
-            fecha_creacion: today,
-        };
-
-        const handleSubmit = async (values, { setSubmitting }) => {
-            try {
-                const response = await axios.post(`${backurl}/api/entries/new`, values);
-                console.log(response.data);
-            } catch (error) {
-                console.error("Error submitting entry:", error);
-            } finally {
-                setSubmitting(false);
-            }
-        };
-
-        if (!user || !entry) {
-            return <div>Cargando...</div>;
+    const handleSubmit = async (values, { setSubmitting }) => {
+        try {
+            const response = await axios.post(`${backurl}/api/entries/new`, values);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error submitting entry:", error);
+        } finally {
+            setSubmitting(false);
         }
+    };
 
-        return (
-            <main>
+    if (!user || !entry) {
+        return <div>Cargando...</div>;
+    }
+
+    return (
+        <Layout>
+            <main role="main">
                 <section>
                     <h1>{entry.titulo}</h1>
                     <h2>Fecha de creación: {entry.fecha_creacion}</h2>
@@ -186,7 +188,8 @@
                     </Formik>
                 </section>
             </main>
-        );
-    };
+        </Layout>
+    );
+};
 
-    export default TodayEntry;
+export default TodayEntry;

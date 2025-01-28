@@ -1,17 +1,18 @@
 import React from "react";
-import Navbar from "../Components/NavBar.jsx"; 
+import Layout from "../Layout/MainLayout";
 
 function Diaries() {
   return (
-    <body>
-      <Navbar />
-      <main role="main">
-        <h2>Aquí irán las cosas de la aplicación</h2>
+    <Layout>
+      <article aria-labelledby="diaries-title">
+        <header>
+          <h2 id="diaries-title">Diarios</h2>
+        </header>
         <p>
-        Pasan cosas y cosas pasan pero de diarios.
+          Pasan cosas y cosas pasan, pero de diarios.
         </p>
-      </main>
-    </body>
+      </article>
+    </Layout>
   );
 }
 
