@@ -26,19 +26,29 @@ const TodayEntry = () => {
             if (storedUser) {
                 setUser(storedUser);
                 try {
+                    // Intenta obtener la entrada como autor
                     const response = await axios.get(`${backurl}/api/entries/${storedUser.username}/${id}`);
                     setEntry(response.data);
                     setEditable(response.data.fecha_creacion === today);
                 } catch (error) {
-                    console.error("Error fetching entries:", error);
-                    setError(error);
+                    try {
+                        // Si falla, intenta obtener como entrada compartida
+                        const sharedResponse = await axios.get(`${backurl}/api/entries/shared-entries/${storedUser.username}/${id}`);
+                        setEntry(sharedResponse.data);
+                        setEditable(false); // Las entradas compartidas no son editables
+                    } catch (sharedError) {
+                        setError(sharedError)
+                        // Si ambas solicitudes fallan, el usuario no tiene acceso
+                        console.error("Usuario no autorizado:", sharedError);
+                        navigate("/"); // Redirige a una página de no autorizado
+                    }
                 }
             } else {
                 navigate("/login");
             }
         };
         fetchUserAndEntries();
-    }, [navigate, id, backurl]);
+    }, [navigate, id, backurl, today]);
 
     const validationSchema = Yup.object().shape({
         titulo: Yup.string().required('El título es requerido'),
