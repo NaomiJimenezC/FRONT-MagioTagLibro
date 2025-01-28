@@ -14,7 +14,7 @@ export const Contact = () => {
     
       const handleSubmit = async (values, { setSubmitting }) => {
         try{
-            await axios.get(`${backurl}/api/contact/sent`)
+            await axios.post(`${backurl}/api/contact/sent`,values)
         }catch(error){
             console.log(`Error submitting contact form: ${error}`)
         }
