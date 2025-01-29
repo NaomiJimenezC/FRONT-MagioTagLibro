@@ -1,5 +1,7 @@
 import React from "react";
 import Layout from "../Layout/MainLayout"; // Importa el Layout
+import "../Sass/Pages/_Home.scss";
+
 
 function Home() {
   return (
@@ -7,7 +9,7 @@ function Home() {
       <main role="main">
         <section>
           <header>
-            <h2>Bienvenidos a Magio Taglibro</h2>
+            <h1>Bienvenidos a Magio Taglibro</h1>
           </header>
           <p>
             Magio Taglibro es tu diario online personal y social. Aquí puedes

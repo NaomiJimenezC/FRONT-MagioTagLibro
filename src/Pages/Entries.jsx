@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Layout from "../Layout/MainLayout";
-import useCheckTodayEntry from "../Functionalities/todayEntries.jsx";
+import useCheckTodayEntry from "../Functionalities/TodayEntries.jsx";
 
 const Entries = () => {
     const backurl = import.meta.env.VITE_BACKEND_URL;

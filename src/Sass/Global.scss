@@ -1,0 +1,14 @@
+@use "./Core/_Variables.scss" as Variables;
+
+h1{
+  font: Variables.$h1-font;
+}
+h2{
+  font: Variables.$h2-font;
+}
+h3{
+  font: Variables.$h3-font;
+}
+p{
+  font: Variables.$p-font;
+}
