@@ -1,7 +1,35 @@
 // _Variables.scss
-
+$general-font: Nunito, sans-serif;
 // Colors
+$light-foreground: #520288;
+$light-background: #F9EFA9;
+$dark-foreground: #F9E03E;
+$dark-background: #310250;
+
+$primary-color-800: #FFE541;
+$primary-color-700: #FAE665;
+$primary-color-600: #FBE978;
+$primary-color-500: #FBEC8B;
+$primary-color-400: #FCF09F;
+$primary-color-300: #FDF3B2;
+$primary-color-200: #FDF6C5;
+$primary-color-100: #FEF9D8;
+
+$secondary-color-800: #2C0066;
+$secondary-color-700: #482279;
+$secondary-color-600: #633F8B;
+$secondary-color-500: #7D5D9E;
+$secondary-color-400: #967BB1;
+$secondary-color-300: #B09BC5;
+$secondary-color-200: #CABBD8;
+$secondary-color-100: #E5DDEB;
 
 // Font Sizes
+$h1-font: $general-font, 48px;
+$h2-font: $general-font, 32px;
+$h3-font: $general-font, 16px;
+$p-font: $general-font, 14px;
+$bold-font: $general-font, bold, 14px;
+$small-font: $general-font, 12px;
 
 // Spacing & Sizing
