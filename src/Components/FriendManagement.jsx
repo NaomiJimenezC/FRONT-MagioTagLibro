@@ -131,6 +131,7 @@ const FriendManagement = () => {
     }
   };
 
+  // Función para enviar una petición de amistad
   const sendFriendRequest = async () => {
     if (!friendUsername.trim()) {
       alert("Por favor ingresa un nombre de usuario válido.");
@@ -159,6 +160,7 @@ const FriendManagement = () => {
     );
   };
 
+  // Función para aceptar una petición de amistad
   const acceptFriendRequest = (requesterUsername) => {
     handlePostRequest(
       `https://backend-magiotaglibro.onrender.com/api/friendship/friends/accept/${username}`,
@@ -168,6 +170,7 @@ const FriendManagement = () => {
     );
   };
 
+  // función para rechazar una petición amistad
   const rejectFriendRequest = (requesterUsername) => {
     handlePostRequest(
       `https://backend-magiotaglibro.onrender.com/api/friendship/friends/reject/${username}`,
@@ -177,6 +180,7 @@ const FriendManagement = () => {
     );
   };
 
+  // Función para cancelar una petición de amistad
   const cancelFriendRequest = (recipientUsername) => {
     handlePostRequest(
       `https://backend-magiotaglibro.onrender.com/api/friendship/friends/cancel/${username}`,
@@ -193,22 +197,7 @@ const FriendManagement = () => {
       return;
     }
   
-    // Verificar si el usuario está en la lista de amigos
-    const isFriend = friends.some((friend) => friend.username === blockUsername);
-  
-    if (isFriend) {
-      // Si es amigo, primero eliminarlo de amigos
-      try {
-        await removeFriend(blockUsername); // Usar la función existente para eliminar al amigo
-        alert("Amigo eliminado antes de bloquear.");
-      } catch (error) {
-        console.error("Error eliminando al amigo:", error.message);
-        alert("No se pudo eliminar al amigo antes de bloquear.");
-        return;
-      }
-    }
-  
-    // Después de eliminarlo de amigos (si es necesario), proceder a bloquearlo
+    // Proceder a bloquear al usuario directamente
     try {
       await handlePostRequest(
         `https://backend-magiotaglibro.onrender.com/api/friendship/friends/block/${username}`,
@@ -227,42 +216,39 @@ const FriendManagement = () => {
   };
   
   
+  
 
   
 // Función para desbloquear un usuario
-  const unblockUser = async (unblockUsername) => {
-    if (!unblockUsername) {
-      alert("El nombre de usuario no es válido.");
-      return;
-    }
-  
-    try {
-      // Hacer la solicitud para desbloquear al usuario
-      await handlePostRequest(
-        `https://backend-magiotaglibro.onrender.com/api/friendship/friends/unblock/${username}`,
-        { unblockUsername },
-        "Usuario desbloqueado.",
-        "Error desbloqueando el usuario."
-      );
-  
-      // Eliminar al usuario de la lista de bloqueados
-      setBlockedUsers((prevBlockedUsers) => prevBlockedUsers.filter(user => user.username !== unblockUsername));
-  
-      // Si el usuario desbloqueado era un amigo previamente, añadirlo a la lista de amigos
-      const isAlreadyFriend = friends.some((friend) => friend.username === unblockUsername);
-      if (!isAlreadyFriend) {
-        setFriends((prevFriends) => [...prevFriends, { username: unblockUsername }]);
-      }
-  
-      alert("Usuario desbloqueado correctamente.");
-    } catch (error) {
-      console.error("Error desbloqueando el usuario:", error.message);
-      alert("No se pudo desbloquear al usuario.");
-    }
-  };
-  
-  
+const unblockUser = async (unblockUsername) => {
+  if (!unblockUsername) {
+    alert("El nombre de usuario no es válido.");
+    return;
+  }
 
+  try {
+    // Hacer la solicitud para desbloquear al usuario
+    await handlePostRequest(
+      `https://backend-magiotaglibro.onrender.com/api/friendship/friends/unblock/${username}`,
+      { blockUsername: unblockUsername },  // Cambié el parámetro para que coincida con el del backend
+      "Usuario desbloqueado.",
+      "Error desbloqueando el usuario."
+    );
+
+    // Eliminar al usuario de la lista de bloqueados
+    setBlockedUsers((prevBlockedUsers) => prevBlockedUsers.filter(user => user.username !== unblockUsername));
+
+    // Ya no agregamos el usuario a la lista de amigos, ya que la relación de amistad fue eliminada
+    alert("Usuario desbloqueado correctamente.");
+  } catch (error) {
+    console.error("Error desbloqueando el usuario:", error.message);
+    alert("No se pudo desbloquear al usuario.");
+  }
+};
+
+  
+  
+// Función para eliminar amigos
   const removeFriend = async (friendUsername) => {
     try {
       const response = await fetch(
