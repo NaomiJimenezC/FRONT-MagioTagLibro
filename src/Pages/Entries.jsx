@@ -9,6 +9,7 @@ const Entries = () => {
 
     const [user, setUser] = useState(null);
     const [entries, setEntries] = useState([]);
+    const [sharedEntries, setSharedEntries] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -33,6 +34,8 @@ const Entries = () => {
             try {
                 if (username) {
                     const response = await axios.get(`${backurl}/api/entries/${username}`);
+                    const sharedEntries = await axios.get(`${backurl}/api/entries/shared-entries/${username}`);
+                    setSharedEntries(sharedEntries.data);
                     setEntries(response.data);
                 }
             } catch (error) {
@@ -52,8 +55,8 @@ const Entries = () => {
         }
     }, [backurl]);
 
-    const entradasPropias = entries.filter(entrada => entrada.autor_username === user?.username);
-    const entradasCompartidas = entries.filter(entrada => entrada.autor_username !== user?.username);
+    const entradasPropias = entries
+    const entradasCompartidas = sharedEntries
 
     if (isLoading) {
         return <div>Cargando...</div>;
@@ -111,7 +114,7 @@ const Entries = () => {
                         <ul>
                             {entradasCompartidas.map(entry => (
                                 <li key={entry._id}>
-                                    <Link to={`/entry/${entry._id}`}>
+                                    <Link to={`/diaries/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}
                                     </Link>
                                 </li>

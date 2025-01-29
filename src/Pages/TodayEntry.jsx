@@ -151,6 +151,7 @@ const TodayEntry = () => {
                                                 <button
                                                     type="button"
                                                     aria-label="Eliminar evento"
+                                                    disabled={!editable}
                                                     onClick={() => {
                                                         const nuevosEventos = [...values.contenido.eventos_clave];
                                                         nuevosEventos.splice(index, 1);
@@ -169,6 +170,7 @@ const TodayEntry = () => {
                                         <section>
                                             <button
                                                 type="button"
+                                                disabled={!editable}
                                                 onClick={() =>
                                                     setFieldValue("contenido.eventos_clave", [...values.contenido.eventos_clave, ''])
                                                 }
@@ -189,7 +191,7 @@ const TodayEntry = () => {
                                     />
                                     <ErrorMessage name="contenido.resumen" component="small" />
 
-                                    <button type="submit" disabled={isSubmitting}>
+                                    <button type="submit" disabled={!editable || isSubmitting}>
                                         {isSubmitting ? 'Enviando...' : 'Enviar'}
                                     </button>
                                 </fieldset>
