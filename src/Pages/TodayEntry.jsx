@@ -4,8 +4,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Layout from "../Layout/MainLayout"; 
+import ShareEntry from '../Components/ShareEntry';
 
 const TodayEntry = () => {
+    const [showFriendModal, setShowFriendModal] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
     const backurl = import.meta.env.VITE_BACKEND_URL;
@@ -14,6 +16,17 @@ const TodayEntry = () => {
         month: '2-digit',
         year: 'numeric'
     });
+
+      // Función para abrir el popup
+  const openFriendModal = () => {
+    setShowFriendModal(true);
+  };
+
+  // Función para cerrar el popup
+  const closeFriendModal = () => {
+    setShowFriendModal(false);
+  };
+
 
     const [editable, setEditable] = useState(true);
     const [user, setUser] = useState(null);
@@ -103,7 +116,9 @@ const TodayEntry = () => {
                 <section>
                     <h1>{entry.titulo}</h1>
                     <h2>Fecha de creación: {entry.fecha_creacion}</h2>
-                    <img src="" alt="Descripción 1" />
+                    <button type="button"
+                    onClick={openFriendModal}
+                    >Compartir</button>
                     <img src="" alt="Descripción 2" />
                 </section>
                 <section>
@@ -199,6 +214,32 @@ const TodayEntry = () => {
                         )}
                     </Formik>
                 </section>
+            <article>    
+                {showFriendModal && (
+                    <aside
+                    className="modal-overlay"
+                    role="dialog"
+                    aria-labelledby="friend-management-title"
+                    aria-modal="true"
+                    >
+                    <div className="modal-content">
+                        <button
+                        onClick={closeFriendModal}
+                        className="close-modal-btn"
+                        aria-label="Cerrar"
+                        >
+                        ✕
+                        </button>
+                        <ShareEntry username={user.username} />
+                    </div>
+                    </aside>
+          )}
+        </article>
+         : (
+        <section>
+          <p>Cargando perfil...</p>
+        </section>
+      )
             </main>
         </Layout>
     );

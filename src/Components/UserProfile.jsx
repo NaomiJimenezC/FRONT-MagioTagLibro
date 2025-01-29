@@ -14,6 +14,7 @@ const UserProfile = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
       setUser(storedUser);
+      console.log(storedUser)
     } else {
       navigate("/login");
     }
@@ -58,7 +59,8 @@ const UserProfile = () => {
             </figure>
             <p><strong>Nombre de usuario:</strong> {user.username}</p>
             <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Fecha de registro:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
+            <p><strong>Fecha de registro:</strong> {user.createdAt
+}</p>
           </section>
 
           <section aria-labelledby="friend-management-title">
