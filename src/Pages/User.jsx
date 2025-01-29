@@ -6,7 +6,6 @@ const User = () => {
   return (
     <Layout>
       <main role="main">
-        <h1>Perfil de Usuario</h1>
         <UserProfile />
       </main>
     </Layout>

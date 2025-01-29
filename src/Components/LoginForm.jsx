@@ -162,7 +162,6 @@ const LoginForm = () => {
   return (
     <main>
       <section aria-labelledby="login-form-title">
-        <h1 id="login-form-title">Inicio de Sesión</h1>
         {renderForm(securityCodeSent)}
       </section>
     </main>
