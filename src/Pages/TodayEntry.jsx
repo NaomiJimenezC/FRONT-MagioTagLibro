@@ -97,8 +97,8 @@ const TodayEntry = () => {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            const response = await axios.post(`${backurl}/api/entries/new`, values);
-            console.log(response.data);
+            await axios.post(`${backurl}/api/entries/new`, values);
+            navigate("/diaries")
         } catch (error) {
             console.error("Error submitting entry:", error);
         } finally {

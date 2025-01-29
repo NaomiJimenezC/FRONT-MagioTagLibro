@@ -14,7 +14,6 @@ const useCheckTodayEntry = (username) => {
             month: '2-digit',
             year: 'numeric'
         });
-        console.log(username);
         try {
             const response = await axios.get(`${backurl}/api/entries/${username}/latest`);
             const todayEntry = response?.data?.fecha_creacion === today ? response.data : null;
