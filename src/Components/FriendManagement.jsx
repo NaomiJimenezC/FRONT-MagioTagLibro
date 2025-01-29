@@ -137,12 +137,18 @@ const FriendManagement = () => {
       alert("Por favor ingresa un nombre de usuario válido.");
       return;
     }
-
+  
+    // Verificar si el usuario intenta enviarse una solicitud a sí mismo
+    if (friendUsername === username) {
+      alert("No puedes enviarte una solicitud de amistad a ti mismo.");
+      return;
+    }
+  
     const isFriend = friends.some((friend) => friend.username === friendUsername);
     const isPendingRequest = pendingRequests.some(
       (request) => request.recipient.username === friendUsername
     );
-
+  
     if (isFriend) {
       alert("Ya son amigos.");
       return;
@@ -151,7 +157,7 @@ const FriendManagement = () => {
       alert("Ya hay una solicitud pendiente con este usuario.");
       return;
     }
-
+  
     handlePostRequest(
       `https://backend-magiotaglibro.onrender.com/api/friendship/friends/request/${username}`,
       { friendUsername },
@@ -159,6 +165,7 @@ const FriendManagement = () => {
       "Error enviando la solicitud de amistad."
     );
   };
+  
 
   // Función para aceptar una petición de amistad
   const acceptFriendRequest = (requesterUsername) => {
@@ -197,6 +204,12 @@ const FriendManagement = () => {
       return;
     }
   
+    // Verificar si el usuario intenta bloquearse a sí mismo
+    if (blockUsername === username) {
+      alert("No puedes bloquearte a ti mismo.");
+      return;
+    }
+  
     // Proceder a bloquear al usuario directamente
     try {
       await handlePostRequest(
@@ -214,6 +227,7 @@ const FriendManagement = () => {
       alert("No se pudo bloquear al usuario.");
     }
   };
+  
   
   
   
