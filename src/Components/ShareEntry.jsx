@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import axios from 'axios';
 
-const ShareEntry = ({ username }) => {
+const ShareEntry = ({ username, idEntry }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const backurl = import.meta.env.VITE_BACKEND_URL;
+
+  const validationSchema = Yup.object().shape({
+    selectedFriends: Yup.array()
+      .min(1, 'Debes seleccionar al menos un amigo')
+      .required('Debes seleccionar al menos un amigo')
+  });
 
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const response = await axios.get(`${backurl}/api/friendship/${username}`);
-        setFriends(response.data.friends); // Accedemos al array 'friends' de la respuesta
-        setSearchResults(response.data.friends); // Mostrar todos los amigos por defecto
+        setIsLoading(true);
+        const response = await axios.get(`${backurl}/api/friendship/friends/${username}`);
+        setFriends(response.data.friends);
+        setSearchResults(response.data.friends);
+        setError(null);
       } catch (error) {
-        console.error("Error fetching friends:", error);
+        setError("Error al cargar los amigos. Por favor, intenta de nuevo.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -23,10 +36,8 @@ const ShareEntry = ({ username }) => {
 
   const handleSearch = (value) => {
     if (value.trim() === '') {
-      // Si el campo de búsqueda está vacío, mostramos todos los amigos
       setSearchResults(friends);
     } else {
-      // Filtrar amigos por username o email
       const filteredFriends = friends.filter(friend => 
         friend.username.toLowerCase().includes(value.toLowerCase()) ||
         friend.email.toLowerCase().includes(value.toLowerCase())
@@ -35,15 +46,29 @@ const ShareEntry = ({ username }) => {
     }
   };
 
+  const handleSubmit = async (values, { setSubmitting, setStatus }) => {
+    try {
+      await axios.patch(`${backurl}/api/entries/shared-entries/${idEntry}`, {
+        shared_usernames: values.selectedFriends
+      });
+      setStatus({ success: 'Entrada compartida exitosamente' });
+    } catch (error) {
+      setStatus({ error: 'Error al compartir la entrada. Por favor, intenta de nuevo.' });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (isLoading) return <div>Cargando amigos...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <Formik
       initialValues={{ search: '', selectedFriends: [] }}
-      onSubmit={(values) => {
-        console.log('Compartir con:', values.selectedFriends);
-        // Aquí iría la lógica para compartir la entrada
-      }}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
     >
-      {({ values, setFieldValue }) => (
+      {({ values, setFieldValue, isSubmitting, status }) => (
         <Form>
           <Field 
             name="search" 
@@ -53,7 +78,12 @@ const ShareEntry = ({ username }) => {
               handleSearch(e.target.value);
             }}
           />
-          <button type="submit">Compartir</button>
+          <ErrorMessage name="selectedFriends" component="div" className="error-message" />
+          {status && status.error && <div className="error-message">{status.error}</div>}
+          {status && status.success && <div className="success-message">{status.success}</div>}
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Compartiendo...' : 'Compartir'}
+          </button>
           
           <div>
             {searchResults.map((friend) => (
@@ -62,9 +92,9 @@ const ShareEntry = ({ username }) => {
                   <Field 
                     type="checkbox" 
                     name="selectedFriends" 
-                    value={friend._id} 
+                    value={friend.username} 
                   />
-                  {friend.username} ({friend.email})
+                  {friend.username}
                 </label>
               </div>
             ))}

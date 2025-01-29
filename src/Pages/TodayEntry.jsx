@@ -214,32 +214,35 @@ const TodayEntry = () => {
                         )}
                     </Formik>
                 </section>
-            <article>    
-                {showFriendModal && (
-                    <aside
-                    className="modal-overlay"
-                    role="dialog"
-                    aria-labelledby="friend-management-title"
-                    aria-modal="true"
-                    >
-                    <div className="modal-content">
-                        <button
-                        onClick={closeFriendModal}
-                        className="close-modal-btn"
-                        aria-label="Cerrar"
+                {user && id ? (
+                    <article>    
+                        {showFriendModal && (
+                        <aside
+                            className="modal-overlay"
+                            role="dialog"
+                            aria-labelledby="friend-management-title"
+                            aria-modal="true"
                         >
-                        ✕
-                        </button>
-                        <ShareEntry username={user.username} />
-                    </div>
-                    </aside>
-          )}
-        </article>
-         : (
-        <section>
-          <p>Cargando perfil...</p>
-        </section>
-      )
+                            <div className="modal-content">
+                            <button
+                                onClick={closeFriendModal}
+                                className="close-modal-btn"
+                                aria-label="Cerrar modal"
+                            >
+                                ✕
+                            </button>
+                            <h2 id="friend-management-title">Compartir entrada</h2>
+                            <ShareEntry username={user.username} idEntry={id} onClose={closeFriendModal} />
+                            </div>
+                        </aside>
+                        )}
+                    </article>
+                    ) : (
+                    <section>
+                        <p>Cargando perfil...</p>
+                    </section>
+                    )}
+    
             </main>
         </Layout>
     );
