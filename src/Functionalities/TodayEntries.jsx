@@ -20,7 +20,7 @@ const useCheckTodayEntry = (username) => {
             const todayEntry = response?.data?.fecha_creacion === today ? response.data : null;
 
             if (todayEntry) {
-                navigate(`/diaries/${todayEntry._id}`);
+                navigate(`/diaries/${response.data._id}`);
             } else {
                 const newEntryData = {
                     titulo: `Entrada del ${today}`,
