@@ -1,5 +1,3 @@
-// _Variables.scss
-$general-font: Nunito, sans-serif;
 // Colors
 $light-foreground: #520288;
 $light-background: #F9EFA9;
@@ -25,11 +23,12 @@ $secondary-color-200: #CABBD8;
 $secondary-color-100: #E5DDEB;
 
 // Font Sizes
-$h1-font: $general-font, 48px;
-$h2-font: $general-font, 32px;
-$h3-font: $general-font, 16px;
-$p-font: $general-font, 14px;
-$bold-font: $general-font, bold, 14px;
-$small-font: $general-font, 12px;
+$general-font: Nunito, sans-serif;
+$h1-font: 48px $general-font;
+$h2-font: 32px $general-font;
+$h3-font: 16px $general-font;
+$p-font: 14px $general-font;
+$bold-font: 14px $general-font bold;
+$small-font: 12px $general-font;
 
 // Spacing & Sizing

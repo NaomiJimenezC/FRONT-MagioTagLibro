@@ -1,0 +1,25 @@
+@import "../Core/_Variables.scss";
+@import "../Global.scss";
+
+footer{
+  *{
+    margin: 5px;
+  }
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-grow: 1;
+  .copyright{
+    width: 50%;
+  }
+  .contact-and-socials{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .social-media-links{
+      display: flex;
+      align-items: center;
+
+    }
+  }
+}
