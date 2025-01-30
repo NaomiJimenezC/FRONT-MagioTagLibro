@@ -27,65 +27,77 @@ const ProfileEditor = ({ user, onSave }) => {
   };
 
   const handleUsernameSave = async () => {
-    try {
-      const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/update/username`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username }),
-      });
+    if (username !== user.username) {
+      try {
+        const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/${user.username}/update/username`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username }),
+        });
 
-      if (!response.ok) {
-        throw new Error("Error al actualizar el nombre de usuario");
+        if (!response.ok) {
+          throw new Error("Error al actualizar el nombre de usuario");
+        }
+
+        const updatedUser = await response.json(); // Obtener los datos actualizados
+        setUsername(updatedUser.username); // Actualizar el estado local con los nuevos datos
+        alert("Nombre de usuario actualizado correctamente");
+      } catch (error) {
+        console.error("Error:", error.message);
+        alert(error.message);
       }
-
-      alert("Nombre de usuario actualizado correctamente");
-    } catch (error) {
-      console.error("Error:", error.message);
-      alert(error.message);
     }
   };
 
   const handleEmailSave = async () => {
-    try {
-      const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/update/email`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+    if (email !== user.email) {
+      try {
+        const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/${user.username}/update/email`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
 
-      if (!response.ok) {
-        throw new Error("Error al actualizar el correo electrónico");
+        if (!response.ok) {
+          throw new Error("Error al actualizar el correo electrónico");
+        }
+
+        const updatedUser = await response.json(); // Obtener los datos actualizados
+        setEmail(updatedUser.email); // Actualizar el estado local con los nuevos datos
+        alert("Correo electrónico actualizado correctamente");
+      } catch (error) {
+        console.error("Error:", error.message);
+        alert(error.message);
       }
-
-      alert("Correo electrónico actualizado correctamente");
-    } catch (error) {
-      console.error("Error:", error.message);
-      alert(error.message);
     }
   };
 
   const handleBirthdaySave = async () => {
-    try {
-      const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/update/birthdate`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ birthDate: birthday }),
-      });
+    if (birthday !== user.birthday) {
+      try {
+        const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/${user.username}/update/birthdate`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ birthDate: birthday }),
+        });
 
-      if (!response.ok) {
-        throw new Error("Error al actualizar la fecha de cumpleaños");
+        if (!response.ok) {
+          throw new Error("Error al actualizar la fecha de cumpleaños");
+        }
+
+        const updatedUser = await response.json(); // Obtener los datos actualizados
+        setBirthday(updatedUser.birthday); // Actualizar el estado local con los nuevos datos
+        alert("Fecha de cumpleaños actualizada correctamente");
+      } catch (error) {
+        console.error("Error:", error.message);
+        alert(error.message);
       }
-
-      alert("Fecha de cumpleaños actualizada correctamente");
-    } catch (error) {
-      console.error("Error:", error.message);
-      alert(error.message);
     }
   };
 
@@ -95,8 +107,8 @@ const ProfileEditor = ({ user, onSave }) => {
         const formData = new FormData();
         formData.append("profileImage", profileImage);
 
-        const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/update/profile-image`, {
-          method: "PUT",
+        const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/${user.username}/update/profile-image`, {
+          method: "PATCH",
           body: formData, // Usamos formData para manejar la imagen
         });
 
@@ -104,6 +116,8 @@ const ProfileEditor = ({ user, onSave }) => {
           throw new Error("Error al actualizar la foto de perfil");
         }
 
+        const updatedUser = await response.json(); // Obtener los datos actualizados
+        setProfileImagePreview(updatedUser.profileImage); // Actualizar la imagen de perfil
         alert("Foto de perfil actualizada correctamente");
       } catch (error) {
         console.error("Error:", error.message);
@@ -114,23 +128,27 @@ const ProfileEditor = ({ user, onSave }) => {
 
   // Función para guardar el lema
   const handleMottoSave = async () => {
-    try {
-      const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/update/motto`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ motto }),
-      });
+    if (motto !== user.motto) {
+      try {
+        const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/${user.username}/update/motto`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ motto }),
+        });
 
-      if (!response.ok) {
-        throw new Error("Error al actualizar el lema");
+        if (!response.ok) {
+          throw new Error("Error al actualizar el lema");
+        }
+
+        const updatedUser = await response.json(); // Obtener los datos actualizados
+        setMotto(updatedUser.motto); // Actualizar el estado local con los nuevos datos
+        alert("Lema actualizado correctamente");
+      } catch (error) {
+        console.error("Error:", error.message);
+        alert(error.message);
       }
-
-      alert("Lema actualizado correctamente");
-    } catch (error) {
-      console.error("Error:", error.message);
-      alert(error.message);
     }
   };
 
