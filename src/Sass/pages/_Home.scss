@@ -1,7 +1,13 @@
-@use "sass:math";
-@use "../Core/_Variables" as Variables;
-@import "../Global";
+@use "../Core/_Variables.scss" as Variables;
 
 
-
-
+  h1{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  .home-contents{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
