@@ -114,118 +114,118 @@ const TodayEntry = () => {
                     <h1>{entry.titulo}</h1>
                     <h2>Fecha de creación: {entry.fecha_creacion}</h2>
 
-                    {editable && (
-                        <button
-                            type="button"
-                            onClick={openFriendModal}
-                        >
-                            Compartir
-                        </button>
-                    )}
+                    
+                    <button
+                        type="button"
+                        onClick={openFriendModal}
+                    >
+                        Compartir
+                    </button>
+                
                     
                 </section>
                 <section>
-                    <Formik
-                        initialValues={initialValues}
-                        onSubmit={handleSubmit}
-                        validationSchema={validationSchema}
-                        enableReinitialize
-                    >
-                        {({ isSubmitting, setFieldValue, values }) => (
-                            <Form>
-                                <fieldset>
-                                    <legend>Cambiar el título</legend>
-                                    <label htmlFor="titulo">Título:</label>
+                <Formik
+    initialValues={initialValues}
+    onSubmit={handleSubmit}
+    validationSchema={validationSchema}
+    enableReinitialize
+>
+    {({ isSubmitting, setFieldValue, values }) => (
+        <Form>
+            {editable ? (
+                <>
+                    <fieldset>
+                        <legend>Cambiar el título</legend>
+                        <label htmlFor="titulo">Título:</label>
+                        <Field
+                            name="titulo"
+                            id="titulo"
+                            type="text"
+                            placeholder="Título de la entrada"
+                        />
+                        <ErrorMessage name="titulo" component="small" />
+                    </fieldset>
+                    <fieldset>
+                        <legend>Información del día</legend>
+
+                        <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
+                        <Field
+                            name="contenido.palabras_clave"
+                            id="palabras_clave"
+                            placeholder="Ingrese las palabras claves de tu día"
+                        />
+                        <ErrorMessage name="contenido.palabras_clave" component="small" />
+
+                        <fieldset>
+                            <legend>Eventos Clave</legend>
+                            {values.contenido.eventos_clave.map((evento, index) => (
+                                <section key={index}>
                                     <Field
-                                        name="titulo"
-                                        id="titulo"
-                                        type="text"
-                                        placeholder="Título de la entrada"
-                                        disabled={!editable}
+                                        name={`contenido.eventos_clave[${index}]`}
+                                        placeholder={`Evento ${index + 1}`}
                                     />
-                                    <ErrorMessage name="titulo" component="small" />
-                                </fieldset>
-                                <fieldset>
-                                    <legend>Información del día</legend>
-
-                                    <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
-                                    <Field
-                                        name="contenido.palabras_clave"
-                                        id="palabras_clave"
-                                        placeholder="Ingrese las palabras claves de tu día"
-                                        disabled={!editable}
+                                    <button
+                                        type="button"
+                                        aria-label="Eliminar evento"
+                                        onClick={() => {
+                                            const nuevosEventos = [...values.contenido.eventos_clave];
+                                            nuevosEventos.splice(index, 1);
+                                            setFieldValue("contenido.eventos_clave", nuevosEventos);
+                                        }}
+                                    >
+                                        Eliminar
+                                    </button>
+                                    <ErrorMessage
+                                        name={`contenido.eventos_clave[${index}]`}
+                                        component="small"
                                     />
-                                    <ErrorMessage name="contenido.palabras_clave" component="small" />
+                                </section>
+                            ))}
 
-                                    <fieldset>
-                                        <legend>Eventos Clave</legend>
-                                        {values.contenido.eventos_clave.map((evento, index) => (
-                                            <section key={index}>
-                                                <Field
-                                                    name={`contenido.eventos_clave[${index}]`}
-                                                    placeholder={`Evento ${index + 1}`}
-                                                    disabled={!editable}
-                                                />
-                                                {editable &&(
-                                                   <button
-                                                        type="button"
-                                                        aria-label="Eliminar evento"
-                                                        disabled={!editable}
-                                                        onClick={() => {
-                                                            const nuevosEventos = [...values.contenido.eventos_clave];
-                                                            nuevosEventos.splice(index, 1);
-                                                            setFieldValue("contenido.eventos_clave", nuevosEventos);
-                                                        }}
-                                                    >
-                                                   Eliminar
-                                               </button>     
-                                                )}
-                                                
-                                                <ErrorMessage
-                                                    name={`contenido.eventos_clave[${index}]`}
-                                                    component="small"
-                                                />
-                                            </section>
-                                        ))}
+                            <section>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setFieldValue("contenido.eventos_clave", [...values.contenido.eventos_clave, ''])
+                                    }
+                                >
+                                    Agregar Evento
+                                </button>
+                            </section>
+                        </fieldset>
 
-                                        <section>
-
-                                            {editable &&(
-                                                <button
-                                                    type="button"
-                                                    disabled={!editable}
-                                                    onClick={() =>
-                                                        setFieldValue("contenido.eventos_clave", [...values.contenido.eventos_clave, ''])
-                                                    }
-                                                >
-                                                Agregar Evento
-                                                </button>
-                                            )}
-                                            
-                                        </section>
-                                    </fieldset>
-
-                                    <label htmlFor="contenido.resumen">Resumen:</label>
-                                    <Field
-                                        name="contenido.resumen"
-                                        id="resumen"
-                                        as="textarea"
-                                        rows={6}
-                                        placeholder="Escribe el resumen de tu día"
-                                        disabled={!editable}
-                                    />
-                                    <ErrorMessage name="contenido.resumen" component="small" />
-                                    
-                                    {editable && (
-                                        <button type="submit" disabled={!editable || isSubmitting}>
-                                            {isSubmitting ? 'Enviando...' : 'Enviar'}
-                                        </button>
-                                    )}
-                                    
-                                </fieldset>
-                            </Form>
-                        )}
-                    </Formik>
+                        <label htmlFor="contenido.resumen">Resumen:</label>
+                        <Field
+                            name="contenido.resumen"
+                            id="resumen"
+                            as="textarea"
+                            rows={6}
+                            placeholder="Escribe el resumen de tu día"
+                        />
+                        <ErrorMessage name="contenido.resumen" component="small" />
+                        
+                        <button type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? 'Enviando...' : 'Enviar'}
+                        </button>
+                    </fieldset>
+                </>
+            ) : (
+                <div>
+                    <p><strong>Palabras clave:</strong> {entry.contenido.palabras_clave}</p>
+                    <h3>Eventos Clave:</h3>
+                    <ul>
+                        {entry.contenido.eventos_clave.map((evento, index) => (
+                            <li key={index}>{evento}</li>
+                        ))}
+                    </ul>
+                    <h3>Resumen:</h3>
+                    <p>{entry.contenido.resumen}</p>
+                </div>
+            )}
+        </Form>
+    )}
+</Formik>
                 </section>
                 {user && id ? (
                     <article>    
@@ -245,7 +245,12 @@ const TodayEntry = () => {
                                 ✕
                             </button>
                             <h2 id="friend-management-title">Compartir entrada</h2>
-                            <ShareEntry username={user.username} idEntry={id} onClose={closeFriendModal} />
+                            <ShareEntry 
+                                username={user.username} 
+                                idEntry={id} 
+                                sharedWith={entry.compartido_con}
+                                onClose={closeFriendModal}
+                             />
                             </div>
                         </aside>
                         )}
