@@ -35,6 +35,7 @@ const Entries = () => {
                 if (username) {
                     const response = await axios.get(`${backurl}/api/entries/${username}`);
                     const sharedEntries = await axios.get(`${backurl}/api/entries/shared-entries/${username}`);
+                    
                     setSharedEntries(sharedEntries.data);
                     setEntries(response.data);
                 }
@@ -53,8 +54,10 @@ const Entries = () => {
         } else {
             setIsLoading(false);
         }
+        
     }, [backurl]);
 
+    // console.log(entries)
     const entradasPropias = entries
     const entradasCompartidas = sharedEntries
 

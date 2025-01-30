@@ -39,21 +39,18 @@ const TodayEntry = () => {
             if (storedUser) {
                 setUser(storedUser);
                 try {
-                    // Intenta obtener la entrada como autor
                     const response = await axios.get(`${backurl}/api/entries/${storedUser.username}/${id}`);
                     setEntry(response.data);
                     setEditable(response.data.fecha_creacion === today);
                 } catch (error) {
                     try {
-                        // Si falla, intenta obtener como entrada compartida
                         const sharedResponse = await axios.get(`${backurl}/api/entries/shared-entries/${storedUser.username}/${id}`);
                         setEntry(sharedResponse.data);
-                        setEditable(false); // Las entradas compartidas no son editables
+                        setEditable(false);
                     } catch (sharedError) {
                         setError(sharedError)
-                        // Si ambas solicitudes fallan, el usuario no tiene acceso
                         console.error("Usuario no autorizado:", sharedError);
-                        navigate("/"); // Redirige a una página de no autorizado
+                        navigate("/");
                     }
                 }
             } else {
@@ -116,10 +113,16 @@ const TodayEntry = () => {
                 <section>
                     <h1>{entry.titulo}</h1>
                     <h2>Fecha de creación: {entry.fecha_creacion}</h2>
-                    <button type="button"
-                    onClick={openFriendModal}
-                    >Compartir</button>
-                    <img src="" alt="Descripción 2" />
+
+                    {editable && (
+                        <button
+                            type="button"
+                            onClick={openFriendModal}
+                        >
+                            Compartir
+                        </button>
+                    )}
+                    
                 </section>
                 <section>
                     <Formik
@@ -163,18 +166,21 @@ const TodayEntry = () => {
                                                     placeholder={`Evento ${index + 1}`}
                                                     disabled={!editable}
                                                 />
-                                                <button
-                                                    type="button"
-                                                    aria-label="Eliminar evento"
-                                                    disabled={!editable}
-                                                    onClick={() => {
-                                                        const nuevosEventos = [...values.contenido.eventos_clave];
-                                                        nuevosEventos.splice(index, 1);
-                                                        setFieldValue("contenido.eventos_clave", nuevosEventos);
-                                                    }}
-                                                >
-                                                    Eliminar
-                                                </button>
+                                                {editable &&(
+                                                   <button
+                                                        type="button"
+                                                        aria-label="Eliminar evento"
+                                                        disabled={!editable}
+                                                        onClick={() => {
+                                                            const nuevosEventos = [...values.contenido.eventos_clave];
+                                                            nuevosEventos.splice(index, 1);
+                                                            setFieldValue("contenido.eventos_clave", nuevosEventos);
+                                                        }}
+                                                    >
+                                                   Eliminar
+                                               </button>     
+                                                )}
+                                                
                                                 <ErrorMessage
                                                     name={`contenido.eventos_clave[${index}]`}
                                                     component="small"
@@ -183,15 +189,19 @@ const TodayEntry = () => {
                                         ))}
 
                                         <section>
-                                            <button
-                                                type="button"
-                                                disabled={!editable}
-                                                onClick={() =>
-                                                    setFieldValue("contenido.eventos_clave", [...values.contenido.eventos_clave, ''])
-                                                }
-                                            >
+
+                                            {editable &&(
+                                                <button
+                                                    type="button"
+                                                    disabled={!editable}
+                                                    onClick={() =>
+                                                        setFieldValue("contenido.eventos_clave", [...values.contenido.eventos_clave, ''])
+                                                    }
+                                                >
                                                 Agregar Evento
-                                            </button>
+                                                </button>
+                                            )}
+                                            
                                         </section>
                                     </fieldset>
 
@@ -205,10 +215,13 @@ const TodayEntry = () => {
                                         disabled={!editable}
                                     />
                                     <ErrorMessage name="contenido.resumen" component="small" />
-
-                                    <button type="submit" disabled={!editable || isSubmitting}>
-                                        {isSubmitting ? 'Enviando...' : 'Enviar'}
-                                    </button>
+                                    
+                                    {editable && (
+                                        <button type="submit" disabled={!editable || isSubmitting}>
+                                            {isSubmitting ? 'Enviando...' : 'Enviar'}
+                                        </button>
+                                    )}
+                                    
                                 </fieldset>
                             </Form>
                         )}
