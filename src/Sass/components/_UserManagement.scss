@@ -2,6 +2,9 @@ $modal-overlay-background: rgba(0, 0, 0, 0.7);
 $modal-max-width: 600px;
 $modal-padding: 20px;
 $close-btn-size: 20px;
+$modal-content-background: #ffffff;
+$modal-header-background: #f4f4f4;
+$modal-header-padding: 10px;
 
 .modal-overlay {
   position: fixed;
@@ -17,12 +20,26 @@ $close-btn-size: 20px;
 }
 
 .modal-content {
-  background-color: white;
+  background-color: $modal-content-background;
   padding: $modal-padding;
   border-radius: 8px;
   position: relative;
   width: 80%;
   max-width: $modal-max-width;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  background-color: $modal-header-background;
+  padding: $modal-header-padding;
+  border-radius: 8px 8px 0 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.modal-body {
+  padding: 15px 0;
+  font-size: 14px;
 }
 
 .close-modal-btn {
@@ -33,4 +50,10 @@ $close-btn-size: 20px;
   border: none;
   font-size: $close-btn-size;
   cursor: pointer;
+  color: #333;
+  font-weight: bold;
+}
+
+.close-modal-btn:hover {
+  color: #ff0000;
 }
