@@ -4,6 +4,7 @@ import { useAuth } from "../Context/AuthContext";
 import FriendManagement from "../Components/FriendManagement";
 import ProfileEditor from "../Components/ProfileEditor";
 import "../Sass/components/_UserManagement.scss";
+import 'font-awesome/css/font-awesome.min.css'; // Asegúrate de importar FontAwesome
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -88,7 +89,8 @@ const UserProfile = () => {
             <p><strong>Nombre de usuario:</strong> {user.username}</p>
             <p><strong>Fecha de registro:</strong> {user.createdAt}</p>
             <p>
-              <strong>Motto:</strong> {isEditingMotto ? (
+              <strong>Motto:</strong> 
+              {isEditingMotto ? (
                 <input 
                   type="text" 
                   value={motto} 
@@ -98,7 +100,10 @@ const UserProfile = () => {
                   autoFocus
                 />
               ) : (
-                <span onClick={() => setIsEditingMotto(true)}>{motto || "Haz clic para agregar un motto"}</span>
+                <span onClick={() => setIsEditingMotto(true)}>
+                  {motto || "Haz clic para agregar un motto"}
+                  <i className="fa fa-pencil-square-o" style={{ cursor: "pointer", marginLeft: "8px" }}></i>
+                </span>
               )}
             </p>
           </section>
