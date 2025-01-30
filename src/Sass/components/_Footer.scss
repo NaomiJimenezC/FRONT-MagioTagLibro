@@ -1,5 +1,5 @@
-@use "../Core/_Variables.scss" as Variables;
-@import "../Global.scss";
+@use "../core/Variables" as Variables;
+@use "../Global";
 
 footer{
   *{

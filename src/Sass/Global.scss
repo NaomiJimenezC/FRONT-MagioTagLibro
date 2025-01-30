@@ -1,4 +1,4 @@
-@use "src/Sass/core/Variables";
+@use "./core/Variables" as Variables;
 
 h1{
   font: Variables.$h1-font;
