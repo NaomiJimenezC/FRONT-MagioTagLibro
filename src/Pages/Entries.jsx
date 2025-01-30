@@ -57,9 +57,7 @@ const Entries = () => {
         
     }, [backurl]);
 
-    // console.log(entries)
-    const entradasPropias = entries
-    const entradasCompartidas = sharedEntries
+
 
     if (isLoading) {
         return <div>Cargando...</div>;
@@ -73,7 +71,7 @@ const Entries = () => {
             </div>
         );
     }
-
+    console.log(sharedEntries)
     return (
         <Layout>
             <main role="main">
@@ -81,9 +79,9 @@ const Entries = () => {
                     <header>
                         <h2 id="my-entries">Mis Entradas de Diario</h2>
                     </header>
-                    {entradasPropias.length > 0 ? (
+                    {entries.length > 0 ? (
                         <ul>
-                            {entradasPropias.map(entry => (
+                            {entries.map(entry => (
                                 <li key={entry._id}>
                                     <Link to={`/diaries/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}
@@ -113,9 +111,9 @@ const Entries = () => {
                     <header>
                         <h2 id="shared-entries">Entradas Compartidas</h2>
                     </header>
-                    {entradasCompartidas.length > 0 ? (
+                    {sharedEntries.length > 0 ? (
                         <ul>
-                            {entradasCompartidas.map(entry => (
+                            {sharedEntries.map(entry => (
                                 <li key={entry._id}>
                                     <Link to={`/diaries/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}

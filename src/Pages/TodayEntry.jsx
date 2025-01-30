@@ -43,13 +43,16 @@ const TodayEntry = () => {
                     setEntry(response.data);
                     setEditable(response.data.fecha_creacion === today);
                 } catch (error) {
+                    console.log("Error al obtener la entrada normal:", error);
                     try {
+                        console.log("Intentando obtener entrada compartida...");
                         const sharedResponse = await axios.get(`${backurl}/api/entries/shared-entries/${storedUser.username}/${id}`);
+                        console.log("Respuesta de entrada compartida:", sharedResponse);
                         setEntry(sharedResponse.data);
                         setEditable(false);
                     } catch (sharedError) {
-                        setError(sharedError)
-                        console.error("Usuario no autorizado:", sharedError);
+                        console.error("Error al obtener entrada compartida:", sharedError);
+                        setError(sharedError);
                         navigate("/");
                     }
                 }
@@ -59,6 +62,7 @@ const TodayEntry = () => {
         };
         fetchUserAndEntries();
     }, [navigate, id, backurl, today]);
+    
 
     const validationSchema = Yup.object().shape({
         titulo: Yup.string().required('El título es requerido'),
@@ -112,121 +116,122 @@ const TodayEntry = () => {
             <main role="main">
                 <section>
                     <h1>{entry.titulo}</h1>
-                    <h2>Fecha de creación: {entry.fecha_creacion}</h2>
+                    <h3><strong>Fecha de creación:</strong> {entry.fecha_creacion}</h3>
+                    <h3><strong>Autor(a):</strong>{entry.autor_username}</h3>
 
-                    
-                    <button
-                        type="button"
-                        onClick={openFriendModal}
-                    >
-                        Compartir
-                    </button>
-                
-                    
+                    {entry.autor_username === user.username &&(
+                        <button
+                             type="button"
+                             onClick={openFriendModal}
+                        >
+                             Compartir
+                        </button>
+                    )}
                 </section>
                 <section>
-                <Formik
-    initialValues={initialValues}
-    onSubmit={handleSubmit}
-    validationSchema={validationSchema}
-    enableReinitialize
->
-    {({ isSubmitting, setFieldValue, values }) => (
-        <Form>
-            {editable ? (
-                <>
-                    <fieldset>
-                        <legend>Cambiar el título</legend>
-                        <label htmlFor="titulo">Título:</label>
-                        <Field
-                            name="titulo"
-                            id="titulo"
-                            type="text"
-                            placeholder="Título de la entrada"
-                        />
-                        <ErrorMessage name="titulo" component="small" />
-                    </fieldset>
-                    <fieldset>
-                        <legend>Información del día</legend>
-
-                        <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
-                        <Field
-                            name="contenido.palabras_clave"
-                            id="palabras_clave"
-                            placeholder="Ingrese las palabras claves de tu día"
-                        />
-                        <ErrorMessage name="contenido.palabras_clave" component="small" />
-
-                        <fieldset>
-                            <legend>Eventos Clave</legend>
-                            {values.contenido.eventos_clave.map((evento, index) => (
-                                <section key={index}>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={validationSchema}
+                enableReinitialize
+            >
+                {({ isSubmitting, setFieldValue, values }) => (
+                    <Form>
+                        {editable ? (
+                            <>
+                                <fieldset>
+                                    <legend>Cambiar el título</legend>
+                                    <label htmlFor="titulo">Título:</label>
                                     <Field
-                                        name={`contenido.eventos_clave[${index}]`}
-                                        placeholder={`Evento ${index + 1}`}
+                                        name="titulo"
+                                        id="titulo"
+                                        type="text"
+                                        placeholder="Título de la entrada"
                                     />
-                                    <button
-                                        type="button"
-                                        aria-label="Eliminar evento"
-                                        onClick={() => {
-                                            const nuevosEventos = [...values.contenido.eventos_clave];
-                                            nuevosEventos.splice(index, 1);
-                                            setFieldValue("contenido.eventos_clave", nuevosEventos);
-                                        }}
-                                    >
-                                        Eliminar
+                                    <ErrorMessage name="titulo" component="small" />
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Información del día</legend>
+
+                                    <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
+                                    <Field
+                                        name="contenido.palabras_clave"
+                                        id="palabras_clave"
+                                        placeholder="Ingrese las palabras claves de tu día"
+                                    />
+                                    <ErrorMessage name="contenido.palabras_clave" component="small" />
+
+                                    <fieldset>
+                                        <legend>Eventos Clave</legend>
+                                        {values.contenido.eventos_clave.map((evento, index) => (
+                                            <section key={index}>
+                                                <Field
+                                                    name={`contenido.eventos_clave[${index}]`}
+                                                    placeholder={`Evento ${index + 1}`}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    aria-label="Eliminar evento"
+                                                    onClick={() => {
+                                                        const nuevosEventos = [...values.contenido.eventos_clave];
+                                                        nuevosEventos.splice(index, 1);
+                                                        setFieldValue("contenido.eventos_clave", nuevosEventos);
+                                                    }}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                                <ErrorMessage
+                                                    name={`contenido.eventos_clave[${index}]`}
+                                                    component="small"
+                                                />
+                                            </section>
+                                        ))}
+
+                                        <section>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setFieldValue("contenido.eventos_clave", [...values.contenido.eventos_clave, ''])
+                                                }
+                                            >
+                                                Agregar Evento
+                                            </button>
+                                        </section>
+                                    </fieldset>
+
+                                    <label htmlFor="contenido.resumen">Resumen:</label>
+                                    <Field
+                                        name="contenido.resumen"
+                                        id="resumen"
+                                        as="textarea"
+                                        rows={6}
+                                        placeholder="Escribe el resumen de tu día"
+                                    />
+                                    <ErrorMessage name="contenido.resumen" component="small" />
+                                    
+                                    <button type="submit" disabled={isSubmitting}>
+                                        {isSubmitting ? 'Enviando...' : 'Enviar'}
                                     </button>
-                                    <ErrorMessage
-                                        name={`contenido.eventos_clave[${index}]`}
-                                        component="small"
-                                    />
-                                </section>
-                            ))}
-
-                            <section>
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        setFieldValue("contenido.eventos_clave", [...values.contenido.eventos_clave, ''])
-                                    }
-                                >
-                                    Agregar Evento
-                                </button>
-                            </section>
-                        </fieldset>
-
-                        <label htmlFor="contenido.resumen">Resumen:</label>
-                        <Field
-                            name="contenido.resumen"
-                            id="resumen"
-                            as="textarea"
-                            rows={6}
-                            placeholder="Escribe el resumen de tu día"
-                        />
-                        <ErrorMessage name="contenido.resumen" component="small" />
-                        
-                        <button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? 'Enviando...' : 'Enviar'}
-                        </button>
-                    </fieldset>
-                </>
-            ) : (
-                <div>
-                    <p><strong>Palabras clave:</strong> {entry.contenido.palabras_clave}</p>
-                    <h3>Eventos Clave:</h3>
-                    <ul>
-                        {entry.contenido.eventos_clave.map((evento, index) => (
-                            <li key={index}>{evento}</li>
-                        ))}
-                    </ul>
-                    <h3>Resumen:</h3>
-                    <p>{entry.contenido.resumen}</p>
-                </div>
-            )}
-        </Form>
-    )}
-</Formik>
-                </section>
+                                </fieldset>
+                            </>
+                        ) : (
+                            <div>
+                                <h3><strong>Palabras clave:</strong> </h3>
+                                <p>{entry.contenido.palabras_clave}</p>
+                                <h3><strong>Eventos Clave:</strong></h3>
+                                <ul>
+                                    {entry.contenido.eventos_clave.map((evento, index) => (
+                                        <li key={index}>{evento}</li>
+                                    ))}
+                                </ul>
+                                <h3><strong>Resumen del día:</strong></h3>
+                                <p>{entry.contenido.resumen}</p>
+                            </div>
+                        )}
+                    </Form>
+                    )}
+            </Formik>
+        </section>
                 {user && id ? (
                     <article>    
                         {showFriendModal && (
