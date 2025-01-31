@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Layout from "../Layout/MainLayout";
 import useCheckTodayEntry from "../Functionalities/TodayEntries.jsx";
 
 const Entries = () => {
     const backurl = import.meta.env.VITE_BACKEND_URL;
-
+    const navigate = useNavigate()
     const [user, setUser] = useState(null);
     const [entries, setEntries] = useState([]);
     const [sharedEntries, setSharedEntries] = useState([])
@@ -52,6 +52,7 @@ const Entries = () => {
         if (username) {
             fetchEntries(username);
         } else {
+            navigate("/login")
             setIsLoading(false);
         }
         
@@ -81,7 +82,7 @@ const Entries = () => {
                     </header>
                     {entries.length > 0 ? (
                         <ul>
-                            {entries.map(entry => (
+                            {(entries || []).map(entry => (
                                 <li key={entry._id}>
                                     <Link to={`/diaries/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}
@@ -113,7 +114,7 @@ const Entries = () => {
                     </header>
                     {sharedEntries.length > 0 ? (
                         <ul>
-                            {sharedEntries.map(entry => (
+                            {(sharedEntries||[]).map(entry => (
                                 <li key={entry._id}>
                                     <Link to={`/diaries/${entry._id}`}>
                                         {entry.titulo} - {entry.fecha_creacion}

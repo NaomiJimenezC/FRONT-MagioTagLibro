@@ -39,7 +39,9 @@ const TodayEntry = () => {
             if (storedUser) {
                 setUser(storedUser);
                 try {
+                    console.log(storedUser.username)
                     const response = await axios.get(`${backurl}/api/entries/${storedUser.username}/${id}`);
+                    console.log(response.data)
                     setEntry(response.data);
                     setEditable(response.data.fecha_creacion === today);
                 } catch (error) {
@@ -250,6 +252,7 @@ const TodayEntry = () => {
                                 ✕
                             </button>
                             <h2 id="friend-management-title">Compartir entrada</h2>
+                            
                             <ShareEntry 
                                 username={user.username} 
                                 idEntry={id} 
