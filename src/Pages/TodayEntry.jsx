@@ -98,6 +98,15 @@ const TodayEntry = () => {
         fecha_creacion: today,
     };
 
+    const handleDeleteClick = async() =>{
+        try {
+            const deletEntry = axios.delete(`${backurl}/api/entries/delete/${id}`)
+            navigate("/diaries")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             await axios.post(`${backurl}/api/entries/new`, values);
@@ -122,12 +131,21 @@ const TodayEntry = () => {
                     <h3><strong>Autor(a):</strong>{entry.autor_username}</h3>
 
                     {entry.autor_username === user.username &&(
-                        <button
-                             type="button"
-                             onClick={openFriendModal}
-                        >
-                             Compartir
-                        </button>
+                        <>
+                            <button
+                                type="button"
+                                onClick={openFriendModal}
+                            >
+                                Compartir
+                            </button>
+
+                            <button
+                            type="button"
+                            onClick={handleDeleteClick}>
+                                Eliminar entrada
+                            </button>
+                        </>
+                        
                     )}
                 </section>
                 <section>
