@@ -61,21 +61,27 @@ const Entries = () => {
 
 
     if (isLoading) {
-        return <div>Cargando...</div>;
+        return (
+            <Layout>
+                <div>Cargando...</div>;
+            </Layout>
+        )
+        
     }
 
     if (error) {
         return (
-            <div>
-                <h2>Ocurrió un error</h2>
-                <p>{error.response?.data?.message || error.message || "Error desconocido"}</p>
-            </div>
+            <Layout>
+                <div>
+                    <h2>Ocurrió un error</h2>
+                    <p>{error.response?.data?.message || error.message || "Error desconocido"}</p>
+                </div>
+            </Layout>
         );
     }
-    console.log(sharedEntries)
     return (
         <Layout>
-            <main role="main">
+            
                 <section aria-labelledby="my-entries">
                     <header>
                         <h2 id="my-entries">Mis Entradas de Diario</h2>
@@ -126,7 +132,6 @@ const Entries = () => {
                         <p>No hay entradas disponibles.</p>
                     )}
                 </section>
-            </main>
         </Layout>
     );
 };

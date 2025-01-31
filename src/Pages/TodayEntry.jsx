@@ -135,7 +135,6 @@ const TodayEntry = () => {
 
     return (
         <Layout>
-            <main role="main">
                 <section>
                     <h1>{entry.titulo}</h1>
                     <h3><strong>Fecha de creación:</strong> {entry.fecha_creacion}</h3>
@@ -311,8 +310,6 @@ const TodayEntry = () => {
                         <p>Cargando perfil...</p>
                     </section>
                     )}
-    
-            </main>
         </Layout>
     );
 };

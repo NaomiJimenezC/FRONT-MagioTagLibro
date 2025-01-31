@@ -6,7 +6,6 @@ import "../Sass/pages/_Home.scss";
 function Home() {
   return (
     <Layout>
-      <main role="main">
         <section>
           <header>
             <h1>Bienvenidos a Magio Taglibro</h1>
@@ -18,7 +17,6 @@ function Home() {
             y conecta!
           </p>
         </section>
-      </main>
     </Layout>
   );
 }

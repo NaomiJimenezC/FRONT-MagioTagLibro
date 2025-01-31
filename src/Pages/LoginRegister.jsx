@@ -17,7 +17,6 @@ const AuthPage = () => {
           {isLogin ? "Iniciar Sesión" : "Registrarse"}
         </h1>
       </header>
-      <main role="main">
         {isLogin ? (
           <>
             <LoginForm />
@@ -45,7 +44,6 @@ const AuthPage = () => {
             </p>
           </>
         )}
-      </main>
     </Layout>
   );
 };

@@ -5,9 +5,7 @@ import Layout from "../Layout/MainLayout";
 const User = () => {
   return (
     <Layout>
-      <main role="main">
         <UserProfile />
-      </main>
     </Layout>
   );
 }

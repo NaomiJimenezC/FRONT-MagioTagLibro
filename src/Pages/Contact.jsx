@@ -35,7 +35,7 @@ export const Contact = () => {
     
   return (
     <Layout>
-        <main>
+
             <section>
                 <h1>¡Contacta con nosotros!</h1>
                 <p>En Magio Taglibro valoramos mucho el bienestar del usuario, debido a ello siempre estamos abiertos a escucharos. Déjanos en el formulario lo que veas necesario y te leeremos. ¡Muchas gracias!</p>
@@ -76,7 +76,6 @@ export const Contact = () => {
                     )}
                 </Formik>
             </section>
-        </main>
     </Layout>
   )
 }
