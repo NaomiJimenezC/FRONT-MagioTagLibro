@@ -192,41 +192,44 @@ const TodayEntry = () => {
                                 <fieldset>
                                     <legend>Información del día</legend>
 
-                                    <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
-                                    <Field
-                                        name="contenido.palabras_clave"
-                                        id="palabras_clave"
-                                        placeholder="Ingrese las palabras claves de tu día"
-                                    />
-                                    <ErrorMessage name="contenido.palabras_clave" component="small" />
+                                    <div>
+                                        <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
+                                        <Field
+                                            name="contenido.palabras_clave"
+                                            id="palabras_clave"
+                                            placeholder="Ingrese las palabras claves de tu día"
+                                        />
+                                        <ErrorMessage name="contenido.palabras_clave" component="small" />
+                                    </div>
 
-                                    <fieldset>
-                                        <legend>Eventos Clave</legend>
-                                        {values.contenido.eventos_clave.map((evento, index) => (
-                                            <section key={index}>
-                                                <Field
-                                                    name={`contenido.eventos_clave[${index}]`}
-                                                    placeholder={`Evento ${index + 1}`}
-                                                />
-                                                <button
-                                                    type="button"
-                                                    aria-label="Eliminar evento"
-                                                    onClick={() => {
-                                                        const nuevosEventos = [...values.contenido.eventos_clave];
-                                                        nuevosEventos.splice(index, 1);
-                                                        setFieldValue("contenido.eventos_clave", nuevosEventos);
-                                                    }}
-                                                >
-                                                    Eliminar
-                                                </button>
-                                                <ErrorMessage
-                                                    name={`contenido.eventos_clave[${index}]`}
-                                                    component="small"
-                                                />
-                                            </section>
-                                        ))}
+                                    <div>
+                                            <label htmlFor='contenido.eventos_clave'>Eventos Claves</label>
+                                            {values.contenido.eventos_clave.map((evento, index) => (
+                                                <div key={index}>
+                                                    <Field
+                                                        name={`contenido.eventos_clave[${index}]`}
+                                                        placeholder={`Evento ${index + 1}`}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        aria-label="Eliminar evento"
+                                                        onClick={() => {
+                                                            const nuevosEventos = [...values.contenido.eventos_clave];
+                                                            nuevosEventos.splice(index, 1);
+                                                            setFieldValue("contenido.eventos_clave", nuevosEventos);
+                                                        }}
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                    <ErrorMessage
+                                                        name={`contenido.eventos_clave[${index}]`}
+                                                        component="small"
+                                                    />
+                                                </div>
+                                            ))}
+                                    </div>
 
-                                        <section>
+                                    <div>
                                             <button
                                                 type="button"
                                                 onClick={() =>
@@ -235,22 +238,25 @@ const TodayEntry = () => {
                                             >
                                                 Agregar Evento
                                             </button>
-                                        </section>
-                                    </fieldset>
+                                    </div>
 
-                                    <label htmlFor="contenido.resumen">Resumen:</label>
-                                    <Field
-                                        name="contenido.resumen"
-                                        id="resumen"
-                                        as="textarea"
-                                        rows={6}
-                                        placeholder="Escribe el resumen de tu día"
-                                    />
-                                    <ErrorMessage name="contenido.resumen" component="small" />
-                                    
-                                    <button type="submit" disabled={isSubmitting}>
-                                        {isSubmitting ? 'Enviando...' : 'Enviar'}
-                                    </button>
+                                    <div>
+                                            <label htmlFor="contenido.resumen">Resumen del día:</label>
+                                            <Field
+                                                name="contenido.resumen"
+                                                id="resumen"
+                                                as="textarea"
+                                                rows={6}
+                                                placeholder="Escribe el resumen de tu día"
+                                            />
+                                            <ErrorMessage name="contenido.resumen" component="small" />
+                                    </div>
+
+                                    <div>
+                                            <button type="submit" disabled={isSubmitting}>
+                                                {isSubmitting ? 'Enviando...' : 'Enviar'}
+                                            </button>
+                                    </div>
                                 </fieldset>
                             </>
                         ) : (
