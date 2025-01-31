@@ -23,9 +23,17 @@ const TodayEntry = () => {
   };
 
   // Función para cerrar el popup
-  const closeFriendModal = () => {
+  const closeFriendModal = async () => {
     setShowFriendModal(false);
+    // Recargar los datos de la entrada
+    try {
+      const response = await axios.get(`${backurl}/api/entries/${user.username}/${id}`);
+      setEntry(response.data);
+    } catch (error) {
+      console.error("Error al recargar la entrada:", error);
+    }
   };
+  
 
 
     const [editable, setEditable] = useState(true);

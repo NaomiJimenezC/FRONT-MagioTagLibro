@@ -11,20 +11,13 @@ import axios from 'axios';
  * @param {string[]} props.sharedWith - Lista de usuarios con los que ya se ha compartido la entrada.
  * @returns {JSX.Element} Formulario para compartir la entrada.
  */
-const ShareEntry = ({ username, idEntry, sharedWith }) => {
+const ShareEntry = ({ username, idEntry, sharedWith,onClose  }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [friends, setFriends] = useState([]);
   const [sharedUsers, setSharedUsers] = useState(Array.isArray(sharedWith) ? [...sharedWith] : []);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const backurl = import.meta.env.VITE_BACKEND_URL;
-
-  // Esquema de validación para Formik
-  const validationSchema = Yup.object().shape({
-    selectedFriends: Yup.array()
-        .min(1, 'Debes seleccionar al menos un amigo')
-        .required('Debes seleccionar al menos un amigo'),
-  });
 
   // Cargar la lista de amigos
   useEffect(() => {
@@ -71,6 +64,8 @@ const ShareEntry = ({ username, idEntry, sharedWith }) => {
         shared_usernames: values.selectedFriends,
       });
       setSharedUsers(values.selectedFriends);
+
+      onClose()
       setStatus({ success: 'Entrada compartida exitosamente' });
     } catch (error) {
       console.error('Error al compartir la entrada:', error);
@@ -87,7 +82,6 @@ const ShareEntry = ({ username, idEntry, sharedWith }) => {
       <Formik
           initialValues={{ search: '', selectedFriends: sharedUsers }}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
       >
         {({ values, setFieldValue, isSubmitting, status }) => {
           // Eliminar usuario compartido
@@ -158,7 +152,7 @@ const ShareEntry = ({ username, idEntry, sharedWith }) => {
 
                 {/* Botón de envío */}
                 <button type="submit" disabled={!isModified || isSubmitting}>
-                  {isSubmitting ? 'Compartiendo...' : 'Compartir'}
+                  {isSubmitting ? 'Actualizando...' : 'Actualizar'}
                 </button>
               </Form>
           );
