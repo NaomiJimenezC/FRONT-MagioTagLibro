@@ -8,6 +8,12 @@ import ShareEntry from '../Components/ShareEntry';
 
 const TodayEntry = () => {
     const [showFriendModal, setShowFriendModal] = useState(false);
+    const [editable, setEditable] = useState(true);
+    const [user, setUser] = useState(null);
+    const [entry, setEntry] = useState(null);
+    const [error, setError] = useState(null);
+
+
     const { id } = useParams();
     const navigate = useNavigate();
     const backurl = import.meta.env.VITE_BACKEND_URL;
@@ -34,13 +40,6 @@ const TodayEntry = () => {
     }
   };
   
-
-
-    const [editable, setEditable] = useState(true);
-    const [user, setUser] = useState(null);
-    const [entry, setEntry] = useState(null);
-    const [error, setError] = useState(null);
-
     useEffect(() => {
         const fetchUserAndEntries = async () => {
             const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -115,6 +114,10 @@ const TodayEntry = () => {
         }
     }
 
+    const handleEditClick = (isEditable)=>{
+        setEditable(prevState => !prevState);
+    }
+
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             await axios.post(`${backurl}/api/entries/new`, values);
@@ -152,6 +155,14 @@ const TodayEntry = () => {
                             onClick={handleDeleteClick}>
                                 Eliminar entrada
                             </button>
+                            {entry.fecha_creacion === today &&(
+                                <button
+                                    type='button'
+                                    onClick={handleEditClick}
+                                >
+                                    {editable ? "Vista":"Edición"}
+                                </button>
+                            )}
                         </>
                         
                     )}
