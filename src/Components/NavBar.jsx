@@ -62,7 +62,7 @@ const Navbar = () => {
         borderColor: isDarkMode ? "#555" : "#ddd",
       }}
     >
-      <h1 className="navbar-logo">
+      <h3 className="navbar-logo">
         <Link
           to="/"
           aria-label="Ir a la página principal"
@@ -70,7 +70,7 @@ const Navbar = () => {
         >
           🏠 Magio Taglibro
         </Link>
-      </h1>
+      </h3>
 
       <div>
         {isLoggedIn && (

@@ -1,14 +1,11 @@
-@use "../core/Variables" as Variables;
-@use "../Global";
-
 footer{
-  *{
-    margin: 5px;
-  }
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-grow: 1;
+  *{
+    margin: 5px;
+  }
   .copyright{
     width: 50%;
   }
