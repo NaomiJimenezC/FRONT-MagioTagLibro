@@ -3,21 +3,22 @@ import Navbar from "../Components/NavBar";
 import Footer from "../Components/Footer";
 import "../Sass/GlobalLayout.scss";
 
+
 const Layout = ({ children }) => {
   return (
-    <section aria-labelledby="site-layout">
+    <section className="father-layout" aria-labelledby="site-layout">
       {/* Encabezado principal con el Navbar */}
-      <header aria-label="Primary navigation">
+      <header className="head-bar" aria-label="Primary navigation">
         <Navbar />
       </header>
 
       {/* Contenido principal dinámico */}
-      <main id="main-content" tabIndex="-1" aria-labelledby="page-title">
+      <main className="page-content" id="main-content" tabIndex="-1" aria-labelledby="page-title">
         {children}
       </main>
 
       {/* Pie de página */}
-      <footer aria-label="Site footer">
+      <footer className="foot-bar" aria-label="Site footer">
         <Footer />
       </footer>
     </section>

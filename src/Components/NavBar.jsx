@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { useTheme } from "../Context/ThemeContext"; // Ajusta la ruta si es necesario
+import { useTheme } from "../Context/ThemeContext";
+import * as PropTypes from "prop-types";
+import FaSun from "../Assets/Sun.svg" // Ajusta la ruta si es necesario
 
+function FontAwesomeIcon(props) {
+  return null;
+}
+
+FontAwesomeIcon.propTypes = {
+  icon: PropTypes.string,
+  style: PropTypes.shape({color: PropTypes.string})
+};
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const { isLoggedIn, logout } = useAuth();
@@ -133,6 +143,7 @@ const Navbar = () => {
         )}
 
         <button onClick={toggleTheme}>
+          <FontAwesomeIcon icon={FaSun} style={{color: "#14cb10",}} />
           {isDarkMode ? "Modo Claro" : "Modo Oscuro"}
         </button>
       </div>
