@@ -1,10 +1,25 @@
-h1{
-    text-align: center;
-    display: flex;
-    justify-content: center;
+@import "../core/_Fonts.scss";
+@import "../core/_Variables.scss";
+
+
+h1 {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: $secondary-color-800;  // Color para el texto de los encabezados en modo claro
+  
+  &.dark-mode {
+    color: $secondary-color-100;  // Color para el texto de los encabezados en modo oscuro
   }
-  .home-contents{
-    text-align: center;
-    display: flex;
-    justify-content: center;
+}
+
+.home-contents {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: $secondary-color-800;  // Color para el texto en contenido principal en modo claro
+  
+  &.dark-mode {
+    color: $secondary-color-100;  // Color para el texto en contenido principal en modo oscuro
   }
+}

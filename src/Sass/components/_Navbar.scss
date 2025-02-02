@@ -1,0 +1,91 @@
+@import "../core/_Fonts.scss";
+@import "../core/_Variables.scss";
+
+/* Estilos generales */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 2px solid;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.navbar-logo a {
+    text-decoration: none;
+    color: inherit;  /* Aseguramos que el color no sea morado */
+    transition: color 0.3s;
+}
+
+.navbar-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-button {
+    background-color: transparent;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    color: inherit; /* Aseguramos que no haya color predeterminado */
+    transition: color 0.3s;
+}
+
+.navbar-dropdown {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.navbar-dropdown button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: inherit; /* Aseguramos que el texto del botón sea blanco */
+}
+
+.sun-icon {
+    width: 20px;
+    margin-right: 8px;
+}
+
+/* Tema oscuro */
+.dark-mode .navbar {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+.dark-mode .navbar-logo a {
+    color: #fff;  /* Aseguramos que el texto del logo sea blanco */
+}
+
+.dark-mode .navbar-button {
+    color: #fff;  /* Aseguramos que los botones tengan color blanco */
+}
+
+.dark-mode .navbar-dropdown {
+    background-color: #444;
+    color: #fff;
+}
+
+.dark-mode .navbar-dropdown button {
+    background-color: transparent; /* Botones sin fondo por defecto */
+    color: #fff;  /* Aseguramos que el texto sea blanco */
+}
+
+.dark-mode .navbar-dropdown button:hover {
+    background-color: darkblue;
+}
+
+.dark-mode .navbar-button:focus {
+    outline: none;
+}

@@ -1,3 +1,5 @@
+
+
 // Colors
 $light-foreground: #520288;
 $light-background: #F9EFA9;
@@ -22,13 +24,18 @@ $secondary-color-300: #B09BC5;
 $secondary-color-200: #CABBD8;
 $secondary-color-100: #E5DDEB;
 
+// Font Families
+
+$title-font: 'Afacad', sans-serif;
+$text-font: 'Open Sans', sans-serif;
+
 // Font Sizes
-$general-font: Nunito, sans-serif;
-$h1-font: 48px $general-font;
-$h2-font: 32px $general-font;
-$h3-font: 16px $general-font;
-$p-font: 14px $general-font;
-$bold-font: 14px $general-font bold;
-$small-font: 12px $general-font;
+
+$h1-font: 48px $title-font;
+$h2-font: 32px $title-font;
+$h3-font: 16px $title-font;
+$p-font: 14px $text-font;
+$bold-font: 14px $text-font bold;
+$small-font: 12px $text-font;
 
 // Spacing & Sizing

@@ -1,22 +1,39 @@
-footer{
+@import "../core/_Fonts.scss";
+@import "../core/_Variables.scss";
+
+footer {
+  background-color: $primary-color-800;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-grow: 1;
-  *{
+  * {
     margin: 5px;
   }
-  .copyright{
+
+  .copyright {
     width: 50%;
   }
-  .contact-and-socials{
+
+  .contact-and-socials {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .social-media-links{
+
+    .social-media-links {
       display: flex;
       align-items: center;
-
     }
+  }
+
+  &.dark-mode {
+    color: $secondary-color-100;
+    background-color: $dark-background;
+  }
+
+  // Estilos para el modo claro
+  &:not(.dark-mode) {
+    color: $secondary-color-800;
+    background-color: $light-background;
   }
 }

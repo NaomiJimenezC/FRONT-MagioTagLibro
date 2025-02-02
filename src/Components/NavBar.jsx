@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useTheme } from "../Context/ThemeContext";
 import * as PropTypes from "prop-types";
-import FaSun from "../Assets/Sun.svg" // Ajusta la ruta si es necesario
+import FaSun from "../Assets/Sun.svg";
+import '../Sass/components/_Navbar.scss';
 
 function FontAwesomeIcon(props) {
   return null;
@@ -11,8 +12,9 @@ function FontAwesomeIcon(props) {
 
 FontAwesomeIcon.propTypes = {
   icon: PropTypes.string,
-  style: PropTypes.shape({color: PropTypes.string})
+  style: PropTypes.shape({ color: PropTypes.string }),
 };
+
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const { isLoggedIn, logout } = useAuth();
@@ -27,12 +29,19 @@ const Navbar = () => {
         setUser(JSON.parse(storedUser));
       } catch (error) {
         console.error("Error al parsear el usuario:", error);
-        setUser(null); // Si el JSON es inválido, seteamos `user` como null
+        setUser(null);
       }
     } else {
-      setUser(null); // Si no existe el usuario o es "undefined", lo dejamos como null
+      setUser(null);
     }
-  }, []);
+
+    // Actualiza la clase en el <html> para cambiar entre modos
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark-mode");
+    } else {
+      document.documentElement.classList.remove("dark-mode");
+    }
+  }, [isDarkMode]);
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
@@ -46,12 +55,11 @@ const Navbar = () => {
     logout();
     localStorage.removeItem("authToken");
     localStorage.removeItem("user");
-    setUser(null); // Limpiar el usuario del estado
-    navigate("/"); // Redirige a la página principal
+    setUser(null);
+    navigate("/");
     setIsDropdownOpen(false);
   };
 
-  // Solo mostrar el nombre de usuario cuando se haya cargado correctamente el estado `user`
   const getUsername = () => {
     if (isLoggedIn && user) {
       return user.username || "Usuario no encontrado";
@@ -60,90 +68,39 @@ const Navbar = () => {
   };
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "1rem",
-        backgroundColor: isDarkMode ? "#333" : "#fff",
-        color: isDarkMode ? "#fff" : "#333",
-        borderBottom: "2px solid",
-        borderColor: isDarkMode ? "#555" : "#ddd",
-      }}
-    >
+    <nav className="navbar">
       <h3 className="navbar-logo">
-        <Link
-          to="/"
-          aria-label="Ir a la página principal"
-          style={{ color: isDarkMode ? "#fff" : "#333", textDecoration: "none" }}
-        >
+        <Link to="/" aria-label="Ir a la página principal">
           🏠 Magio Taglibro
         </Link>
       </h3>
 
-      <div>
+      <div className="navbar-buttons">
         {isLoggedIn && (
-          <Link to="/diaries" style={{ marginRight: "1rem", textDecoration: "none" }}>
-            <button style={{ backgroundColor: "transparent", color: isDarkMode ? "#fff" : "#333" }}>
+          <Link to="/diaries" style={{ marginRight: "1rem" }}>
+            <button className="navbar-button">
               Mis diarios
             </button>
           </Link>
         )}
 
-        <button onClick={handleAuthClick}>
+        <button onClick={handleAuthClick} className="navbar-button">
           {getUsername()}
         </button>
 
         {isLoggedIn && isDropdownOpen && (
-          <div
-            style={{
-              position: "absolute",
-              top: "60px",
-              right: "20px",
-              backgroundColor: isDarkMode ? "#444" : "#fff",
-              color: isDarkMode ? "#fff" : "#333",
-              padding: "10px",
-              borderRadius: "5px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-              zIndex: 10,
-            }}
-          >
+          <div className="navbar-dropdown">
             <Link to="/user">
-              <button
-                style={{
-                  display: "block",
-                  width: "100%",
-                  marginBottom: "10px",
-                  backgroundColor: "blue",
-                  color: "#fff",
-                  border: "none",
-                  padding: "5px 10px",
-                  cursor: "pointer",
-                }}
-              >
-                Ir al perfil
-              </button>
+              <button className="navbar-dropdown-button">Ir al perfil</button>
             </Link>
-            <button
-              onClick={handleLogout}
-              style={{
-                display: "block",
-                width: "100%",
-                backgroundColor: "red",
-                color: "#fff",
-                border: "none",
-                padding: "5px 10px",
-                cursor: "pointer",
-              }}
-            >
+            <button onClick={handleLogout} className="navbar-dropdown-button">
               Cerrar sesión
             </button>
           </div>
         )}
 
-        <button onClick={toggleTheme}>
-          <FontAwesomeIcon icon={FaSun} style={{color: "#14cb10",}} />
+        <button onClick={toggleTheme} className="navbar-button">
+          <img src={FaSun} alt="Icono del sol" className="sun-icon" />
           {isDarkMode ? "Modo Claro" : "Modo Oscuro"}
         </button>
       </div>

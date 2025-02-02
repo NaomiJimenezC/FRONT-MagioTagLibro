@@ -1,24 +1,81 @@
 @import "core/_Fonts.scss";
-html, body{
+@import "core/_Variables.scss";
+
+// Estilos globales para html y body
+html, body {
   height: 100vh;
   margin: 0;
   padding: 0;
+  font-family: $text-font;
+  color: $secondary-color-800;
+  background-color: $light-background;
+
+  // Estilos cuando el modo oscuro está activado
+  &.dark-mode {
+    color: $secondary-color-100;
+    background-color: $dark-background;
+  }
 }
-.father-layout{
+
+// Diseño de la página (para estructurar la aplicación)
+.father-layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  .head-bar{
+
+  .father-layout__head-bar {
     min-height: 10%;
     flex-grow: 1;
   }
-  .page-content{
+
+  .father-layout__page-content {
     min-height: 80%;
     flex-grow: 20;
   }
-  .foot-bar{
+
+  .father-layout__foot-bar {
     min-height: 10%;
     flex-grow: 1;
+  }
+}
+
+// Estilo de los encabezados (h1, h2, h3, etc.)
+h1, h2, h3, h4, h5, h6 {
+  font-family: $title-font; // Fuente específica para los títulos
+}
+
+// Estilos para párrafos, etiquetas y botones
+p, span, label, input, textarea, button {
+  font-family: $text-font; // Fuente para texto normal
+}
+
+// Botones adaptativos para el modo claro y oscuro
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+
+  // Modo claro
+  background-color: $secondary-color-800;  // Fondo morado
+  color: $light-background;  // Texto amarillo
+  border: 1px solid $secondary-color-800;
+
+  &:hover {
+    background-color: $primary-color-600;
+    color: $secondary-color-800;
+  }
+
+  // Modo oscuro
+  &.dark-mode {
+    background-color: $primary-color-100;  // Fondo amarillo
+    color: $secondary-color-800;  // Texto morado
+    border: 1px solid $primary-color-100;
+
+    &:hover {
+      background-color: $primary-color-200;
+    }
   }
 }

@@ -1,83 +1,113 @@
+@import "../core/_Fonts.scss";
+@import "../core/_Variables.scss";
+
 .login-form {
-    max-width: 400px;
-    margin: 0 auto;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: $light-background; /* Fondo claro */
+  border: 1px solid $primary-color-800;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  &.dark-mode {
+    background-color: $dark-background; /* Fondo oscuro */
+    border: 1px solid $secondary-color-100;
+  }
+
+  &__form-group {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    background-color: #f7f8fc; 
-    border: 1px solid #191919;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
-    .form-group {
-      display: flex;
-      flex-direction: column;
-  
-      .input-field {
-        max-width: 50vh;
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 1rem;
-        transition: border-color 0.3s;
-  
-        &:focus {
-          border-color: #007bff;
-          outline: none;
-        }
-      }
-  
-      .error-message {
-        color: #d9534f;
-        font-size: 0.875rem;
-        margin-top: 5px;
-        font-weight: bold;
-      }
+  }
+
+  &__input-field {
+    max-width: 50vh;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid $secondary-color-800; /* Bordes claros para modo claro */
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: $primary-color-800; /* Color en enfoque */
+      outline: none;
     }
-  
-    .submit-button {
-      max-width: 53vh;
-      padding: 12px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      font-weight: bold;
-      text-align: center;
-      transition: background-color 0.3s, transform 0.2s;
-  
-      &:hover {
-        background-color: #0056b3;
-        transform: scale(1.02);
-      }
-  
-      &:active {
-        transform: scale(0.98);
-      }
-  
-      &.disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
-    }
-  
-    .form-title {
-      text-align: center;
-      font-size: 1.5rem;
-      color: #333;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-  
-    .form-description {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 20px;
+
+    &.dark-mode {
+      border-color: $secondary-color-100; /* Bordes oscuros para modo oscuro */
+      background-color: $dark-background;
+      color: $secondary-color-100;
     }
   }
-  
+
+  &__error-message {
+    color: $danger-color;
+    font-size: 0.875rem;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+
+  &__submit-button {
+    max-width: 53vh;
+    padding: 12px;
+    background-color: $primary-color-800;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+
+    &:hover {
+      background-color: $primary-color-600;
+      transform: scale(1.02);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &.disabled {
+      background-color: $secondary-color-400;
+      cursor: not-allowed;
+    }
+
+    &.dark-mode {
+      background-color: $primary-color-200;
+      color: $primary-color-800;
+
+      &:hover {
+        background-color: $primary-color-300;
+      }
+    }
+  }
+
+  &__form-title {
+    text-align: center;
+    font-size: 1.5rem;
+    color: $secondary-color-800;
+    margin-bottom: 10px;
+    font-weight: bold;
+
+    &.dark-mode {
+      color: $secondary-color-100;
+    }
+  }
+
+  &__form-description {
+    text-align: center;
+    font-size: 0.9rem;
+    color: $secondary-color-600;
+    margin-bottom: 20px;
+
+    &.dark-mode {
+      color: $secondary-color-200;
+    }
+  }
+}

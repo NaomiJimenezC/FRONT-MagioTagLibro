@@ -1,9 +1,12 @@
+@import "../core/_Fonts.scss";
+@import "../core/_Variables.scss";
+
 $modal-overlay-background: rgba(0, 0, 0, 0.7);
 $modal-max-width: 600px;
 $modal-padding: 20px;
 $close-btn-size: 20px;
-$modal-content-background: #ffffff;
-$modal-header-background: #f4f4f4;
+$modal-content-background: $light-background;  // Fondo modal en modo claro
+$modal-header-background: $primary-color-100;  // Fondo encabezado modal claro
 $modal-header-padding: 10px;
 
 .modal-overlay {
@@ -27,6 +30,10 @@ $modal-header-padding: 10px;
   width: 80%;
   max-width: $modal-max-width;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &.dark-mode {
+    background-color: $dark-background;  // Fondo modal en modo oscuro
+  }
 }
 
 .modal-header {
@@ -35,11 +42,20 @@ $modal-header-padding: 10px;
   border-radius: 8px 8px 0 0;
   font-size: 18px;
   font-weight: bold;
+
+  &.dark-mode {
+    background-color: $secondary-color-800;  // Fondo encabezado modal en modo oscuro
+    color: $secondary-color-100;
+  }
 }
 
 .modal-body {
   padding: 15px 0;
   font-size: 14px;
+
+  &.dark-mode {
+    color: $secondary-color-200;
+  }
 }
 
 .close-modal-btn {
@@ -50,10 +66,17 @@ $modal-header-padding: 10px;
   border: none;
   font-size: $close-btn-size;
   cursor: pointer;
-  color: #333;
+  color: $primary-color-800;
   font-weight: bold;
-}
 
-.close-modal-btn:hover {
-  color: #ff0000;
+  &:hover {
+    color: $secondary-color-700;
+  }
+
+  &.dark-mode {
+    color: $secondary-color-100;
+    &:hover {
+      color: $secondary-color-200;
+    }
+  }
 }
