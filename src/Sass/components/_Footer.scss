@@ -2,7 +2,7 @@
 @import "../core/_Variables.scss";
 
 footer {
-  background-color: $primary-color-800;
+  background-color: $primary-color-800 !important; 
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -28,12 +28,11 @@ footer {
 
   &.dark-mode {
     color: $secondary-color-100;
-    background-color: $dark-background;
+    background-color: $dark-background !important; // Fondo para el modo oscuro
   }
 
-  // Estilos para el modo claro
   &:not(.dark-mode) {
     color: $secondary-color-800;
-    background-color: $light-background;
+    background-color: $light-background !important; // Fondo para el modo claro
   }
 }

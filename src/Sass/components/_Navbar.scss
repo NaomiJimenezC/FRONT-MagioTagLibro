@@ -68,7 +68,7 @@
     color: #fff;  /* Aseguramos que el texto del logo sea blanco */
 }
 
-.dark-mode .navbar-button {
+.dark-mode .navbar-buttons .navbar-button {
     color: #fff;  /* Aseguramos que los botones tengan color blanco */
 }
 
@@ -88,4 +88,14 @@
 
 .dark-mode .navbar-button:focus {
     outline: none;
+}
+
+/* Especificidad extra para asegurar que el texto dentro de los botones en dark mode sea blanco */
+.dark-mode .navbar-button,
+.dark-mode .navbar-dropdown button {
+    color: #fff !important;
+}
+
+.dark-mode .navbar-dropdown button:hover {
+    background-color: darkblue !important;
 }
