@@ -1,8 +1,8 @@
 @import "../core/_Fonts.scss";
 @import "../core/_Variables.scss";
 
-footer {
-  background-color: $primary-color-800 !important; 
+.footer {
+  background-color: $primary-color-800; 
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -28,11 +28,11 @@ footer {
 
   &.dark-mode {
     color: $secondary-color-100;
-    background-color: $dark-background !important; // Fondo para el modo oscuro
+    background-color: $dark-background; // Fondo para el modo oscuro
   }
 
   &:not(.dark-mode) {
     color: $secondary-color-800;
-    background-color: $light-background !important; // Fondo para el modo claro
+    background-color: $light-background; // Fondo para el modo claro
   }
 }

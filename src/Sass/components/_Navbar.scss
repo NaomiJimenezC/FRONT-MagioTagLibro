@@ -9,6 +9,17 @@
     padding: 1rem;
     border-bottom: 2px solid;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+
+
+    &.dark-mode {
+        color: $secondary-color-100;
+        background-color: $dark-background; // Fondo para el modo oscuro
+      }
+    
+      &:not(.dark-mode) {
+        color: $secondary-color-800;
+        background-color: $light-background; // Fondo para el modo claro
+      }
 }
 
 .navbar-logo a {
@@ -93,9 +104,9 @@
 /* Especificidad extra para asegurar que el texto dentro de los botones en dark mode sea blanco */
 .dark-mode .navbar-button,
 .dark-mode .navbar-dropdown button {
-    color: #fff !important;
+    color: #fff;
 }
 
 .dark-mode .navbar-dropdown button:hover {
-    background-color: darkblue !important;
+    background-color: darkblue;
 }

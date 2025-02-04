@@ -4,7 +4,7 @@ import "../Sass/components/_Footer.scss";
 
 const Footer = () => {
   return (
-      <footer className="bg-gray-900 text-white py-8" aria-labelledby="footer-heading">
+      <footer className="footer" aria-labelledby="footer-heading">
         {/* Copyright */}
         <p className="copyright" aria-labelledby="copyright">
           © MagioTaglibro 2025. All rights reserved.
