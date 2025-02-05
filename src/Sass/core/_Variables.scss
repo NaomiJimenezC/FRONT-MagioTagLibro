@@ -4,16 +4,51 @@
 
 body.Light{
 
+background-color:#F9EFA9;
+color: #2C0066;
+.navbar{
 background-color:#FFE541;
+}
+.footer{
+    background-color:#FFE541;
+}
+.navbar-logo{
+    color: #2C0066;
+    text-decoration: none;
 
+}
 
+.navbar-button{
+    color: #2C0066;
+
+}
+
+.navbar-dropdown-button{
+
+    color: #2C0066;
+
+}
+
+.navbar-dropdown{
+    color: #2C0066;
+
+}
 }
 
 
 body.Dark{
-
-    background-color: #2C0066;
-
+color: #FFE541;
+background-color: #482279;
+.navbar{
+background-color:#2C0066;
+}
+.footer{
+background-color:#2C0066;
+}
+.navbar-logo{
+    color: #FFE541;
+    text-decoration: none;
+}
 
 }
 $light-foreground: #520288;

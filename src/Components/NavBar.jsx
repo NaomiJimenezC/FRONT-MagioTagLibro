@@ -78,8 +78,8 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <h3 className="navbar-logo">
-        <Link to="/" aria-label="Ir a la página principal">
+      <h3>
+        <Link className="navbar-logo" to="/" aria-label="Ir a la página principal">
           🏠 Magio Taglibro
         </Link>
       </h3>
