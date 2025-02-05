@@ -2,26 +2,32 @@
 @import "../core/_Variables.scss";
 
 .footer {
+  width:1fr;
+  position: relative;
+  bottom:0%;
+  left:0%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  flex-grow: 1;
-  * {
-    margin: 5px;
-  }
+  padding: 1rem 2rem; // Espaciado uniforme
+
 
   .copyright {
     width: 50%;
+    text-align: left;
   }
 
   .contact-and-socials {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    width: 30%;
+    gap: 10px;
 
     .social-media-links {
       display: flex;
       align-items: center;
+      gap: 10px; // Espaciado uniforme entre íconos
     }
   }
 }

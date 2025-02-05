@@ -4,28 +4,27 @@
 // Estilos globales para html y body
 main {
   height: 100vh;
-  margin: 0;
-  padding: 0;
+  margin: 0%;
   font-family: $text-font;
-
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-// Diseño de la página (para estructurar la aplicación)
+// Diseño de la página (estructura general)
 .father-layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 1rem; // Espaciado en los laterales
 
-  .father-layout__head-bar {
-    min-height: 10%;
-    flex-grow: 1;
-  }
 
   .father-layout__page-content {
     min-height: 80%;
     flex-grow: 20;
+    padding: 2rem;
   }
 
   .father-layout__foot-bar {
@@ -36,20 +35,46 @@ main {
 
 // Estilo de los encabezados (h1, h2, h3, etc.)
 h1, h2, h3, h4, h5, h6 {
-  font-family: $title-font; // Fuente específica para los títulos
+  font-family: $title-font;
+  margin: 1rem 0; // Espaciado uniforme
+  text-align: center; // Centrado para mejor visualización
 }
 
 // Estilos para párrafos, etiquetas y botones
 p, span, label, input, textarea, button {
-  font-family: $text-font; // Fuente para texto normal
+  font-family: $text-font;
 }
 
-// Botones adaptativos para el modo claro y oscuro
+// Botones adaptativos para modo claro y oscuro
 button {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.75rem 1.5rem; // Botones más cómodos de pulsar
+  margin: 0.5rem; // Espacio entre botones
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s, color 0.3s;
-
+  border: none;
 }
+
+// Formularios y entradas de datos
+input, textarea {
+  width: 100%;
+  max-width: 400px; // No demasiado ancho en pantallas grandes
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+// Listas y elementos de navegación
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+

@@ -109,7 +109,6 @@ const Navbar = () => {
         )}
 
         <button className="theme-button" onClick={handleThemeChange}>
-          {currentTheme}
           <img src={FaSun} alt="Icono del sol" className="sun-icon" />
         </button>
       </div>

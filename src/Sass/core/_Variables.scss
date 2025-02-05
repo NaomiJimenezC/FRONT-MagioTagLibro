@@ -1,56 +1,114 @@
-
-
 // Themes
 
-body.Light{
+body.Light {
+  background-color: #F9EFA9;
+  color: #2C0066;
 
-background-color:#F9EFA9;
-color: #2C0066;
-.navbar{
-background-color:#FFE541;
-}
-.footer{
-    background-color:#FFE541;
-}
-.navbar-logo{
+  .navbar {
+    background-color: #FFE541;
+  }
+
+  .footer {
+    background-color: #FFE541;
+  }
+
+  .navbar-logo {
     color: #2C0066;
     text-decoration: none;
+  }
 
-}
-
-.navbar-button{
+  .navbar-button,
+  .navbar-dropdown-button {
     color: #2C0066;
+  }
 
-}
-
-.navbar-dropdown-button{
-
+  .navbar-dropdown {
     color: #2C0066;
+  }
 
-}
-
-.navbar-dropdown{
+  // Estilos para etiquetas
+  h1, h2, h3 {
     color: #2C0066;
+  }
 
-}
+  p, span, a {
+    color: #2C0066;
+    text-decoration: none;
+  }
+
+  button {
+    background-color: #FFE541;
+    color: #2C0066;
+    border: none;
+    cursor: pointer;
+  }
+
+  input, textarea {
+    background-color: #FEF9D8;
+    color: #2C0066;
+    border: 1px solid #2C0066;
+  }
+
+  ul, li {
+    list-style: none;
+  }
 }
 
+body.Dark {
+  background-color: #482279;
+  color: #FFE541;
 
-body.Dark{
-color: #FFE541;
-background-color: #482279;
-.navbar{
-background-color:#2C0066;
-}
-.footer{
-background-color:#2C0066;
-}
-.navbar-logo{
+  .navbar {
+    background-color: #2C0066;
+  }
+
+  .footer {
+    background-color: #2C0066;
+  }
+
+  .navbar-logo {
     color: #FFE541;
     text-decoration: none;
+  }
+
+  .navbar-button,
+  .navbar-dropdown-button {
+    color: #FFE541;
+  }
+
+  .navbar-dropdown {
+    color: #FFE541;
+  }
+
+  // Estilos para etiquetas
+  h1, h2, h3 {
+    color: #FFE541;
+  }
+
+  p, span, a {
+    color: #FFE541;
+    text-decoration: none;
+  }
+
+  button {
+    background-color: #2C0066;
+    color: #FFE541;
+    border: none;
+    cursor: pointer;
+  }
+
+  input, textarea {
+    background-color: #310250;
+    color: #FFE541;
+    border: 1px solid #FFE541;
+  }
+
+  ul, li {
+    list-style: none;
+  }
 }
 
-}
+// Variables de colores
 $light-foreground: #520288;
 $light-background: #F9EFA9;
 $dark-foreground: #F9E03E;
@@ -75,17 +133,13 @@ $secondary-color-200: #CABBD8;
 $secondary-color-100: #E5DDEB;
 
 // Font Families
-
 $title-font: 'Afacad', sans-serif;
 $text-font: 'Open Sans', sans-serif;
 
 // Font Sizes
-
 $h1-font: 48px $title-font;
 $h2-font: 32px $title-font;
 $h3-font: 16px $title-font;
 $p-font: 14px $text-font;
 $bold-font: 14px $text-font bold;
 $small-font: 12px $text-font;
-
-// Spacing & Sizing
