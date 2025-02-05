@@ -38,13 +38,11 @@ const LoginForm = () => {
         const { message, token, user } = data;
 
         // Mostrar mensaje de éxito
-        console.log("Datos de login recibidos:", data);
         alert(message); // Mostrar el mensaje de éxito
 
         // Guardar el token y el usuario en localStorage
         localStorage.setItem("authToken", token);
         localStorage.setItem("user", JSON.stringify(user)); // Guardar el usuario completo en localStorage
-        console.log("Token guardado en localStorage:", token);
 
         // Llamar la función login
         login(user); // Función para manejar el login

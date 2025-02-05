@@ -16,7 +16,6 @@ export const Contact = () => {
         try{
             await axios.post(`${backurl}/api/contact/sent`,values)
         }catch(error){
-            console.log(`Error submitting contact form: ${error}`)
         }
         finally{
             setSubmitting(false);

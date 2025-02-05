@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { useTheme } from "../Context/ThemeContext";
 import * as PropTypes from "prop-types";
 import FaSun from "../Assets/Sun.svg";
 import '../Sass/components/_Navbar.scss';
+import '../Sass/core/_Variables.scss'
 
 function FontAwesomeIcon(props) {
   return null;
@@ -16,11 +16,27 @@ FontAwesomeIcon.propTypes = {
 };
 
 const Navbar = () => {
-  const { isDarkMode, toggleTheme } = useTheme();
   const { isLoggedIn, logout } = useAuth();
+  const [currentTheme, setCurrentTheme] = useState('Light');
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
+
+  const themes = ['Light', 'Dark'];
+
+  const handleThemeChange = () => {
+    const newTheme = currentTheme === 'Light' ? 'Dark' : 'Light';
+    setCurrentTheme(newTheme);
+    document.body.classList.remove(...themes);
+    document.body.classList.add(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme') || 'Light';
+    setCurrentTheme(storedTheme);
+    document.body.classList.add(storedTheme);
+  }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -34,14 +50,7 @@ const Navbar = () => {
     } else {
       setUser(null);
     }
-
-    // Actualiza la clase en el <html> para cambiar entre modos
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark-mode");
-    } else {
-      document.documentElement.classList.remove("dark-mode");
-    }
-  }, [isDarkMode]);
+  }, []);
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
@@ -99,9 +108,9 @@ const Navbar = () => {
           </div>
         )}
 
-        <button onClick={toggleTheme} className="navbar-button">
+        <button className="theme-button" onClick={handleThemeChange}>
+          {currentTheme}
           <img src={FaSun} alt="Icono del sol" className="sun-icon" />
-          {isDarkMode ? "Modo Claro" : "Modo Oscuro"}
         </button>
       </div>
     </nav>

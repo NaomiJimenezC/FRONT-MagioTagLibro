@@ -46,17 +46,12 @@ const TodayEntry = () => {
             if (storedUser) {
                 setUser(storedUser);
                 try {
-                    console.log(storedUser.username)
                     const response = await axios.get(`${backurl}/api/entries/${storedUser.username}/${id}`);
-                    console.log(response.data)
                     setEntry(response.data);
                     setEditable(response.data.fecha_creacion === today);
                 } catch (error) {
-                    console.log("Error al obtener la entrada normal:", error);
                     try {
-                        console.log("Intentando obtener entrada compartida...");
                         const sharedResponse = await axios.get(`${backurl}/api/entries/shared-entries/${storedUser.username}/${id}`);
-                        console.log("Respuesta de entrada compartida:", sharedResponse);
                         setEntry(sharedResponse.data);
                         setEditable(false);
                     } catch (sharedError) {
@@ -110,7 +105,6 @@ const TodayEntry = () => {
             const deletEntry = axios.delete(`${backurl}/api/entries/delete/${id}`)
             navigate("/diaries")
         } catch (error) {
-            console.log(error)
         }
     }
 
