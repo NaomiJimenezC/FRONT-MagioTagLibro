@@ -54,12 +54,13 @@ const UserProfile = () => {
   };
 
   return (
-    <main aria-labelledby="user-profile-title">
+    <main id="user-profile-page">
       {user ? (
-        <article aria-labelledby="profile-details-title">
-          <section id="profile-summary" aria-labelledby="profile-summary-title">
+        <article id="profile-details">
+          <section id="profile-summary">
             <figure>
               <img
+                id="profile-avatar"
                 src={user.profileImage || "https://via.placeholder.com/150"}
                 alt={`Avatar de ${user.username}`}
                 className="profile-avatar"
@@ -72,6 +73,7 @@ const UserProfile = () => {
               ref={fileInputRef}
               accept="image/*"
               onChange={handleImageChange}
+              style={{ display: "none" }}
             />
 
             <p><strong>Nombre de usuario:</strong> {user.username}</p>
@@ -97,28 +99,28 @@ const UserProfile = () => {
           </section>
 
           <section>
-            <button onClick={() => setShowProfileModal(true)}>Editar perfil</button>
+            <button id="edit-profile-btn" onClick={() => setShowProfileModal(true)}>Editar perfil</button>
           </section>
 
           <section>
-            <button onClick={() => setShowFriendModal(true)} className="manage-friends-btn">
+            <button id="manage-friends-btn" onClick={() => setShowFriendModal(true)}>
               Gestionar Amigos
             </button>
           </section>
 
           {showProfileModal && (
-            <aside className="modal-overlay">
+            <aside id="profile-modal" className="modal-overlay">
               <div className="modal-content">
-                <button onClick={() => setShowProfileModal(false)} className="close-modal-btn">✕</button>
+                <button id="close-profile-modal" onClick={() => setShowProfileModal(false)} className="close-modal-btn">✕</button>
                 <ProfileEditor user={user} onSave={() => setShowProfileModal(false)} />
               </div>
             </aside>
           )}
 
           {showFriendModal && (
-            <aside className="modal-overlay">
+            <aside id="friend-modal" className="modal-overlay">
               <div className="modal-content">
-                <button onClick={() => setShowFriendModal(false)} className="close-modal-btn">✕</button>
+                <button id="close-friend-modal" onClick={() => setShowFriendModal(false)} className="close-modal-btn">✕</button>
                 <FriendManagement />
               </div>
             </aside>

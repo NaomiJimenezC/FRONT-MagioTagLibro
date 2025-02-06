@@ -2,15 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
   justify-content: center;
   padding: 2rem;
+  height: 100vh;
 }
 
 .login-form {
-  width: 100%;
-  min-width: 12vh;
-  max-width: 15vh;
+  width: 90%;
+  max-width: 800px;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -19,9 +18,15 @@
   gap: 1rem;
 }
 
+/* Agrupa los inputs en una fila */
 fieldset {
   border: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
   padding: 0;
+  width: 100%;
 }
 
 legend {
@@ -30,14 +35,22 @@ legend {
 }
 
 label {
-  display: block;
   font-weight: bold;
+}
+
+/* Ajusta los campos para que estén en línea */
+p {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
 }
 
 input {
   width: 100%;
   padding: 0.8rem;
   border-radius: 5px;
+  border: 1px solid #ccc;
   transition: box-shadow 0.3s ease-in-out;
 
   &:focus {
@@ -47,13 +60,14 @@ input {
 }
 
 span {
-  display: block;
+  color: red;
+  font-size: 0.9rem;
 }
 
 button {
-  width: 100%;
-  padding: 0.8rem;
-  border: none;
+  width: auto;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid #ccc;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s ease-in-out;
