@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import "../Sass/Components/_Login.scss";
+import "../Sass/components/_Login.scss";
 
 const apiRequest = async (url, method, body, onSuccess, onError) => {
   try {
