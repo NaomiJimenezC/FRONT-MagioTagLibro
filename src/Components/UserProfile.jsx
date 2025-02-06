@@ -70,7 +70,6 @@ const UserProfile = () => {
             <input
               type="file"
               ref={fileInputRef}
-              style={{ display: "none" }}
               accept="image/*"
               onChange={handleImageChange}
             />
