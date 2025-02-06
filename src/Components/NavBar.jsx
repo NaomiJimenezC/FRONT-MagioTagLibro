@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import * as PropTypes from "prop-types";
-import SunDarkDark from "../Assets/SunDarkDark.svg";
-import SunDark from "../Assets/SunDark.svg";
-import SunLight from "../Assets/SunLight.svg";
+import Moon from "../Assets/Moon.svg";
+import HalfMoon from "../Assets/HalfMoon.svg";
+import Sun from "../Assets/Sun.svg";
 import "../Sass/components/_Navbar.scss";
 import "../Sass/core/_Variables.scss";
 
@@ -38,13 +38,13 @@ const Navbar = () => {
 
   function sunIcon() {
     if (currentTheme === "Light") {
-      return (<img src={SunLight} alt="Cambiar tema" className="sun-icon"/>)
+      return (<img src={Sun} alt="Cambiar tema" className="theme-icon-sun"/>)
     }
     if (currentTheme === "Dark") {
-      return (<img src={SunDark} alt="Cambiar tema" className="sun-icon"/>)
+      return (<img src={HalfMoon} alt="Cambiar tema" className="theme-icon-half-moon"/>)
     }
     if (currentTheme === "DarkDark") {
-      return (<img src={SunDarkDark} alt="Cambiar tema" className="sun-icon"/>)
+      return (<img src={Moon} alt="Cambiar tema" className="theme-icon-moon"/>)
     }
   }
 
