@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import FriendManagement from "../Components/FriendManagement";
 import ProfileEditor from "../Components/ProfileEditor";
 import "../Sass/components/_UserManagement.scss";
-import 'font-awesome/css/font-awesome.min.css'; // Asegúrate de importar FontAwesome
+import "font-awesome/css/font-awesome.min.css";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -12,8 +12,9 @@ const UserProfile = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [motto, setMotto] = useState("");
   const [isEditingMotto, setIsEditingMotto] = useState(false);
-  const { logout } = useAuth();
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -25,45 +26,30 @@ const UserProfile = () => {
     }
   }, [navigate]);
 
-  const openProfileModal = () => {
-    setShowProfileModal(true);
-  };
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const closeProfileModal = () => {
-    setShowProfileModal(false);
-    // No es necesario hacer fetchUserData aquí, los datos ya están en el estado.
-  };
-
-  const handleMottoSave = async () => {
-    try {
-      const response = await fetch(`https://backend-magiotaglibro.onrender.com/api/userEditor/${user.username}/update/motto`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ motto }),
-      });
-      if (!response.ok) throw new Error("Error al actualizar el motto");
-      
-      // Actualizar el motto en el estado del usuario
-      setUser((prevUser) => {
-        const updatedUser = { ...prevUser, motto };
-        localStorage.setItem("user", JSON.stringify(updatedUser)); // Guardar en localStorage
-        return updatedUser;  // Devolver el usuario actualizado
-      });
-
-      alert("Motto actualizado correctamente");
-      setIsEditingMotto(false);
-    } catch (error) {
-      console.error("Error:", error.message);
-      alert(error.message);
+    if (file.size > 2 * 1024 * 1024) {
+      alert("La imagen supera los 2MB. Por favor, selecciona otra.");
+      return;
     }
-  };
 
-  const openFriendModal = () => {
-    setShowFriendModal(true);
-  };
-
-  const closeFriendModal = () => {
-    setShowFriendModal(false);
+    try {
+      const imageBitmap = await createImageBitmap(file);
+      const canvas = document.createElement("canvas");
+      canvas.width = imageBitmap.width;
+      canvas.height = imageBitmap.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(imageBitmap, 0, 0);
+      const webpImage = canvas.toDataURL("image/webp", 0.8);
+      
+      const updatedUser = { ...user, profileImage: webpImage };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+    } catch (error) {
+      console.error("Error al procesar la imagen:", error);
+    }
   };
 
   return (
@@ -81,22 +67,32 @@ const UserProfile = () => {
                 src={user.profileImage || "https://via.placeholder.com/150"}
                 alt={`Avatar de ${user.username}`}
                 className="profile-avatar"
+                onClick={() => fileInputRef.current.click()}
+                style={{ cursor: "pointer" }}
               />
               <figcaption>
                 Información del perfil de {user.username}.
               </figcaption>
             </figure>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+
             <p><strong>Nombre de usuario:</strong> {user.username}</p>
             <p><strong>Fecha de registro:</strong> {user.createdAt}</p>
             <p>
-              <strong>Motto:</strong> 
+              <strong>Motto:</strong>
               {isEditingMotto ? (
-                <input 
-                  type="text" 
-                  value={motto} 
-                  maxLength={125} 
-                  onChange={(e) => setMotto(e.target.value)} 
-                  onBlur={handleMottoSave} 
+                <input
+                  type="text"
+                  value={motto}
+                  maxLength={125}
+                  onChange={(e) => setMotto(e.target.value)}
+                  onBlur={() => setIsEditingMotto(false)}
                   autoFocus
                 />
               ) : (
@@ -108,57 +104,29 @@ const UserProfile = () => {
             </p>
           </section>
 
-          <section aria-labelledby="user-editor.botton">
-            <button onClick={openProfileModal}>
-              Editar perfil
-            </button>
+          <section>
+            <button onClick={() => setShowProfileModal(true)}>Editar perfil</button>
           </section>
 
-          <section aria-labelledby="friend-management-title">
-            <button
-              onClick={openFriendModal}
-              className="manage-friends-btn"
-              aria-haspopup="dialog"
-            >
+          <section>
+            <button onClick={() => setShowFriendModal(true)} className="manage-friends-btn">
               Gestionar Amigos
             </button>
           </section>
 
           {showProfileModal && (
-            <aside
-              className="modal-overlay"
-              role="dialog"
-              aria-labelledby="profile-editor-title"
-              aria-modal="true"
-            >
+            <aside className="modal-overlay">
               <div className="modal-content">
-                <button
-                  onClick={closeProfileModal}
-                  className="close-modal-btn"
-                  aria-label="Cerrar"
-                >
-                  ✕
-                </button>
-                <ProfileEditor user={user} onSave={closeProfileModal} />
+                <button onClick={() => setShowProfileModal(false)} className="close-modal-btn">✕</button>
+                <ProfileEditor user={user} onSave={() => setShowProfileModal(false)} />
               </div>
             </aside>
           )}
 
           {showFriendModal && (
-            <aside
-              className="modal-overlay"
-              role="dialog"
-              aria-labelledby="friend-management-title"
-              aria-modal="true"
-            >
+            <aside className="modal-overlay">
               <div className="modal-content">
-                <button
-                  onClick={closeFriendModal}
-                  className="close-modal-btn"
-                  aria-label="Cerrar"
-                >
-                  ✕
-                </button>
+                <button onClick={() => setShowFriendModal(false)} className="close-modal-btn">✕</button>
                 <FriendManagement />
               </div>
             </aside>
