@@ -1,5 +1,6 @@
 // Themes
 
+// Body Light
 body.Light {
   background-color: #F9EFA9;
   color: #2C0066;
@@ -52,8 +53,34 @@ body.Light {
   ul, li {
     list-style: none;
   }
+
+  .modal-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .modal-content {
+    background-color: #FEF9D8;
+    color: #2C0066;
+    border: 2px solid #2C0066;
+    width: 90%;
+    max-height: 90vh;
+    margin: 5% auto;
+    padding: 20px;
+    font-size: 0.9rem;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    background-color: #FFE541;
+    color: #2C0066;
+  }
+
+  .close-modal-btn {
+    color: #2C0066;
+  }
 }
 
+// Body Dark
 body.Dark {
   background-color: #482279;
   color: #FFE541;
@@ -106,8 +133,34 @@ body.Dark {
   ul, li {
     list-style: none;
   }
+
+  .modal-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .modal-content {
+    background-color: #310250;
+    color: #FFE541;
+    border: 2px solid #FFE541;
+    width: 90%;
+    max-height: 90vh;
+    margin: 5% auto;
+    padding: 20px;
+    font-size: 0.9rem;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    background-color: #2C0066;
+    color: #FFE541;
+  }
+
+  .close-modal-btn {
+    color: #FFE541;
+  }
 }
 
+// Body DarkDark
 body.DarkDark {
   background-color: #1c1c1c;
   color: #e3e3e3;
@@ -160,7 +213,33 @@ body.DarkDark {
   ul, li {
     list-style: none;
   }
+
+  .modal-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .modal-content {
+    background-color: #555555;
+    color: #e3e3e3;
+    border: 2px solid #e3e3e3;
+    width: 90%;
+    max-height: 90vh;
+    margin: 5% auto;
+    padding: 20px;
+    font-size: 0.9rem;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    background-color: #393939;
+    color: #e3e3e3;
+  }
+
+  .close-modal-btn {
+    color: #e3e3e3;
+  }
 }
+
 
 
 // Variables de colores
