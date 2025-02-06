@@ -54,14 +54,9 @@ const UserProfile = () => {
 
   return (
     <main aria-labelledby="user-profile-title">
-      <header>
-        <h1 id="user-profile-title">Perfil de Usuario</h1>
-      </header>
-
       {user ? (
         <article aria-labelledby="profile-details-title">
           <section id="profile-summary" aria-labelledby="profile-summary-title">
-            <h2 id="profile-summary-title">Detalles del perfil</h2>
             <figure>
               <img
                 src={user.profileImage || "https://via.placeholder.com/150"}
@@ -70,9 +65,6 @@ const UserProfile = () => {
                 onClick={() => fileInputRef.current.click()}
                 style={{ cursor: "pointer" }}
               />
-              <figcaption>
-                Información del perfil de {user.username}.
-              </figcaption>
             </figure>
             <input
               type="file"

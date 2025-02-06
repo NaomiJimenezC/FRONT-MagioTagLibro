@@ -6,6 +6,7 @@ $modal-max-width: 600px;
 $modal-padding: 20px;
 $close-btn-size: 20px;
 $modal-header-padding: 10px;
+$image-max-limit: 5; // Límite de imágenes
 
 .modal-overlay {
   position: fixed;
@@ -33,13 +34,36 @@ $modal-header-padding: 10px;
   border-radius: 8px 8px 0 0;
   font-size: 18px;
   font-weight: bold;
-
 }
 
 .modal-body {
   padding: 15px 0;
   font-size: 14px;
 
+  .image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+
+    .image-preview {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+
+      &:nth-child(n + #{$image-max-limit + 1}) {
+        display: none; // Ocultar imágenes si exceden el límite
+      }
+    }
+
+    .image-error {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+  }
 }
 
 .close-modal-btn {
