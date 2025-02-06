@@ -2,9 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import * as PropTypes from "prop-types";
-import Moon from "../Assets/Moon.svg";
-import HalfMoon from "../Assets/HalfMoon.svg";
-import Sun from "../Assets/Sun.svg";
+import Moon from "../Assets/Theme/Moon.svg";
+import HalfMoon from "../Assets/Theme/HalfMoon.svg";
+import Sun from "../Assets/Theme/Sun.svg";
+import LogInLight from "../Assets/LogIn/Light.svg";
+import LogInDark from "../Assets/LogIn/Dark.svg";
+import LogInDarkDark from "../Assets/LogIn/DarkDark.svg";
+import UserLight from "../Assets/User/Light.svg";
+import UserDark from "../Assets/User/Dark.svg";
+import UserDarkDark from "../Assets/User/DarkDark.svg";
 import "../Sass/components/_Navbar.scss";
 import "../Sass/core/_Variables.scss";
 
@@ -36,7 +42,7 @@ const Navbar = () => {
     localStorage.setItem("theme", newTheme);
   };
 
-  function sunIcon() {
+  function themeIcon() {
     if (currentTheme === "Light") {
       return (<img src={Sun} alt="Cambiar tema" className="theme-icon-sun"/>)
     }
@@ -47,6 +53,29 @@ const Navbar = () => {
       return (<img src={Moon} alt="Cambiar tema" className="theme-icon-moon"/>)
     }
   }
+  function logInIcon() {
+    if (currentTheme === "Light") {
+      return (<img src={LogInLight} alt="Log In" className="login-icon"/>)
+    }
+    if (currentTheme === "Dark") {
+      return (<img src={LogInDark} alt="Log In" className="login-icon"/>)
+    }
+    if (currentTheme === "DarkDark") {
+      return (<img src={LogInDarkDark} alt="Log In" className="login-icon"/>)
+    }
+  }
+  function userIcon() {
+    if (currentTheme === "Light") {
+      return (<img src={UserLight} alt="Usuario" className="usuario-icon"/>)
+    }
+    if (currentTheme === "Dark") {
+      return (<img src={UserDark} alt="Usuario" className="usuario-icon"/>)
+    }
+    if (currentTheme === "DarkDark") {
+      return (<img src={UserDarkDark} alt="Usuario" className="usuario-icon"/>)
+    }
+  }
+
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "Light";
@@ -85,13 +114,6 @@ const Navbar = () => {
     setIsDropdownOpen(false);
   };
 
-  const getUsername = () => {
-    if (isLoggedIn && user) {
-      return user.username || "Usuario no encontrado";
-    }
-    return isLoggedIn ? "Cargando..." : "Iniciar sesión";
-  };
-
   // Cerrar dropdown con ESC
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -124,24 +146,26 @@ const Navbar = () => {
             </button>
           </Link>
         )}
-
-        <button
-          onClick={handleAuthClick}
-          className="navbar-button"
-          tabIndex="0"
-          aria-haspopup="true"
-          aria-expanded={isDropdownOpen}
-        >
-          {getUsername()}
-        </button>
-
+          <button
+              onClick={handleAuthClick}
+              className="navbar-button"
+              tabIndex="0"
+              aria-haspopup="true"
+              aria-expanded={isDropdownOpen}
+          >
+            {isLoggedIn ? (
+                userIcon()
+            ) : (
+                logInIcon()
+            )}
+          </button>
         {isLoggedIn && isDropdownOpen && (
-          <div
-            className="navbar-dropdown"
-            ref={dropdownRef}
-            tabIndex="0"
-            role="menu"
-            aria-label="Menú desplegable de usuario"
+            <div
+                className="navbar-dropdown"
+                ref={dropdownRef}
+                tabIndex="0"
+                role="menu"
+                aria-label="Menú desplegable de usuario"
           >
             <Link to="/user">
               <button className="navbar-dropdown-button" tabIndex="0">
@@ -155,7 +179,7 @@ const Navbar = () => {
         )}
 
         <button className="theme-button" onClick={handleThemeChange} tabIndex="0">
-          {sunIcon()}
+          {themeIcon()}
         </button>
       </div>
     </nav>
