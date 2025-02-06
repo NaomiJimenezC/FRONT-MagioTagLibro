@@ -11,6 +11,7 @@ import LogInDarkDark from "../Assets/LogIn/DarkDark.svg";
 import UserLight from "../Assets/User/Light.svg";
 import UserDark from "../Assets/User/Dark.svg";
 import UserDarkDark from "../Assets/User/DarkDark.svg";
+import Logo from "../Assets/MagioTaglibro.png";
 import "../Sass/components/_Navbar.scss";
 import "../Sass/core/_Variables.scss";
 
@@ -134,7 +135,7 @@ const Navbar = () => {
     <nav className="navbar">
       <h3>
         <Link className="navbar-logo" to="/" aria-label="Ir a la página principal">
-          🏠 Magio Taglibro
+          <img src={Logo} alt="Bienvenido a MagioTaglibro" className="logo"></img>
         </Link>
       </h3>
 
