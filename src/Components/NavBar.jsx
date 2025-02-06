@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import * as PropTypes from "prop-types";
-import FaSun from "../Assets/Sun.svg";
+import SunDarkDark from "../Assets/SunDarkDark.svg";
+import SunDark from "../Assets/SunDark.svg";
+import SunLight from "../Assets/SunLight.svg";
 import "../Sass/components/_Navbar.scss";
 import "../Sass/core/_Variables.scss";
 
@@ -33,6 +35,18 @@ const Navbar = () => {
     document.body.classList.add(newTheme);
     localStorage.setItem("theme", newTheme);
   };
+
+  function sunIcon() {
+    if (currentTheme === "Light") {
+      return (<img src={SunLight} alt="Cambiar tema" className="sun-icon"/>)
+    }
+    if (currentTheme === "Dark") {
+      return (<img src={SunDark} alt="Cambiar tema" className="sun-icon"/>)
+    }
+    if (currentTheme === "DarkDark") {
+      return (<img src={SunDarkDark} alt="Cambiar tema" className="sun-icon"/>)
+    }
+  }
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "Light";
@@ -141,7 +155,7 @@ const Navbar = () => {
         )}
 
         <button className="theme-button" onClick={handleThemeChange} tabIndex="0">
-          <img src={FaSun} alt="Cambiar tema" className="sun-icon" />
+          {sunIcon()}
         </button>
       </div>
     </nav>
