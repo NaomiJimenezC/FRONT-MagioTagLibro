@@ -22,7 +22,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
 
-  const themes = ['Light', 'Dark'];
+  const themes = ['Light', 'Dark', 'DarkDark'];
 
   const handleThemeChange = () => {
     const newTheme = currentTheme === 'Light' ? 'Dark' : 'Light';

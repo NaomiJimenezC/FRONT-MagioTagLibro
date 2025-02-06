@@ -1,8 +1,15 @@
 @import "core/_Fonts.scss";
 @import "core/_Variables.scss";
 
+
+*{
+
+  box-sizing: border-box;
+
+}
 // Estilos globales para html y body
 main {
+  width: 100%;
   height: 100vh;
   margin: 0%;
   font-family: $text-font;
@@ -10,28 +17,9 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  
 }
 
-// Diseño de la página (estructura general)
-.father-layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem; // Espaciado en los laterales
-
-
-  .father-layout__page-content {
-    min-height: 80%;
-    flex-grow: 20;
-    padding: 2rem;
-  }
-
-  .father-layout__foot-bar {
-    min-height: 10%;
-    flex-grow: 1;
-  }
-}
 
 // Estilo de los encabezados (h1, h2, h3, etc.)
 h1, h2, h3, h4, h5, h6 {
@@ -59,7 +47,7 @@ button {
 // Formularios y entradas de datos
 input, textarea {
   width: 100%;
-  max-width: 400px; // No demasiado ancho en pantallas grandes
+  max-width: 400px;
   padding: 0.75rem;
   margin: 0.5rem 0;
   border-radius: 6px;
