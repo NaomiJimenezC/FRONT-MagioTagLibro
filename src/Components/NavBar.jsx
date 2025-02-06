@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import * as PropTypes from "prop-types";
 import FaSun from "../Assets/Sun.svg";
-import '../Sass/components/_Navbar.scss';
-import '../Sass/core/_Variables.scss'
+import "../Sass/components/_Navbar.scss";
+import "../Sass/core/_Variables.scss";
 
 function FontAwesomeIcon(props) {
   return null;
@@ -17,23 +17,25 @@ FontAwesomeIcon.propTypes = {
 
 const Navbar = () => {
   const { isLoggedIn, logout } = useAuth();
-  const [currentTheme, setCurrentTheme] = useState('Light');
+  const [currentTheme, setCurrentTheme] = useState("Light");
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
-
-  const themes = ['Light', 'Dark', 'DarkDark'];
+  const dropdownRef = useRef(null);
+  const themes = ["Light", "Dark", "DarkDark"];
 
   const handleThemeChange = () => {
-    const newTheme = currentTheme === 'Light' ? 'Dark' : 'Light';
+    const nextThemeIndex = (themes.indexOf(currentTheme) + 1) % themes.length;
+    const newTheme = themes[nextThemeIndex];
+
     setCurrentTheme(newTheme);
     document.body.classList.remove(...themes);
     document.body.classList.add(newTheme);
-    localStorage.setItem('theme', newTheme);
+    localStorage.setItem("theme", newTheme);
   };
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') || 'Light';
+    const storedTheme = localStorage.getItem("theme") || "Light";
     setCurrentTheme(storedTheme);
     document.body.classList.add(storedTheme);
   }, []);
@@ -76,6 +78,22 @@ const Navbar = () => {
     return isLoggedIn ? "Cargando..." : "Iniciar sesión";
   };
 
+  // Cerrar dropdown con ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+      dropdownRef.current?.focus();
+    }
+
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isDropdownOpen]);
+
   return (
     <nav className="navbar">
       <h3>
@@ -87,29 +105,43 @@ const Navbar = () => {
       <div className="navbar-buttons">
         {isLoggedIn && (
           <Link to="/diaries" style={{ marginRight: "1rem" }}>
-            <button className="navbar-button">
+            <button className="navbar-button" tabIndex="0">
               Mis diarios
             </button>
           </Link>
         )}
 
-        <button onClick={handleAuthClick} className="navbar-button">
+        <button
+          onClick={handleAuthClick}
+          className="navbar-button"
+          tabIndex="0"
+          aria-haspopup="true"
+          aria-expanded={isDropdownOpen}
+        >
           {getUsername()}
         </button>
 
         {isLoggedIn && isDropdownOpen && (
-          <div className="navbar-dropdown">
+          <div
+            className="navbar-dropdown"
+            ref={dropdownRef}
+            tabIndex="0"
+            role="menu"
+            aria-label="Menú desplegable de usuario"
+          >
             <Link to="/user">
-              <button className="navbar-dropdown-button">Ir al perfil</button>
+              <button className="navbar-dropdown-button" tabIndex="0">
+                Ir al perfil
+              </button>
             </Link>
-            <button onClick={handleLogout} className="navbar-dropdown-button">
+            <button onClick={handleLogout} className="navbar-dropdown-button" tabIndex="0">
               Cerrar sesión
             </button>
           </div>
         )}
 
-        <button className="theme-button" onClick={handleThemeChange}>
-          <img src={FaSun} alt="Icono del sol" className="sun-icon" />
+        <button className="theme-button" onClick={handleThemeChange} tabIndex="0">
+          <img src={FaSun} alt="Cambiar tema" className="sun-icon" />
         </button>
       </div>
     </nav>

@@ -108,6 +108,61 @@ body.Dark {
   }
 }
 
+body.DarkDark {
+  background-color: #1c1c1c;
+  color: #e3e3e3;
+
+  .navbar {
+    background-color: #393939;
+  }
+
+  .footer {
+    background-color: #393939;
+  }
+
+  .navbar-logo {
+    color: #e3e3e3;
+    text-decoration: none;
+  }
+
+  .navbar-button,
+  .navbar-dropdown-button {
+    color: #e3e3e3;
+  }
+
+  .navbar-dropdown {
+    color: #e3e3e3;
+  }
+
+  // Estilos para etiquetas
+  h1, h2, h3 {
+    color: #e3e3e3;
+  }
+
+  p, span, a {
+    color: #e3e3e3;
+    text-decoration: none;
+  }
+
+  button {
+    background-color: #393939;
+    color: #e3e3e3;
+    border: none;
+    cursor: pointer;
+  }
+
+  input, textarea {
+    background-color: #555555;
+    color: #e3e3e3;
+    border: 1px solid #e3e3e3;
+  }
+
+  ul, li {
+    list-style: none;
+  }
+}
+
+
 // Variables de colores
 $light-foreground: #520288;
 $light-background: #F9EFA9;
