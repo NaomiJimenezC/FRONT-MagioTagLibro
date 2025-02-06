@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import "../Sass/Components/_Login.scss";
 
 const apiRequest = async (url, method, body, onSuccess, onError) => {
   try {
@@ -158,11 +159,11 @@ const LoginForm = () => {
   );
 
   return (
-    <main>
-      <section aria-labelledby="login-form-title">
+    <section>
+      <article aria-labelledby="login-form-title">
         {renderForm(securityCodeSent)}
-      </section>
-    </main>
+      </article>
+    </section>
   );
 };
 

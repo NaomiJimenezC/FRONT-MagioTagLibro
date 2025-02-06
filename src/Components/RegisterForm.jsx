@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import "../Sass/components/_Register.scss";
+
 
 const RegisterForm = () => {
   const navigate = useNavigate();
