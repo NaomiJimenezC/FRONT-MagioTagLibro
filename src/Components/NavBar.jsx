@@ -15,15 +15,6 @@ import Logo from "../Assets/MagioTaglibro.png";
 import "../Sass/components/_Navbar.scss";
 import "../Sass/core/_Variables.scss";
 
-function FontAwesomeIcon(props) {
-  return null;
-}
-
-FontAwesomeIcon.propTypes = {
-  icon: PropTypes.string,
-  style: PropTypes.shape({ color: PropTypes.string }),
-};
-
 const Navbar = () => {
   const { isLoggedIn, logout } = useAuth();
   const [currentTheme, setCurrentTheme] = useState("Light");
@@ -36,47 +27,29 @@ const Navbar = () => {
   const handleThemeChange = () => {
     const nextThemeIndex = (themes.indexOf(currentTheme) + 1) % themes.length;
     const newTheme = themes[nextThemeIndex];
-
     setCurrentTheme(newTheme);
     document.body.classList.remove(...themes);
     document.body.classList.add(newTheme);
     localStorage.setItem("theme", newTheme);
   };
 
-  function themeIcon() {
-    if (currentTheme === "Light") {
-      return (<img src={Sun} alt="Cambiar tema" className="theme-icon-sun"/>)
-    }
-    if (currentTheme === "Dark") {
-      return (<img src={HalfMoon} alt="Cambiar tema" className="theme-icon-half-moon"/>)
-    }
-    if (currentTheme === "DarkDark") {
-      return (<img src={Moon} alt="Cambiar tema" className="theme-icon-moon"/>)
-    }
-  }
-  function logInIcon() {
-    if (currentTheme === "Light") {
-      return (<img src={LogInLight} alt="Log In" className="login-icon"/>)
-    }
-    if (currentTheme === "Dark") {
-      return (<img src={LogInDark} alt="Log In" className="login-icon"/>)
-    }
-    if (currentTheme === "DarkDark") {
-      return (<img src={LogInDarkDark} alt="Log In" className="login-icon"/>)
-    }
-  }
-  function userIcon() {
-    if (currentTheme === "Light") {
-      return (<img src={UserLight} alt="Usuario" className="usuario-icon"/>)
-    }
-    if (currentTheme === "Dark") {
-      return (<img src={UserDark} alt="Usuario" className="usuario-icon"/>)
-    }
-    if (currentTheme === "DarkDark") {
-      return (<img src={UserDarkDark} alt="Usuario" className="usuario-icon"/>)
-    }
-  }
+  const themeIcons = {
+    Light: Sun,
+    Dark: HalfMoon,
+    DarkDark: Moon,
+  };
 
+  const logInIcons = {
+    Light: LogInLight,
+    Dark: LogInDark,
+    DarkDark: LogInDarkDark,
+  };
+
+  const userIcons = {
+    Light: UserLight,
+    Dark: UserDark,
+    DarkDark: UserDarkDark,
+  };
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "Light";
@@ -99,11 +72,7 @@ const Navbar = () => {
   }, []);
 
   const handleAuthClick = () => {
-    if (isLoggedIn) {
-      setIsDropdownOpen((prev) => !prev);
-    } else {
-      navigate("/login");
-    }
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const handleLogout = () => {
@@ -115,75 +84,58 @@ const Navbar = () => {
     setIsDropdownOpen(false);
   };
 
-  // Cerrar dropdown con ESC
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         setIsDropdownOpen(false);
       }
     };
-
     if (isDropdownOpen) {
       document.addEventListener("keydown", handleKeyDown);
       dropdownRef.current?.focus();
     }
-
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isDropdownOpen]);
 
   return (
-    <nav className="navbar">
-      <h3>
-        <Link className="navbar-logo" to="/" aria-label="Ir a la página principal">
-          <img src={Logo} alt="Bienvenido a MagioTaglibro" className="logo"></img>
-        </Link>
-      </h3>
-
-      <div className="navbar-buttons">
-        {isLoggedIn && (
-          <Link to="/diaries" style={{ marginRight: "1rem" }}>
-            <button className="navbar-button" tabIndex="0">
-              Mis diarios
-            </button>
+      <nav className="navbar" aria-label={"Menú de navegación"}>
+        <h3>
+          <Link className="navbar-logo" to="/" aria-label="Ir a la página principal">
+            <img src={Logo} alt="Logotipo de MagioTaglibro" className="logo" />
           </Link>
-        )}
+        </h3>
+        <div className="navbar-buttons">
+          {isLoggedIn && (
+              <Link to="/diaries" className="navbar-link">
+                <button className="navbar-button">Mis diarios</button>
+              </Link>
+          )}
           <button
               onClick={handleAuthClick}
               className="navbar-button"
-              tabIndex="0"
               aria-haspopup="true"
               aria-expanded={isDropdownOpen}
+              aria-label={isLoggedIn ? "Abrir menú de usuario" : "Iniciar sesión"}
           >
-            {isLoggedIn ? (
-                userIcon()
-            ) : (
-                logInIcon()
-            )}
+            <img src={isLoggedIn ? userIcons[currentTheme] : logInIcons[currentTheme]} alt="Icono de usuario" className="usuario-icon" />
           </button>
-        {isLoggedIn && isDropdownOpen && (
-            <div
-                className="navbar-dropdown"
-                ref={dropdownRef}
-                tabIndex="0"
-                role="menu"
-                aria-label="Menú desplegable de usuario"
-          >
-            <Link to="/user">
-              <button className="navbar-dropdown-button" tabIndex="0">
-                Ir al perfil
-              </button>
-            </Link>
-            <button onClick={handleLogout} className="navbar-dropdown-button" tabIndex="0">
-              Cerrar sesión
-            </button>
-          </div>
-        )}
-
-        <button className="theme-button" onClick={handleThemeChange} tabIndex="0">
-          {themeIcon()}
-        </button>
-      </div>
-    </nav>
+          {isLoggedIn && isDropdownOpen && (
+              <ul className="navbar-dropdown" ref={dropdownRef} role="menu">
+                <li role="menuitem">
+                  <Link to="/user" className="navbar-dropdown-link">
+                    <button className="navbar-dropdown-button">Ir al perfil</button>
+                  </Link>
+                </li>
+                <li role="menuitem">
+                  <button onClick={handleLogout} className="navbar-dropdown-button">Cerrar sesión</button>
+                </li>
+              </ul>
+          )}
+          <button className="theme-button" onClick={handleThemeChange} aria-label="Cambiar tema">
+            <img src={themeIcons[currentTheme]} alt="Icono de cambio de tema" className="theme-icon" />
+          </button>
+        </div>
+      </nav>
   );
 };
 

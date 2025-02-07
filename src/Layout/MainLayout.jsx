@@ -8,9 +8,8 @@ const Layout = ({ children }) => {
   return (
     <section className="father-layout" aria-labelledby="site-layout">
       {/* Encabezado principal con el Navbar */}
-      <header className="head-bar" aria-label="Primary navigation">
-        <Navbar />
-      </header>
+      <Navbar />
+
 
       {/* Contenido principal dinámico */}
       <main className="page-content" id="main-content" tabIndex="-1" aria-labelledby="page-title">
@@ -18,9 +17,7 @@ const Layout = ({ children }) => {
       </main>
 
       {/* Pie de página */}
-      <footer className="foot-bar" aria-label="Site footer">
-        <Footer />
-      </footer>
+      <Footer />
     </section>
   );
 };
