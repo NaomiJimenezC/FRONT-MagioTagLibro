@@ -6,7 +6,7 @@ const Footer = () => {
   return (
       <footer className="footer" aria-label="footer-heading">
         {/* Copyright */}
-        <p className="copyright" aria-label="copyright">
+        <p className="copyright">
           © MagioTaglibro 2025. All rights reserved.
         </p>
 
