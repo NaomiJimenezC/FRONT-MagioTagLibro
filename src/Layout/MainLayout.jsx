@@ -6,19 +6,19 @@ import Footer from "../Components/Footer";
 
 const Layout = ({ children }) => {
   return (
-    <section className="father-layout" aria-label="site-layout">
-      {/* Encabezado principal con el Navbar */}
-      <Navbar />
+      <>
+          {/* Encabezado principal con el Navbar */}
+          <Navbar />
 
 
-      {/* Contenido principal dinámico */}
-      <main className="page-content" id="main-content" tabIndex="-1" aria-labelledby="main-content">
-        {children}
-      </main>
+          {/* Contenido principal dinámico */}
+          <main className="page-content" id="main-content" tabIndex="-1" aria-labelledby="main-content">
+              {children}
+          </main>
 
-      {/* Pie de página */}
-      <Footer />
-    </section>
+          {/* Pie de página */}
+          <Footer />
+      </>
   );
 };
 
