@@ -103,6 +103,22 @@ body.Dark {
   background-color: #482279;
   color: #FFE541;
 
+  a, link {
+    color: #FFE541;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+
+    &:hover {
+      color: #FFD700;
+      text-decoration: underline;
+    }
+
+    &:focus {
+      outline: 2px solid #FFD700;
+    }
+  }
+
   .navbar {
     background-color: #2C0066;
   }
@@ -198,6 +214,23 @@ body.DarkDark {
   margin: 0;
   background-color: #1c1c1c;
   color: #e3e3e3;
+
+  a, link {
+    color: #e3e3e3;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+
+    &:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    &:focus {
+      outline: 2px solid #ffffff;
+    }
+  }
+
 
   .navbar {
     background-color: #393939;
