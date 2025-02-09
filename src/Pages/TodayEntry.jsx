@@ -131,8 +131,8 @@ const TodayEntry = () => {
         <Layout>
                 <section>
                     <h1>{entry.titulo}</h1>
-                    <h3><strong>Fecha de creación:</strong> {entry.fecha_creacion}</h3>
-                    <h3><strong>Autor(a):</strong>{entry.autor_username}</h3>
+                    <h2><strong>Fecha de creación:</strong> {entry.fecha_creacion}</h2>
+                    <h2><strong>Autor(a):</strong>{entry.autor_username}</h2>
 
                     {entry.autor_username === user.username &&(
                         <>
@@ -189,7 +189,7 @@ const TodayEntry = () => {
                                         <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
                                         <Field
                                             name="contenido.palabras_clave"
-                                            id="palabras_clave"
+                                            id="contenido.palabras_clave"
                                             placeholder="Ingrese las palabras claves de tu día"
                                         />
                                         <ErrorMessage name="contenido.palabras_clave" component="small" />
@@ -200,6 +200,7 @@ const TodayEntry = () => {
                                             {values.contenido.eventos_clave.map((evento, index) => (
                                                 <div key={index}>
                                                     <Field
+                                                        id={"contenido.eventos_clave"}
                                                         name={`contenido.eventos_clave[${index}]`}
                                                         placeholder={`Evento ${index + 1}`}
                                                     />
@@ -237,7 +238,7 @@ const TodayEntry = () => {
                                             <label htmlFor="contenido.resumen">Resumen del día:</label>
                                             <Field
                                                 name="contenido.resumen"
-                                                id="resumen"
+                                                id="contenido.resumen"
                                                 as="textarea"
                                                 rows={6}
                                                 placeholder="Escribe el resumen de tu día"
