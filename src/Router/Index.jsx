@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
     element: <LoginRegister />,
   },
   {
-    path: "/auth-test", 
+    path: "/auth-test",
     element: <AuthTestPage />,
   },
   {
@@ -38,3 +38,7 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute element={<TodayEntry />} />,
   }
 ]);
+console.log("Home:", Home);
+console.log("Contact:", Contact);
+console.log("LoginRegister:", LoginRegister);
+console.log("ProtectedRoute:", ProtectedRoute);
