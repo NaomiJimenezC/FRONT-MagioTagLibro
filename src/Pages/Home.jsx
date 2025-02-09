@@ -1,10 +1,15 @@
 import React from "react";
 import Layout from "../Layout/MainLayout"; // Importa el Layout
 import "../Sass/pages/_Home.scss";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 
 function Home() {
+  const navigate = useNavigate();
+
+  const handleStartWriting = () => {
+    navigate('/diaries');
+  };
   return (
     <Layout>
       <h1>¡Bienvenido a Magio Taglibro!<br/>¡El sitio donde tu vida es<br/>mágica!</h1>
@@ -29,11 +34,11 @@ function Home() {
       <section className="start-writting">
         <h2>¿Cómo empiezo a escribir?</h2>
         <p>Para empezar a escribir tu diario mágico es sencillo, solo tienes que darle al siguiente botón:</p>
-        <Link to="/diaries">
-          <button>
+
+        <button onClick={handleStartWriting}>
             ¡A tu diario!
-          </button>
-        </Link>
+        </button>
+
       </section>
     </Layout>
   );

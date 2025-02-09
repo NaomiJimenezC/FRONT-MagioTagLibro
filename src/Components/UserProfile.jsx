@@ -68,13 +68,19 @@ const UserProfile = () => {
                 style={{ cursor: "pointer" }}
               />
             </figure>
+
+            <label htmlFor="file-input" style={{ cursor: "pointer" }}>
+              Haz clic para cambiar la imagen
+            </label>
+
             <input
-              type="file"
-              ref={fileInputRef}
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
+                type="file"
+                id="file-input"  // Asociado con el label
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
             />
+
 
             <p><strong>Nombre de usuario:</strong> {user.username}</p>
             <p><strong>Fecha de registro:</strong> {user.createdAt}</p>
