@@ -4,9 +4,9 @@ import "../Sass/components/_Footer.scss";
 
 const Footer = () => {
   return (
-      <footer className="footer" aria-labelledby="footer-heading">
+      <footer className="footer" aria-label="footer-heading">
         {/* Copyright */}
-        <p className="copyright" aria-labelledby="copyright">
+        <p className="copyright" aria-label="copyright">
           © MagioTaglibro 2025. All rights reserved.
         </p>
 
@@ -20,7 +20,7 @@ const Footer = () => {
           </p>
 
           {/* Social Media Links */}
-          <section className="social-media-links" aria-labelledby="social-media-heading" >
+          <section className="social-media-links" id ="social-media-links" aria-labelledby="social-media-links">
 
             <p className="text-sm mb-2">Follow us on:</p>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"

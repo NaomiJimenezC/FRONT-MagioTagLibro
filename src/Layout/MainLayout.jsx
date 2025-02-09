@@ -6,13 +6,13 @@ import Footer from "../Components/Footer";
 
 const Layout = ({ children }) => {
   return (
-    <section className="father-layout" aria-labelledby="site-layout">
+    <section className="father-layout" aria-label="site-layout">
       {/* Encabezado principal con el Navbar */}
       <Navbar />
 
 
       {/* Contenido principal dinámico */}
-      <main className="page-content" id="main-content" tabIndex="-1" aria-labelledby="page-title">
+      <main className="page-content" id="main-content" tabIndex="-1" aria-labelledby="main-content">
         {children}
       </main>
 
