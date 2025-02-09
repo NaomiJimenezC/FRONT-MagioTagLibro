@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../Layout/MainLayout"; // Importa el Layout
 import "../Sass/pages/_Home.scss";
 import {Link, useNavigate} from "react-router-dom";
+import {Helmet} from "react-helmet-async";
 
 
 function Home() {
@@ -12,6 +13,16 @@ function Home() {
   };
   return (
     <Layout>
+        <Helmet>
+            <title>Inicio - Magio Taglibro</title>
+            <meta
+                name="description"
+                content="Bienvenido a Magio Taglibro, el sitio donde tu vida es mágica. Organiza tu día, comparte con amigos y crea recuerdos inolvidables."
+            />
+            <meta name="keywords" content="diario, organización, amistades, Cornell, Magio Taglibro" />
+            <meta name="author" content="Magio Taglibro Team" />
+        </Helmet>
+
       <h1>¡Bienvenido a Magio Taglibro!<br/>¡El sitio donde tu vida es<br/>mágica!</h1>
       <h2>¿Qué te puede aportar esta página?</h2>
       <section className="home-contents" aria-labelledby={"home-contents"}>

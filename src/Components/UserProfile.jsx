@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import FriendManagement from "../Components/FriendManagement";
 import ProfileEditor from "../Components/ProfileEditor";
+import { Helmet } from "react-helmet-async"; // Importa Helmet
 import "../Sass/components/_UserManagement.scss";
 import "../Sass/components/_UserProfile.scss";
 import "font-awesome/css/font-awesome.min.css";
@@ -44,7 +45,7 @@ const UserProfile = () => {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(imageBitmap, 0, 0);
       const webpImage = canvas.toDataURL("image/webp", 0.8);
-      
+
       const updatedUser = { ...user, profileImage: webpImage };
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setUser(updatedUser);
@@ -54,90 +55,104 @@ const UserProfile = () => {
   };
 
   return (
-    <main id="user-profile-page">
-      {user ? (
-        <article id="profile-details">
-          <section id="profile-summary">
-            <figure>
-              <img
-                id="profile-avatar"
-                src={user.profileImage || "https://via.placeholder.com/150"}
-                alt={`Avatar de ${user.username}`}
-                className="profile-avatar"
-                onClick={() => fileInputRef.current.click()}
-                style={{ cursor: "pointer" }}
-              />
-            </figure>
+      <main id="user-profile-page">
+        {/* Configuración del head con Helmet */}
+        <Helmet>
+          <title>{user ? `${user.username} - Perfil de Usuario` : "Cargando perfil..."} - Magio Taglibro</title>
+          <meta
+              name="description"
+              content={
+                user
+                    ? `Perfil de usuario de ${user.username} en Magio Taglibro. Gestiona tu información personal y amigos aquí.`
+                    : "Cargando perfil de usuario en Magio Taglibro."
+              }
+          />
+          <meta name="keywords" content="perfil de usuario, Magio Taglibro, gestión de amigos, editar perfil" />
+          <meta name="author" content="Magio Taglibro Team" />
+        </Helmet>
 
-            <label htmlFor="file-input" style={{ cursor: "pointer" }}>
-              Haz clic para cambiar la imagen
-            </label>
+        {user ? (
+            <article id="profile-details">
+              <section id="profile-summary">
+                <figure>
+                  <img
+                      id="profile-avatar"
+                      src={user.profileImage || "https://via.placeholder.com/150"}
+                      alt={`Avatar de ${user.username}`}
+                      className="profile-avatar"
+                      onClick={() => fileInputRef.current.click()}
+                      style={{ cursor: "pointer" }}
+                  />
+                </figure>
 
-            <input
-                type="file"
-                id="file-input"  // Asociado con el label
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
-            />
+                <label htmlFor="file-input" style={{ cursor: "pointer" }}>
+                  Haz clic para cambiar la imagen
+                </label>
 
-
-            <p><strong>Nombre de usuario:</strong> {user.username}</p>
-            <p><strong>Fecha de registro:</strong> {user.createdAt}</p>
-            <p>
-              <strong>Motto:</strong>
-              {isEditingMotto ? (
                 <input
-                  type="text"
-                  value={motto}
-                  maxLength={125}
-                  onChange={(e) => setMotto(e.target.value)}
-                  onBlur={() => setIsEditingMotto(false)}
-                  autoFocus
+                    type="file"
+                    id="file-input" // Asociado con el label
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
                 />
-              ) : (
-                <span onClick={() => setIsEditingMotto(true)}>
+
+                <p><strong>Nombre de usuario:</strong> {user.username}</p>
+                <p><strong>Fecha de registro:</strong> {user.createdAt}</p>
+                <p>
+                  <strong>Motto:</strong>
+                  {isEditingMotto ? (
+                      <input
+                          type="text"
+                          value={motto}
+                          maxLength={125}
+                          onChange={(e) => setMotto(e.target.value)}
+                          onBlur={() => setIsEditingMotto(false)}
+                          autoFocus
+                      />
+                  ) : (
+                      <span onClick={() => setIsEditingMotto(true)}>
                   {motto || "Haz clic para agregar un motto"}
-                  <i className="fa fa-pencil-square-o" style={{ cursor: "pointer", marginLeft: "8px" }}></i>
+                        <i className="fa fa-pencil-square-o" style={{ cursor: "pointer", marginLeft: "8px" }}></i>
                 </span>
+                  )}
+                </p>
+              </section>
+
+              <section>
+                <button id="edit-profile-btn" onClick={() => setShowProfileModal(true)}>Editar perfil</button>
+              </section>
+
+              <section>
+                <button id="manage-friends-btn" onClick={() => setShowFriendModal(true)}>
+                  Gestionar Amigos
+                </button>
+              </section>
+
+              {showProfileModal && (
+                  <aside id="profile-modal" className="modal-overlay">
+                    <div className="modal-content">
+                      <button id="close-profile-modal" onClick={() => setShowProfileModal(false)} className="close-modal-btn">✕</button>
+                      <ProfileEditor user={user} onSave={() => setShowProfileModal(false)} />
+                    </div>
+                  </aside>
               )}
-            </p>
-          </section>
 
-          <section>
-            <button id="edit-profile-btn" onClick={() => setShowProfileModal(true)}>Editar perfil</button>
-          </section>
-
-          <section>
-            <button id="manage-friends-btn" onClick={() => setShowFriendModal(true)}>
-              Gestionar Amigos
-            </button>
-          </section>
-
-          {showProfileModal && (
-            <aside id="profile-modal" className="modal-overlay">
-              <div className="modal-content">
-                <button id="close-profile-modal" onClick={() => setShowProfileModal(false)} className="close-modal-btn">✕</button>
-                <ProfileEditor user={user} onSave={() => setShowProfileModal(false)} />
-              </div>
-            </aside>
-          )}
-
-          {showFriendModal && (
-            <aside id="friend-modal" className="modal-overlay">
-              <div className="modal-content">
-                <button id="close-friend-modal" onClick={() => setShowFriendModal(false)} className="close-modal-btn">✕</button>
-                <FriendManagement />
-              </div>
-            </aside>
-          )}
-        </article>
-      ) : (
-        <section>
-          <p>Cargando perfil...</p>
-        </section>
-      )}
-    </main>
+              {showFriendModal && (
+                  <aside id="friend-modal" className="modal-overlay">
+                    <div className="modal-content">
+                      <button id="close-friend-modal" onClick={() => setShowFriendModal(false)} className="close-modal-btn">✕</button>
+                      <FriendManagement />
+                    </div>
+                  </aside>
+              )}
+            </article>
+        ) : (
+            <section>
+              <p>Cargando perfil...</p>
+            </section>
+        )}
+      </main>
   );
 };
 

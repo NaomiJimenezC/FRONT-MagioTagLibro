@@ -3,8 +3,9 @@ import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import Layout from "../Layout/MainLayout"; 
+import Layout from "../Layout/MainLayout";
 import ShareEntry from '../Components/ShareEntry';
+import { Helmet } from "react-helmet-async"; // Importa Helmet
 
 const TodayEntry = () => {
     const [showFriendModal, setShowFriendModal] = useState(false);
@@ -12,8 +13,6 @@ const TodayEntry = () => {
     const [user, setUser] = useState(null);
     const [entry, setEntry] = useState(null);
     const [error, setError] = useState(null);
-
-
     const { id } = useParams();
     const navigate = useNavigate();
     const backurl = import.meta.env.VITE_BACKEND_URL;
@@ -23,23 +22,23 @@ const TodayEntry = () => {
         year: 'numeric'
     });
 
-      // Función para abrir el popup
-  const openFriendModal = () => {
-    setShowFriendModal(true);
-  };
+    // Función para abrir el popup
+    const openFriendModal = () => {
+        setShowFriendModal(true);
+    };
 
-  // Función para cerrar el popup
-  const closeFriendModal = async () => {
-    setShowFriendModal(false);
-    // Recargar los datos de la entrada
-    try {
-      const response = await axios.get(`${backurl}/api/entries/${user.username}/${id}`);
-      setEntry(response.data);
-    } catch (error) {
-      console.error("Error al recargar la entrada:", error);
-    }
-  };
-  
+    // Función para cerrar el popup
+    const closeFriendModal = async () => {
+        setShowFriendModal(false);
+        // Recargar los datos de la entrada
+        try {
+            const response = await axios.get(`${backurl}/api/entries/${user.username}/${id}`);
+            setEntry(response.data);
+        } catch (error) {
+            console.error("Error al recargar la entrada:", error);
+        }
+    };
+
     useEffect(() => {
         const fetchUserAndEntries = async () => {
             const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -66,7 +65,6 @@ const TodayEntry = () => {
         };
         fetchUserAndEntries();
     }, [navigate, id, backurl, today]);
-    
 
     const validationSchema = Yup.object().shape({
         titulo: Yup.string().required('El título es requerido'),
@@ -100,7 +98,7 @@ const TodayEntry = () => {
         fecha_creacion: today,
     };
 
-    const handleDeleteClick = async() =>{
+    const handleDeleteClick = async () => {
         try {
             const deletEntry = axios.delete(`${backurl}/api/entries/delete/${id}`)
             navigate("/diaries")
@@ -108,7 +106,7 @@ const TodayEntry = () => {
         }
     }
 
-    const handleEditClick = (isEditable)=>{
+    const handleEditClick = (isEditable) => {
         setEditable(prevState => !prevState);
     }
 
@@ -124,78 +122,89 @@ const TodayEntry = () => {
     };
 
     if (!user || !entry) {
-        return <div>Cargando...</div>;
+        return (
+            <Layout>
+                <Helmet>
+                    <title>Cargando entrada - Magio Taglibro</title>
+                    <meta name="description" content="Cargando la entrada del diario..." />
+                </Helmet>
+                <div>Cargando...</div>
+            </Layout>
+        );
     }
 
     return (
         <Layout>
-                <section>
-                    <h1>{entry.titulo}</h1>
-                    <h2><strong>Fecha de creación:</strong> {entry.fecha_creacion}</h2>
-                    <h2><strong>Autor(a):</strong>{entry.autor_username}</h2>
+            <Helmet>
+                <title>{entry.titulo} - Magio Taglibro</title>
+                <meta name="description" content={`Entrada de diario del ${entry.fecha_creacion} por ${entry.autor_username}.`} />
+            </Helmet>
+            <section>
+                <h1>{entry.titulo}</h1>
+                <h2><strong>Fecha de creación:</strong> {entry.fecha_creacion}</h2>
+                <h2><strong>Autor(a):</strong>{entry.autor_username}</h2>
 
-                    {entry.autor_username === user.username &&(
-                        <>
-                            <button
-                                type="button"
-                                onClick={openFriendModal}
-                            >
-                                Compartir
-                            </button>
+                {entry.autor_username === user.username && (
+                    <>
+                        <button
+                            type="button"
+                            onClick={openFriendModal}
+                        >
+                            Compartir
+                        </button>
 
-                            <button
+                        <button
                             type="button"
                             onClick={handleDeleteClick}>
-                                Eliminar entrada
+                            Eliminar entrada
+                        </button>
+                        {entry.fecha_creacion === today && (
+                            <button
+                                type='button'
+                                onClick={handleEditClick}
+                            >
+                                {editable ? "Vista" : "Edición"}
                             </button>
-                            {entry.fecha_creacion === today &&(
-                                <button
-                                    type='button'
-                                    onClick={handleEditClick}
-                                >
-                                    {editable ? "Vista":"Edición"}
-                                </button>
-                            )}
-                        </>
-                        
-                    )}
-                </section>
-                <section>
-            <Formik
-                initialValues={initialValues}
-                onSubmit={handleSubmit}
-                validationSchema={validationSchema}
-                enableReinitialize
-            >
-                {({ isSubmitting, setFieldValue, values }) => (
-                    <Form>
-                        {editable ? (
-                            <>
-                                <fieldset>
-                                    <legend>Cambiar el título</legend>
-                                    <label htmlFor="titulo">Título:</label>
-                                    <Field
-                                        name="titulo"
-                                        id="titulo"
-                                        type="text"
-                                        placeholder="Título de la entrada"
-                                    />
-                                    <ErrorMessage name="titulo" component="small" />
-                                </fieldset>
-                                <fieldset>
-                                    <legend>Información del día</legend>
+                        )}
+                    </>
 
-                                    <div>
-                                        <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
+                )}
+            </section>
+            <section>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={handleSubmit}
+                    validationSchema={validationSchema}
+                    enableReinitialize
+                >
+                    {({ isSubmitting, setFieldValue, values }) => (
+                        <Form>
+                            {editable ? (
+                                <>
+                                    <fieldset>
+                                        <legend>Cambiar el título</legend>
+                                        <label htmlFor="titulo">Título:</label>
                                         <Field
-                                            name="contenido.palabras_clave"
-                                            id="contenido.palabras_clave"
-                                            placeholder="Ingrese las palabras claves de tu día"
+                                            name="titulo"
+                                            id="titulo"
+                                            type="text"
+                                            placeholder="Título de la entrada"
                                         />
-                                        <ErrorMessage name="contenido.palabras_clave" component="small" />
-                                    </div>
+                                        <ErrorMessage name="titulo" component="small" />
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>Información del día</legend>
+                                        <div>
+                                            <label htmlFor="contenido.palabras_clave">Palabras clave:</label>
+                                            <Field
+                                                name="contenido.palabras_clave"
+                                                id="contenido.palabras_clave"
+                                                placeholder="Ingrese las palabras claves de tu día"
+                                            />
+                                            <ErrorMessage name="contenido.palabras_clave" component="small" />
+                                        </div>
 
-                                    <div>
+                                        <div>
                                             <label htmlFor='contenido.eventos_clave'>Eventos Claves</label>
                                             {values.contenido.eventos_clave.map((evento, index) => (
                                                 <div key={index}>
@@ -221,9 +230,9 @@ const TodayEntry = () => {
                                                     />
                                                 </div>
                                             ))}
-                                    </div>
+                                        </div>
 
-                                    <div>
+                                        <div>
                                             <button
                                                 type="button"
                                                 onClick={() =>
@@ -232,9 +241,9 @@ const TodayEntry = () => {
                                             >
                                                 Agregar Evento
                                             </button>
-                                    </div>
+                                        </div>
 
-                                    <div>
+                                        <div>
                                             <label htmlFor="contenido.resumen">Resumen del día:</label>
                                             <Field
                                                 name="contenido.resumen"
@@ -244,36 +253,36 @@ const TodayEntry = () => {
                                                 placeholder="Escribe el resumen de tu día"
                                             />
                                             <ErrorMessage name="contenido.resumen" component="small" />
-                                    </div>
+                                        </div>
 
-                                    <div>
+                                        <div>
                                             <button type="submit" disabled={isSubmitting}>
                                                 {isSubmitting ? 'Enviando...' : 'Enviar'}
                                             </button>
-                                    </div>
-                                </fieldset>
-                            </>
-                        ) : (
-                            <div>
-                                <h3><strong>Palabras clave:</strong> </h3>
-                                <p>{entry.contenido.palabras_clave}</p>
-                                <h3><strong>Eventos Clave:</strong></h3>
-                                <ul>
-                                    {entry.contenido.eventos_clave.map((evento, index) => (
-                                        <li key={index}>{evento}</li>
-                                    ))}
-                                </ul>
-                                <h3><strong>Resumen del día:</strong></h3>
-                                <p>{entry.contenido.resumen}</p>
-                            </div>
-                        )}
-                    </Form>
+                                        </div>
+                                    </fieldset>
+                                </>
+                            ) : (
+                                <div>
+                                    <h3><strong>Palabras clave:</strong> </h3>
+                                    <p>{entry.contenido.palabras_clave}</p>
+                                    <h3><strong>Eventos Clave:</strong></h3>
+                                    <ul>
+                                        {entry.contenido.eventos_clave.map((evento, index) => (
+                                            <li key={index}>{evento}</li>
+                                        ))}
+                                    </ul>
+                                    <h3><strong>Resumen del día:</strong></h3>
+                                    <p>{entry.contenido.resumen}</p>
+                                </div>
+                            )}
+                        </Form>
                     )}
-            </Formik>
-        </section>
-                {user && id ? (
-                    <article>    
-                        {showFriendModal && (
+                </Formik>
+            </section>
+            {user && id ? (
+                <article>
+                    {showFriendModal && (
                         <aside
                             className="modal-overlay"
                             role="dialog"
@@ -281,30 +290,30 @@ const TodayEntry = () => {
                             aria-modal="true"
                         >
                             <div className="modal-content">
-                            <button
-                                onClick={closeFriendModal}
-                                className="close-modal-btn"
-                                aria-label="Cerrar modal"
-                            >
-                                ✕
-                            </button>
-                            <h2 id="friend-management-title">Compartir entrada</h2>
-                            
-                            <ShareEntry 
-                                username={user.username} 
-                                idEntry={id} 
-                                sharedWith={entry.compartido_con}
-                                onClose={closeFriendModal}
-                             />
+                                <button
+                                    onClick={closeFriendModal}
+                                    className="close-modal-btn"
+                                    aria-label="Cerrar modal"
+                                >
+                                    ✕
+                                </button>
+                                <h2 id="friend-management-title">Compartir entrada</h2>
+
+                                <ShareEntry
+                                    username={user.username}
+                                    idEntry={id}
+                                    sharedWith={entry.compartido_con}
+                                    onClose={closeFriendModal}
+                                />
                             </div>
                         </aside>
-                        )}
-                    </article>
-                    ) : (
-                    <section>
-                        <p>Cargando perfil...</p>
-                    </section>
                     )}
+                </article>
+            ) : (
+                <section>
+                    <p>Cargando perfil...</p>
+                </section>
+            )}
         </Layout>
     );
 };

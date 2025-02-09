@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Layout from "../Layout/MainLayout";
 import useCheckTodayEntry from "../Functionalities/TodayEntries.jsx";
+import {Helmet} from "react-helmet-async";
 
 const Entries = () => {
     const backurl = import.meta.env.VITE_BACKEND_URL;
@@ -72,6 +73,11 @@ const Entries = () => {
     if (error) {
         return (
             <Layout>
+                <Helmet>
+                    <title>Cargando... - Magio Taglibro</title>
+                    <meta name="description" content="Cargando las entradas de diario. Por favor espera." />
+                </Helmet>
+                <div>Cargando...</div>
                 <div>
                     <h2>Ocurrió un error</h2>
                     <p>{error.response?.data?.message || error.message || "Error desconocido"}</p>
@@ -81,6 +87,15 @@ const Entries = () => {
     }
     return (
         <Layout>
+            <Helmet>
+                <title>Mis Entradas - Magio Taglibro</title>
+                <meta
+                    name="description"
+                    content="Consulta tus entradas de diario, crea nuevas entradas y revisa las entradas compartidas con tus amigos."
+                />
+                <meta name="keywords" content="diario, entradas, organización, compartir, Magio Taglibro" />
+                <meta name="author" content="Magio Taglibro Team" />
+            </Helmet>
             
                 <section aria-labelledby="my-entries">
                     <header>

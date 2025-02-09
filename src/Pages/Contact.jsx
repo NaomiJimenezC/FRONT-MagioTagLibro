@@ -30,6 +30,15 @@ export const Contact = () => {
 
     return (
         <Layout>
+            <Helmet>
+                <title>Contacto - Magio Taglibro</title>
+                <meta
+                    name="description"
+                    content="Contáctanos en Magio Taglibro. Déjanos tus comentarios, sugerencias o dudas a través de nuestro formulario de contacto."
+                />
+                <meta name="keywords" content="contacto, formulario, Magio Taglibro, soporte, ayuda" />
+                <meta name="author" content="Magio Taglibro Team" />
+            </Helmet>
             <section id="contact-intro">
                 <h1>¡Contacta con nosotros!</h1>
                 <p>En Magio Taglibro valoramos mucho el bienestar del usuario, debido a ello siempre estamos abiertos a escucharos. Déjanos en el formulario lo que veas necesario y te leeremos. ¡Muchas gracias!</p>
