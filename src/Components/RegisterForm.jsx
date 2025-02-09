@@ -77,7 +77,7 @@ const RegisterForm = () => {
   );
 
   return (
-    <section aria-labelledby="register-form-title">
+    <section aria-label="register-form-title">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

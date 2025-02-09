@@ -160,7 +160,7 @@ const LoginForm = () => {
 
   return (
     <section>
-      <article aria-labelledby="login-form-title">
+      <article aria-label="login-form-title">
         {renderForm(securityCodeSent)}
       </article>
     </section>

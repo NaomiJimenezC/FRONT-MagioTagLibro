@@ -42,15 +42,16 @@ export const Contact = () => {
                             <fieldset id="form-fieldset">
                                 <legend id="form-legend">Contacta con nosotros</legend>
 
-                                <label htmlFor="subject" id="label-subject">Asunto</label>
-                                <Field id="input-subject" as="input" name="subject" type="text" />
+                                <label htmlFor="subject" id="subject">Asunto</label>
+                                <Field id="subject" as="input" name="subject" type="text" />
                                 <ErrorMessage name="subject" id="error-subject" component="div" />
 
-                                <label htmlFor="email_user" id="label-email">Email</label>
-                                <Field id="input-email" as="input" name="email_user" type="email" />
+                                <label htmlFor="email_user" id="email_user">Email</label>
+                                <Field id="email_user" as="input" name="email_user" type="email" />
                                 <ErrorMessage name="email_user" id="error-email" component="div" />
 
-                                <label htmlFor="email_body" id="label-message">Mensaje</label>
+                                <label htmlFor="email_body" id="email_body">Mensaje</label>
+
                                 <Field id="textarea-message" name="email_body" as="textarea" rows={8} />
                                 <ErrorMessage name="email_body" id="error-message" component="div" />
 
